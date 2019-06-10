@@ -4,7 +4,6 @@ public class Bomb {
     private int _rangeBombs;
     private int _xCoordinate;
     private int _yCoordinate;
-    private boolean _isExploding;
 
     public void explode(){
     }
@@ -13,7 +12,6 @@ public class Bomb {
         setXCoordinate(playerXCoordinate);
         setYCoordinate(playerYCoordinate);
         setRangeBombs(rangeBombs);
-        setIsExploding(false);
     }
 
     public int getRangeBombs() {
@@ -40,11 +38,4 @@ public class Bomb {
         this._yCoordinate = _yCoordinate;
     }
 
-    public boolean getIsExploding() {
-        return _isExploding;
-    }
-
-    public void setIsExploding(boolean _isExploding) {
-        this._isExploding = _isExploding;
-    }
 }

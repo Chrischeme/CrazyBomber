@@ -4,29 +4,29 @@ public class Player {
     private boolean _isKnockedUp;
     private boolean _isAlive;
     private int _numBombs;
-    private int _speed;
+    private double _speed;
     private boolean onItem;
-    private int _xCoordinate;
-    private int _yCoordinate;
+    private double _xCoordinate;
+    private double _yCoordinate;
 
 
-    public int getXCoordinate() {
+    public double getXCoordinate() {
         return _xCoordinate;
     }
 
-    public void setXCoordinate(int _xCoordinate) {
+    public void setXCoordinate(double _xCoordinate) {
         this._xCoordinate = _xCoordinate;
     }
 
-    public int getYCoordinate() {
+    public double getYCoordinate() {
         return _yCoordinate;
     }
 
-    public void setYCoordinate(int _yCoordinate) {
+    public void setYCoordinate(double _yCoordinate) {
         this._yCoordinate = _yCoordinate;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return _speed;
     }
 
