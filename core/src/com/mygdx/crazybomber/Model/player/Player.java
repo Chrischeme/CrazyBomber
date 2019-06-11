@@ -83,6 +83,7 @@ public class Player {
         this._rangeBombs = _rangeBombs;
     }
 
+    //todo: will need logic to not walk through walls
     public void move(char direction) {
         switch (direction) {
             case 'W':
@@ -101,23 +102,32 @@ public class Player {
     }
 
     public Bomb dropBomb() {
-        Bomb droppedBomb =_bombStack.pop();
+        Bomb droppedBomb = _bombStack.pop();
         droppedBomb.setRangeBombs(getRangeBombs());
-        droppedBomb.setXCoordinate((int)getXCoordinate());
-        droppedBomb.setYCoordinate((int)getYCoordinate());
+        if (getXCoordinate() % 0.5 == 0) {
+            droppedBomb.setXCoordinate((int) Math.round((getXCoordinate() - 0.01)));
+        } else {
+            droppedBomb.setXCoordinate((int) Math.round(getXCoordinate()));
+        }
+        if (getYCoordinate() % 0.5 == 0) {
+            droppedBomb.setXCoordinate((int) Math.round((getYCoordinate() - 0.01)));
+        } else {
+            droppedBomb.setXCoordinate((int) Math.round(getYCoordinate()));
+        }
         return droppedBomb;
     }
 
     public Player(double playerSpawnXCoordinate, double playerSpawnYCoordinate) {
-        Stack<Bomb> bombStack = new Stack<Bomb>();
+        Stack<Bomb> _bombStack = new Stack<Bomb>();
         setIsAlive(false);
         setIsKnockedUp(false);
         setNumBombs(1);
         setOnItem(false);
         setSpeed(1.5);
+        setRangeBombs(1);
         setXCoordinate(playerSpawnXCoordinate);
         setYCoordinate(playerSpawnYCoordinate);
-        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBombs());
+        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBombs(),_bombStack);
         _bombStack.push(bomb);
     }
 
