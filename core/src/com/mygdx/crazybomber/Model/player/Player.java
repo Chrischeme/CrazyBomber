@@ -8,7 +8,7 @@ public class Player {
     private boolean _isKnockedUp;
     private boolean _isAlive;
     private int _numBombs;
-    private int _rangeBombs;
+    private int _rangeBomb;
     private double _speed;
     private boolean onItem;
     private double _xCoordinate;
@@ -75,15 +75,15 @@ public class Player {
     public void pickUpItem(int itemXCoordinate, int itemYCoordinate) {
     }
 
-    public int getRangeBombs() {
-        return _rangeBombs;
+    public int getRangeBomb() {
+        return _rangeBomb;
     }
 
-    public void setRangeBombs(int _rangeBombs) {
-        this._rangeBombs = _rangeBombs;
+    public void setRangeBomb(int _rangeBombs) {
+        this._rangeBomb = _rangeBombs;
     }
 
-    //todo: will need logic to not walk through walls
+    //todo: will need logic to not walk through walls and make traveling constant (frame rate or constant velocity, libgdx physics?)
     public void move(char direction) {
         switch (direction) {
             case 'W':
@@ -103,7 +103,7 @@ public class Player {
 
     public Bomb dropBomb() {
         Bomb droppedBomb = _bombStack.pop();
-        droppedBomb.setRangeBombs(getRangeBombs());
+        droppedBomb.setRangeBombs(getRangeBomb());
         if (getXCoordinate() % 0.5 == 0) {
             droppedBomb.setXCoordinate((int) Math.round((getXCoordinate() - 0.01)));
         } else {
@@ -118,18 +118,16 @@ public class Player {
     }
 
     public Player(double playerSpawnXCoordinate, double playerSpawnYCoordinate) {
-        Stack<Bomb> _bombStack = new Stack<Bomb>();
+        _bombStack = new Stack<Bomb>();
         setIsAlive(false);
         setIsKnockedUp(false);
         setNumBombs(1);
         setOnItem(false);
         setSpeed(1.5);
-        setRangeBombs(1);
+        setRangeBomb(1);
         setXCoordinate(playerSpawnXCoordinate);
         setYCoordinate(playerSpawnYCoordinate);
-        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBombs(),_bombStack);
+        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBomb(), _bombStack);
         _bombStack.push(bomb);
     }
-
-
 }
