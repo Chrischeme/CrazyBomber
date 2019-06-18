@@ -48,9 +48,10 @@ public class CrazyBomberServer {
                     }
                     int switchByte = (int) data[0];
                     switch (switchByte) {
+                        // not sure about the data about which player, we might be able to decipher that with the different sockets
                         case 1:
                             // On player coord change
-                            // data should have new coord + if a movement key is pressed down (WASD)
+                            // data should have which player + new coord + if a movement key is pressed down (WASD)
                             // update the player coord in player data + send to all other players
                             break;
                         case 2:
@@ -69,8 +70,13 @@ public class CrazyBomberServer {
                             // update item in item data + send to all other players => NOT SURE
                             break;
                         case 5:
+                            // On item pickedup
+                            // data should have which player
+                            // update the player fields in player data + send to all other players
+                            break;
+                        case 6:
                             // On player death
-                            // not sure there should be data
+                            // data should have which player
                             // send to all other players
                             break;
                         default:
