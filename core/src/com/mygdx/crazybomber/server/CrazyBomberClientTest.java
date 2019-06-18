@@ -22,7 +22,7 @@ public class CrazyBomberClientTest {
 
         public void run() throws IOException {
             try {
-                Socket socket = new Socket(serverAddress, 59898);
+                Socket socket = new Socket(serverAddress, 8000);
                 in = new Scanner(socket.getInputStream());
                 out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -44,7 +44,7 @@ public class CrazyBomberClientTest {
     }
 
     public static void main(String argv[]) throws Exception {
-        ChatClient client = new ChatClient("localhost");
+        ChatClient client = new ChatClient("47.227.192.92");
         client.run();
     }
 }

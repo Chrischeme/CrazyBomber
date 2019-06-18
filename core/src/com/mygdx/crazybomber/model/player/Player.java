@@ -3,17 +3,21 @@ package com.mygdx.crazybomber.model.player;
 import com.mygdx.crazybomber.model.bomb.Bomb;
 
 import java.util.Stack;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Player {
     private boolean _isKnockedUp;
     private boolean _isAlive;
-    private int _numBombs;
     private int _rangeBomb;
     private double _speed;
     private boolean onItem;
     private double _xCoordinate;
     private double _yCoordinate;
     private Stack<Bomb> _bombStack;
+    private ScheduledExecutorService _scheduleExecutorService;
 
 
     public double getXCoordinate() {
@@ -56,14 +60,6 @@ public class Player {
         this._isAlive = _isAlive;
     }
 
-    public int getNumBombs() {
-        return _numBombs;
-    }
-
-    public void setNumBombs(int _numBombs) {
-        this._numBombs = _numBombs;
-    }
-
     public boolean getIsOnItem() {
         return onItem;
     }
@@ -102,8 +98,12 @@ public class Player {
     }
 
     public Bomb dropBomb() {
-        Bomb droppedBomb = _bombStack.pop();
-        droppedBomb.setRangeBombs(getRangeBomb());
+        if (_bombStack.isEmpty()) {
+            System.out.println("out of bombs");
+            return null;
+        }
+        final Bomb droppedBomb = _bombStack.pop();
+        droppedBomb.setRangeBomb(getRangeBomb());
         if (getXCoordinate() % 0.5 == 0) {
             droppedBomb.setXCoordinate((int) Math.round((getXCoordinate() - 0.01)));
         } else {
@@ -114,6 +114,15 @@ public class Player {
         } else {
             droppedBomb.setXCoordinate((int) Math.round(getYCoordinate()));
         }
+        ScheduledExecutorService _scheduledExecutorService = Executors.newScheduledThreadPool(5);
+        System.out.println("bomb dropped");
+        ScheduledFuture _scheduledFuture =
+                _scheduledExecutorService.schedule(new Runnable() {
+                    public void run() {
+                        droppedBomb.explode();
+                    }
+                }, 3, TimeUnit.SECONDS);
+        _scheduledExecutorService.shutdown();
         return droppedBomb;
     }
 
@@ -121,7 +130,6 @@ public class Player {
         _bombStack = new Stack<Bomb>();
         setIsAlive(false);
         setIsKnockedUp(false);
-        setNumBombs(1);
         setOnItem(false);
         setSpeed(1.5);
         setRangeBomb(1);
@@ -130,4 +138,19 @@ public class Player {
         Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBomb(), _bombStack);
         _bombStack.push(bomb);
     }
+
+    public void addBomb() {
+        final Bomb newBomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBomb(), _bombStack);
+        this._bombStack.push(newBomb);
+    }
+
+    public void increaseSpeed() {
+        setSpeed(getSpeed() + 0.5);
+    }
+
+    public void increaseBombRange() {
+        setRangeBomb(getRangeBomb() + 1);
+    }
+
+
 }
