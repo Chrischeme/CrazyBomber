@@ -32,10 +32,6 @@ public class CrazyBomberServer {
             this.socket = socket;
         }
 
-        public void updateMapData() {
-
-        }
-
         public void run() {
             try {
                 out = new DataOutputStream(socket.getOutputStream());
@@ -84,7 +80,6 @@ public class CrazyBomberServer {
                             // ignore??
                             break;
                     }
-                    updateMapData();
                 }
             }
         }
