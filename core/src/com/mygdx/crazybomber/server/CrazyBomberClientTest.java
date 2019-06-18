@@ -5,36 +5,30 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class CrazyBomberClientTest {
+    // this class should have two threads; one for listening and one for running the game
     public static class ChatClient {
-
-        String serverAddress;
-        Scanner in;
-        PrintWriter out;
+        private Socket socket;
+        private DataInputStream in;
+        private DataOutputStream out;
 
         public ChatClient(String serverAddress) {
-            this.serverAddress = serverAddress;
+            this.socket = new Socket(serverAddress, 59898);
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
         }
 
-        private String getName() {
-            System.out.println("Enter your nickname");
-            return new Scanner(System.in).nextLine();
+        public void sendByteArray(byte[] data) throws IOException {
+            out.writeInt(data.length);
+            out.write(data);
         }
 
         public void run() throws IOException {
             try {
-                Socket socket = new Socket(serverAddress, 59898);
-                in = new Scanner(socket.getInputStream());
-                out = new PrintWriter(socket.getOutputStream(), true);
-
-                while (in.hasNextLine()) {
-                    String line = in.nextLine();
-                    if (line.startsWith("SUBMITNAME")) {
-                        out.println(getName());
-                    } else if (line.startsWith("NAMEACCEPTED")) {
-                        System.out.println("Write your message");
-                        out.println(new Scanner(System.in));
-                    } else if (line.startsWith("MESSAGE")) {
-                        System.out.println(line.substring(8) + "\n");
+                while (true) {
+                    int length = new in.readInt();
+                    if (length > 0) {
+                        byte[] data = new byte[length];
+                        in.readFully(data, 0, data.length);
                     }
                 }
             } catch (IOException e) {

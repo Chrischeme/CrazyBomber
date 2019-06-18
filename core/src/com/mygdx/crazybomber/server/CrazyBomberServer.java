@@ -25,61 +25,61 @@ public class CrazyBomberServer {
     private static class Handler implements Runnable {
         private String name;
         private Socket socket;
-        private Scanner in;
-        private PrintWriter out;
+        private DataInputStream in;
+        private DataOutputStream out;
 
         public Handler(Socket socket) {
             this.socket = socket;
         }
 
+        public void updateMapData() {
+
+        }
+
         public void run() {
             try {
-                in = new Scanner(socket.getInputStream());
-                out = new PrintWriter(socket.getOutputStream(), true);
-
-                while (true) {
-                    out.println("SUBMITNAME");
-                    name = in.nextLine();
-                    if (name == null) {
-                        return;
+                out = new DataOutputStream(socket.getOutputStream());
+                in = new DataInputStream(socket.getInputStream());
+                while(true) {
+                    int length = in.readInt();
+                    if (length > 0) {
+                        byte[] data = new byte[length];
+                        in.readFully(data, 0, data.length);
                     }
-                    synchronized (names) {
-                        if (!name.isEmpty() && !names.contains(name)) {
-                            names.add(name);
+                    int switchByte = (int) data[0];
+                    switch (switchByte) {
+                        case 1:
+                            // On player coord change
+                            // data should have new coord + if a movement key is pressed down (WASD)
+                            // update the player coord in player data + send to all other players
                             break;
-                        }
+                        case 2:
+                            // On player placed bomb
+                            // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
+                            // update bomb in bomb data + send to all other players => NOT SURE
+                            break;
+                        case 3:
+                            // On block broken
+                            // data should have coord of broken block.
+                            // update the block in map data + send to all other players
+                            break;
+                        case 4:
+                            // On item dropped
+                            // data should have type of item + coord of item
+                            // update item in item data + send to all other players => NOT SURE
+                            break;
+                        case 5:
+                            // On player death
+                            // not sure there should be data
+                            // send to all other players
+                            break;
+                        default:
+                            // Unspecified
+                            // ignore??
+                            break;
                     }
+                    updateMapData();
                 }
-
-                out.println("NAMEACCEPTED " + name);
-                for (PrintWriter writer : writers) {
-                    writer.println("MESSAGE " + name + " has joined");
-                }
-                writers.add(out);
-
-                while (true) {
-                    String input = in.nextLine();
-                    if (input.toLowerCase().startsWith("/quit")) {
-                        return;
-                    }
-                    for (PrintWriter writer : writers) {
-                        writer.println("MESSAGE " + name + ": " + input);
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            } finally {
-                if (out != null) {
-                    writers.remove(out);
-                }
-                if (name != null) {
-                    System.out.println(name + " is leaving");
-                    names.remove(name);
-                    for (PrintWriter writer : writers) {
-                        writer.println("MESSAGE " + name + " has left");
-                    }
-                }
-                try { socket.close(); } catch (IOException e) {}
             }
         }
     }
