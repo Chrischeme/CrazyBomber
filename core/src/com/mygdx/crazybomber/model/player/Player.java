@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class Player {
     private boolean _isKnockedUp;
     private boolean _isAlive;
-    private int _rangeBomb;
+    private int _numRangeUpgrades;
     private double _speed;
     private boolean onItem;
     private double _xCoordinate;
@@ -71,12 +71,12 @@ public class Player {
     public void pickUpItem(int itemXCoordinate, int itemYCoordinate) {
     }
 
-    public int getRangeBomb() {
-        return _rangeBomb;
+    public int getNumRangeUpgrades() {
+        return _numRangeUpgrades;
     }
 
-    public void setRangeBomb(int _rangeBombs) {
-        this._rangeBomb = _rangeBombs;
+    public void setNumRangeUpgrades(int _rangeBombs) {
+        this._numRangeUpgrades = _rangeBombs;
     }
 
     //todo: will need logic to not walk through walls and make traveling constant (frame rate or constant velocity, libgdx physics?)
@@ -103,7 +103,7 @@ public class Player {
             return null;
         }
         final Bomb droppedBomb = _bombStack.pop();
-        droppedBomb.setRangeBomb(getRangeBomb());
+        droppedBomb.setRangeBomb(getNumRangeUpgrades() + 1);
         if (getXCoordinate() % 0.5 == 0) {
             droppedBomb.setXCoordinate((int) Math.round((getXCoordinate() - 0.01)));
         } else {
@@ -132,15 +132,15 @@ public class Player {
         setIsKnockedUp(false);
         setOnItem(false);
         setSpeed(1.5);
-        setRangeBomb(1);
+        setNumRangeUpgrades(0);
         setXCoordinate(playerSpawnXCoordinate);
         setYCoordinate(playerSpawnYCoordinate);
-        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBomb(), _bombStack);
+        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack);
         _bombStack.push(bomb);
     }
 
     public void addBomb() {
-        final Bomb newBomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getRangeBomb(), _bombStack);
+        final Bomb newBomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack);
         this._bombStack.push(newBomb);
     }
 
@@ -148,8 +148,8 @@ public class Player {
         setSpeed(getSpeed() + 0.5);
     }
 
-    public void increaseBombRange() {
-        setRangeBomb(getRangeBomb() + 1);
+    public void pickUpRangeUpgrade() {
+        setNumRangeUpgrades(getNumRangeUpgrades() + 1);
     }
 
 
