@@ -38,8 +38,8 @@ public class CrazyBomberServer {
                 in = new DataInputStream(socket.getInputStream());
                 while(true) {
                     int length = in.readInt();
+                    byte[] data = new byte[length];
                     if (length > 0) {
-                        byte[] data = new byte[length];
                         in.readFully(data, 0, data.length);
                     }
                     int switchByte = (int) data[0];
@@ -81,6 +81,8 @@ public class CrazyBomberServer {
                             break;
                     }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

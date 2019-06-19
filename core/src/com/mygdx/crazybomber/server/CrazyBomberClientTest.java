@@ -13,7 +13,7 @@ public class CrazyBomberClientTest {
         private DataInputStream in;
         private DataOutputStream out;
 
-        public ChatClient(String serverAddress) {
+        public ChatClient(String serverAddress) throws IOException {
             this.socket = new Socket(serverAddress, 59898);
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
@@ -26,7 +26,7 @@ public class CrazyBomberClientTest {
         }
 
         public void sendOnItemPickedUp(byte itemType, byte itemId) throws IOException {
-            byte[] data = new byte[];
+            byte[] data = new byte[3];
             data[0] = 5;
             data[1] = itemType;
             data[2] = itemId;
@@ -87,7 +87,7 @@ public class CrazyBomberClientTest {
         }
 
         public void copyArrayToAnotherWithStartingIndexes(byte[] fromArray, byte[] toArray, int toArrayIndex) {
-            foreach(byte fromArrayByte : fromArray ){
+            for(byte fromArrayByte : fromArray){
                 toArray[toArrayIndex] = fromArrayByte;
                 toArrayIndex++;
             }
@@ -101,7 +101,7 @@ public class CrazyBomberClientTest {
         public void run() throws IOException {
             try {
                 while (true) {
-                    int length = new in.readInt();
+                    int length = in.readInt();
                     if (length > 0) {
                         byte[] data = new byte[length];
                         in.readFully(data, 0, data.length);
