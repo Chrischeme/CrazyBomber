@@ -17,7 +17,7 @@ public class Player {
     private double _xCoordinate;
     private double _yCoordinate;
     private Stack<Bomb> _bombStack;
-    private ScheduledExecutorService _scheduleExecutorService;
+    private ScheduledExecutorService _scheduledExecutorService;
 
 
     public double getXCoordinate() {
@@ -114,7 +114,7 @@ public class Player {
         } else {
             droppedBomb.setXCoordinate((int) Math.round(getYCoordinate()));
         }
-        ScheduledExecutorService _scheduledExecutorService = Executors.newScheduledThreadPool(5);
+        _scheduledExecutorService = Executors.newScheduledThreadPool(1);
         System.out.println("bomb dropped");
         ScheduledFuture _scheduledFuture =
                 _scheduledExecutorService.schedule(new Runnable() {

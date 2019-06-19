@@ -3,7 +3,7 @@ package com.mygdx.crazybomber.model.player;
 import java.util.Scanner;
 
 //just a test class will not be in the product
-public class testClass {
+public class TestClass {
     public static void main(String args[]) {
         Player player1 = new Player(1, 1);
 
