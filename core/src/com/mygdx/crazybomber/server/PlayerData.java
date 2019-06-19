@@ -1,3 +1,5 @@
+package com.mygdx.crazybomber.server;
+
 import java.io.Serializable;
 
 public class PlayerData implements Serializable {
