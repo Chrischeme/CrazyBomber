@@ -19,6 +19,17 @@ public class CrazyBomberClientTest {
             in = new DataInputStream(socket.getInputStream());
         }
 
+        public void sendOnNewPlayer(int x, int y) throws IOException {
+            byte[] data = new byte[9];
+            data[0] = 7;
+            byte[] intInByteArray = new byte[4];
+            ByteBuffer.wrap(intInByteArray).putInt(x);
+            copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 1);
+            ByteBuffer.wrap(intInByteArray).putInt(y);
+            copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 5);
+            sendByteArray(data);
+        }
+
         public void sendOnPlayerDeath() throws IOException {
             byte[] data = new byte[1];
             data[0] = 6;
@@ -99,7 +110,7 @@ public class CrazyBomberClientTest {
         }
 
         public void run() throws IOException {
-            try {
+            /*try {
                 while (true) {
                     int length = in.readInt();
                     if (length > 0) {
@@ -109,11 +120,26 @@ public class CrazyBomberClientTest {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }*/
+            while (true) {
+                String userInput = new Scanner(System.in).nextLine();
+                switch (userInput) {
+                    case "1":
+                        sendOnBlockBroken(1, 2);
+                        break;
+                    case "2":
+                        sendOnBombPlaced(4, 3);
+                        break;
+                    case "3":
+                        sendOnPlayerDeath();
+                        break;
+                }
             }
         }
     }
 
     public static void main(String argv[]) throws Exception {
         ChatClient client = new ChatClient("localhost");
+        client.run();
     }
 }

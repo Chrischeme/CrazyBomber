@@ -43,6 +43,7 @@ public class CrazyBomberServer {
                         in.readFully(data, 0, data.length);
                     }
                     int switchByte = (int) data[0];
+                    System.out.println("Updating: " + switchByte);
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
                         case 1:
@@ -73,6 +74,11 @@ public class CrazyBomberServer {
                         case 6:
                             // On player death
                             // data should have which player
+                            // send to all other players
+                            break;
+                        case 7:
+                            // On player connect
+                            // data should have player data
                             // send to all other players
                             break;
                         default:
