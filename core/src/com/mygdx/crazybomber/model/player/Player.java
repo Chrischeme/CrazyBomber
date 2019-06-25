@@ -1,6 +1,7 @@
 package com.mygdx.crazybomber.model.player;
 
 import com.mygdx.crazybomber.model.bomb.Bomb;
+import com.mygdx.crazybomber.model.map.Map;
 
 import java.util.Stack;
 import java.util.concurrent.Executors;
@@ -18,6 +19,7 @@ public class Player {
     private double _yCoordinate;
     private Stack<Bomb> _bombStack;
     private ScheduledExecutorService _scheduledExecutorService;
+    private Map _map;
 
 
     public double getXCoordinate() {
@@ -126,7 +128,7 @@ public class Player {
         return droppedBomb;
     }
 
-    public Player(double playerSpawnXCoordinate, double playerSpawnYCoordinate) {
+    public Player(double playerSpawnXCoordinate, double playerSpawnYCoordinate, Map map) {
         _bombStack = new Stack<Bomb>();
         setIsAlive(false);
         setIsKnockedUp(false);
@@ -135,12 +137,14 @@ public class Player {
         setNumRangeUpgrades(0);
         setXCoordinate(playerSpawnXCoordinate);
         setYCoordinate(playerSpawnYCoordinate);
-        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack);
+        _map = map;
+        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
         _bombStack.push(bomb);
+        getMap().getActiveBombArray().add(bomb);
     }
 
-    public void addBomb() {
-        final Bomb newBomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack);
+    public void addBomb(Map map) {
+        final Bomb newBomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
         this._bombStack.push(newBomb);
     }
 
@@ -153,4 +157,7 @@ public class Player {
     }
 
 
+    public Map getMap() {
+        return _map;
+    }
 }
