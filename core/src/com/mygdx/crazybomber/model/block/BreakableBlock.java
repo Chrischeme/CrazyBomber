@@ -7,12 +7,11 @@ import com.mygdx.crazybomber.model.item.SpeedUp;
 
 public class BreakableBlock extends Block {
     private Item _item;
-    private double randNum;
 
     public BreakableBlock(int xCoordinate, int yCoordinate) {
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
-        randNum = Math.random();
+        double randNum = Math.random();
         if (randNum < 0.066) {
             _item = new BombUp(getXCoordinate(), getYCoordinate());
         } else if (randNum < 0.132) {

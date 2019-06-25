@@ -12,7 +12,7 @@ public class GameState {
         return _playerList;
     }
 
-    public Map get_map() {
+    public Map getMap() {
         return _map;
     }
 
