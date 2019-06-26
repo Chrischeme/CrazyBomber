@@ -1,4 +1,4 @@
-package com.mygdx.bomberbois;
+package com.mygdx.crazybomber;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;

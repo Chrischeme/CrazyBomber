@@ -1,4 +1,4 @@
-package com.mygdx.bomberbois;
+package com.mygdx.crazybomber;
 import java.util.*;
 
 //making a list of map objects

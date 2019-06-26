@@ -1,4 +1,4 @@
-package com.mygdx.bomberbois;
+package com.mygdx.crazybomber;
 import com.badlogic.gdx.Screen;
 
 import java.util.Stack;

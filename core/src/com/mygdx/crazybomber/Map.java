@@ -1,4 +1,4 @@
-package com.mygdx.bomberbois;
+package com.mygdx.crazybomber;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,12 +21,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.mygdx.crazybomber.Player;
 
 
 /* just notes for myself
-make texture a field in player
-in show method, new player instead of new sprite, copy over the draw method from sprite to player class
-send to server whenever making a new map
+make texture a field in player - done
+in show method, new player instead of new sprite, copy over the draw method from sprite to player class - done
+send to server whenever making a new map - gotta do this
 use the game state data to populate and render
 spawn the player class and move it
 gotta pass state repository to map, for back button */
@@ -42,7 +44,9 @@ public class Map implements Screen {
     private TextureAtlas atlas;
     private Texture splashTexture;
     private StateRepository stateRepository;
-    private Sprite player;
+   // private Sprite player;
+     private Player player;
+     private Texture playerTexture;
     private int lmao = 0;
     private int kek = 5;
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE, isPressedSHIFT;
@@ -54,16 +58,24 @@ public class Map implements Screen {
 
     @Override
     public void show() {
+        playerTexture = new Texture("player.png");
         batch = new SpriteBatch();
         splash = new Sprite(splashTexture);
         splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
+
         //player
+        /*
         Texture playerTexture = new Texture("player.png");
         player = new Sprite(playerTexture);
         player.setSize(50,50);
-        player.setPosition(615,345);
+        player.setPosition(615,345); */
+
+       // need to pass player the texture >> Texture playerTexture = new Texture("player.png");
+         player = new Player(0f, 0f, playerTexture);
+        player.setSize(50,50);
+        player.setPosition(615,600);
 
 
         stage = new Stage();
@@ -104,6 +116,7 @@ public class Map implements Screen {
         table.row();
         table.add(buttonBack);
         table.debug();
+
         stage.addActor(table);
     }
 
@@ -128,23 +141,28 @@ public class Map implements Screen {
         isPressedA = Gdx.input.isKeyPressed(Input.Keys.A);
         isPressedSHIFT = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT); //run
         isPressedSPACE = Gdx.input.isKeyPressed(Input.Keys.SPACE); //runevenfaster
+        char direction = '\0';
         if (isPressedUP == true || isPressedW == true)
         {
-                player.translate(0, kek);  //kek, kek
+            direction = 'W';
         }
         if (isPressedDOWN == true || isPressedS == true)
         {
-                player.translate(0, -kek);  //kek, kek
+            direction = 'S';
         }
         if (isPressedLEFT == true || isPressedA == true)
         {
-                player.translate(-kek, 0);  //kek, kek
+            direction = 'A';
         }
         if (isPressedRIGHT == true || isPressedD == true)
         {
-                player.translate(kek, 0);  //kek, kek
+            direction = 'D';
         }
-        player.draw(batch);
+        if (direction != '\0') {
+            player.move(direction);  //kek, kek
+        }
+
+        player.draw(batch); //doesnt work rn
         batch.end();
         stage.draw();
 

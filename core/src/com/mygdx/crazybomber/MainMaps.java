@@ -1,5 +1,5 @@
 //stage where you see all the diff maps to choose from
-package com.mygdx.bomberbois;
+package com.mygdx.crazybomber;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

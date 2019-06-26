@@ -1,6 +1,6 @@
 //this class a splash that is supposed to fade in/out before the main menu -- it doesn't do that yet but I will later.
 
-package com.mygdx.bomberbois;
+package com.mygdx.crazybomber;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

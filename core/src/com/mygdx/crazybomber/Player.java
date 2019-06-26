@@ -1,83 +1,146 @@
-package com.mygdx.bomberbois;
+package com.mygdx.crazybomber;
 
-/*
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.crazybomber.model.bomb.Bomb;
 
-import static com.badlogic.gdx.graphics.g2d.Batch.*;
-import static com.badlogic.gdx.graphics.g2d.Batch.Y4;
+import java.util.Stack;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
-public class Player {
-    public void draw (Batch batch,Texture texture) {
-        batch.draw(texture, getVertices(), 0, SPRITE_SIZE);
+public class Player extends Sprite {
+    private boolean _isKnockedUp;
+    private boolean _isAlive;
+    private int _numRangeUpgrades;
+    private float _speed;
+    private boolean onItem;
+    private Stack<Bomb> _bombStack;
+    private ScheduledExecutorService _scheduledExecutorService;
+
+    public void draw(Batch batch)
+    {
+        super.draw(batch);
     }
-    public float[] getVertices () {
-        if (dirty) {
-            dirty = false;
 
-            float[] vertices = this.vertices;
-            float localX = -originX;
-            float localY = -originY;
-            float localX2 = localX + width;
-            float localY2 = localY + height;
-            float worldOriginX = this.x - localX;
-            float worldOriginY = this.y - localY;
-            if (scaleX != 1 || scaleY != 1) {
-                localX *= scaleX;
-                localY *= scaleY;
-                localX2 *= scaleX;
-                localY2 *= scaleY;
-            }
-            if (rotation != 0) {
-                final float cos = MathUtils.cosDeg(rotation);
-                final float sin = MathUtils.sinDeg(rotation);
-                final float localXCos = localX * cos;
-                final float localXSin = localX * sin;
-                final float localYCos = localY * cos;
-                final float localYSin = localY * sin;
-                final float localX2Cos = localX2 * cos;
-                final float localX2Sin = localX2 * sin;
-                final float localY2Cos = localY2 * cos;
-                final float localY2Sin = localY2 * sin;
+    public float getSpeed() {
+        return _speed;
+    }
 
-                final float x1 = localXCos - localYSin + worldOriginX;
-                final float y1 = localYCos + localXSin + worldOriginY;
-                vertices[X1] = x1;
-                vertices[Y1] = y1;
+    public void setSpeed(float _speed) {
+        this._speed = _speed;
+    }
 
-                final float x2 = localXCos - localY2Sin + worldOriginX;
-                final float y2 = localY2Cos + localXSin + worldOriginY;
-                vertices[X2] = x2;
-                vertices[Y2] = y2;
+    public boolean getIsKnockedUp() {
+        return _isKnockedUp;
+    }
 
-                final float x3 = localX2Cos - localY2Sin + worldOriginX;
-                final float y3 = localY2Cos + localX2Sin + worldOriginY;
-                vertices[X3] = x3;
-                vertices[Y3] = y3;
+    public void setIsKnockedUp(boolean _isKnockedUp) {
+        this._isKnockedUp = _isKnockedUp;
+    }
 
-                vertices[X4] = x1 + (x3 - x2);
-                vertices[Y4] = y3 - (y2 - y1);
-            } else {
-                final float x1 = localX + worldOriginX;
-                final float y1 = localY + worldOriginY;
-                final float x2 = localX2 + worldOriginX;
-                final float y2 = localY2 + worldOriginY;
+    public boolean getIsAlive() {
+        return _isAlive;
+    }
 
-                vertices[X1] = x1;
-                vertices[Y1] = y1;
+    public void setIsAlive(boolean _isAlive) {
+        this._isAlive = _isAlive;
+    }
 
-                vertices[X2] = x1;
-                vertices[Y2] = y2;
+    public boolean getIsOnItem() {
+        return onItem;
+    }
 
-                vertices[X3] = x2;
-                vertices[Y3] = y2;
+    public void setOnItem(boolean onItem) {
+        this.onItem = onItem;
+    }
 
-                vertices[X4] = x2;
-                vertices[Y4] = y1;
-            }
+    public void pickUpItem(int itemXCoordinate, int itemYCoordinate) {
+    }
+
+    public int getNumRangeUpgrades() {
+        return _numRangeUpgrades;
+    }
+
+    public void setNumRangeUpgrades(int _rangeBombs) {
+        this._numRangeUpgrades = _rangeBombs;
+    }
+
+    //todo: will need logic to not walk through walls and make traveling constant (frame rate or constant velocity, libgdx physics?)
+    public void move(char direction) {
+        switch (direction) {
+            case 'W':
+                setY(getY() + getSpeed());
+                break;
+            case 'A':
+                setX(getX() - getSpeed());
+                break;
+            case 'S':
+                setY(getY() - getSpeed());
+                break;
+            case 'D':
+                setX(getX() + getSpeed());
+                break;
         }
-        return vertices;
     }
+
+    public Bomb dropBomb() {
+        if (_bombStack.isEmpty()) {
+            System.out.println("out of bombs");
+            return null;
+        }
+        final Bomb droppedBomb = _bombStack.pop();
+        droppedBomb.setRangeBomb(getNumRangeUpgrades() + 1);
+        if (getX() % 0.5 == 0) {
+            droppedBomb.setXCoordinate((int) Math.round((getX() - 0.01)));
+        } else {
+            droppedBomb.setXCoordinate((int) Math.round(getX()));
+        }
+        if (getY() % 0.5 == 0) {
+            droppedBomb.setXCoordinate((int) Math.round((getY() - 0.01)));
+        } else {
+            droppedBomb.setXCoordinate((int) Math.round(getY()));
+        }
+        _scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        System.out.println("bomb dropped");
+        ScheduledFuture _scheduledFuture =
+                _scheduledExecutorService.schedule(new Runnable() {
+                    public void run() {
+                        droppedBomb.explode();
+                    }
+                }, 3, TimeUnit.SECONDS);
+        _scheduledExecutorService.shutdown();
+        return droppedBomb;
+    }
+
+    public Player(float playerSpawnXCoordinate, float playerSpawnYCoordinate, Texture texture) {
+        super(texture);
+        _bombStack = new Stack<Bomb>();
+        setIsAlive(false);
+        setIsKnockedUp(false);
+        setOnItem(false);
+        setSpeed(1.5f);
+        setNumRangeUpgrades(0);
+        setX(playerSpawnXCoordinate);
+        setY(playerSpawnYCoordinate);
+        Bomb bomb = new Bomb((int) getX(), (int) getY(), getNumRangeUpgrades() + 1, _bombStack);
+        _bombStack.push(bomb);
+    }
+
+    public void addBomb() {
+        final Bomb newBomb = new Bomb((int) getX(), (int) getY(), getNumRangeUpgrades() + 1, _bombStack);
+        this._bombStack.push(newBomb);
+    }
+
+    public void increaseSpeed() {
+        setSpeed(getSpeed() + 0.5f);
+    }
+
+    public void pickUpRangeUpgrade() {
+        setNumRangeUpgrades(getNumRangeUpgrades() + 1);
+    }
+
+
 }
- */
