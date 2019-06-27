@@ -19,8 +19,8 @@ public class Player {
     private double _yCoordinate;
     private Stack<Bomb> _bombStack;
     private ScheduledExecutorService _scheduledExecutorService;
+    private ScheduledFuture _scheduledFuture;
     private Map _map;
-
 
     public double getXCoordinate() {
         return _xCoordinate;
@@ -106,25 +106,18 @@ public class Player {
         }
         final Bomb droppedBomb = _bombStack.pop();
         droppedBomb.setRangeBomb(getNumRangeUpgrades() + 1);
-        if (getXCoordinate() % 0.5 == 0) {
-            droppedBomb.setXCoordinate((int) Math.round((getXCoordinate() - 0.01)));
-        } else {
-            droppedBomb.setXCoordinate((int) Math.round(getXCoordinate()));
-        }
-        if (getYCoordinate() % 0.5 == 0) {
-            droppedBomb.setXCoordinate((int) Math.round((getYCoordinate() - 0.01)));
-        } else {
-            droppedBomb.setXCoordinate((int) Math.round(getYCoordinate()));
-        }
-        _scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        droppedBomb.setXCoordinate((int) Math.round(getXCoordinate()));
+        droppedBomb.setYCoordinate((int) Math.round(getYCoordinate()));
+
+        _scheduledExecutorService = Executors.newScheduledThreadPool(0);
         System.out.println("bomb dropped");
-        ScheduledFuture _scheduledFuture =
+        _scheduledFuture =
                 _scheduledExecutorService.schedule(new Runnable() {
                     public void run() {
                         droppedBomb.explode();
+                        _scheduledExecutorService.shutdown();
                     }
                 }, 3, TimeUnit.SECONDS);
-        _scheduledExecutorService.shutdown();
         return droppedBomb;
     }
 
@@ -133,23 +126,23 @@ public class Player {
         setIsAlive(false);
         setIsKnockedUp(false);
         setOnItem(false);
-        setSpeed(1.5);
+        setSpeed(2.0);
         setNumRangeUpgrades(0);
         setXCoordinate(playerSpawnXCoordinate);
         setYCoordinate(playerSpawnYCoordinate);
         _map = map;
-        Bomb bomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
+        Bomb bomb = new Bomb(this, (int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
         _bombStack.push(bomb);
         getMap().getActiveBombArray().add(bomb);
     }
 
     public void addBomb(Map map) {
-        final Bomb newBomb = new Bomb((int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
+        final Bomb newBomb = new Bomb(this, (int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
         this._bombStack.push(newBomb);
     }
 
     public void increaseSpeed() {
-        setSpeed(getSpeed() + 0.5);
+        setSpeed(getSpeed() + 1.0);
     }
 
     public void pickUpRangeUpgrade() {
@@ -160,4 +153,9 @@ public class Player {
     public Map getMap() {
         return _map;
     }
+
+    public ScheduledFuture getScheduledFuture() {
+        return _scheduledFuture;
+    }
+
 }
