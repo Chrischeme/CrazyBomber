@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.mygdx.crazybomber.Player;
 
@@ -44,11 +43,8 @@ public class Map implements Screen {
     private TextureAtlas atlas;
     private Texture splashTexture;
     private StateRepository stateRepository;
-   // private Sprite player;
-     private Player player;
-     private Texture playerTexture;
-    private int lmao = 0;
-    private int kek = 5;
+    private Player player;
+    private Texture playerTexture;
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE, isPressedSHIFT;
 
     public Map (Texture texture, final StateRepository stateRepository) {
@@ -63,31 +59,18 @@ public class Map implements Screen {
         splash = new Sprite(splashTexture);
         splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
-
-        //player
-        /*
-        Texture playerTexture = new Texture("player.png");
-        player = new Sprite(playerTexture);
-        player.setSize(50,50);
-        player.setPosition(615,345); */
-
-       // need to pass player the texture >> Texture playerTexture = new Texture("player.png");
-         player = new Player(0f, 0f, playerTexture);
+        player = new Player(0f, 0f, playerTexture);
         player.setSize(50,50);
         player.setPosition(615,600);
 
-
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        atlas = new TextureAtlas("ui/button.pack"); //defines the region of sprite image
+        atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(atlas); //using this for the text button
         table = new Table(skin); //table with the skin's atlas
-        //table.setBounds(500, 300, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //sets the bounds to full screen
-        table.setBounds(1050, 600, 100,100 ); // coordinates of the table, size
+        table.setBounds(1050, 600, 100,100 );
 
-
-        white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false); //this false is so the chars aren't flipped
+        white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
         black = new BitmapFont(Gdx.files.internal("font/black.fnt"), false);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -107,7 +90,7 @@ public class Map implements Screen {
 
 
         LabelStyle headingStyle = new LabelStyle(white, Color.WHITE);
-        heading =  new Label(BombermanWithFriends.TITLE, headingStyle);
+        heading =  new Label(CrazyBomber.TITLE, headingStyle);
         heading.setFontScale(2); //doubles the font size
         table.add(heading);
         table.getCell(heading).spaceBottom(10);

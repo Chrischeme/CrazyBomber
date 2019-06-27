@@ -2,7 +2,7 @@ package com.mygdx.crazybomber.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.mygdx.crazybomber.BombermanWithFriends;
+import com.mygdx.crazybomber.CrazyBomber;
 
 
 public class DesktopLauncher {
@@ -12,6 +12,6 @@ public class DesktopLauncher {
 		config.width = 1080;
 		config.height = 720;
 		config.vSyncEnabled = true; //syncing framerate with update, lower frames = less cpu
-		new LwjglApplication(new BombermanWithFriends(), config);
+		new LwjglApplication(new CrazyBomber(), config);
 	}
 }

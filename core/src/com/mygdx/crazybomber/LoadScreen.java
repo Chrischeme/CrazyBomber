@@ -1,4 +1,4 @@
-//this class a splash that is supposed to fade in/out before the main menu -- it doesn't do that yet but I will later.
+//TODO: fade in & out before main menu
 
 package com.mygdx.crazybomber;
 import com.badlogic.gdx.Game;
@@ -10,37 +10,33 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LoadScreen implements Screen {
-
-
-    private Sprite splash; //the picture
-    private SpriteBatch batch; //the frame we're drawing on
+    private Sprite splash;
+    private SpriteBatch batch;
     @Override
     public void show() {
         StateRepository stateRepository = new StateRepository();
-
-        Map map1 = new Map((new Texture("badlogic.jpg")),stateRepository); //map1 is the badlogic.jpg map
-        Map map2 = new Map((new Texture("splash.png")),stateRepository); //map2 is the spash.png map
-        //can add more maps later
         MapRepository mapRepository = new MapRepository();
+        Map map = new Map((new Texture("background.jpg")),stateRepository);
+        Map map1 = new Map((new Texture("background2.png")),stateRepository); //TODO: this should be room1,room2 etc
+        mapRepository.addMap(map);
         mapRepository.addMap(map1);
-        mapRepository.addMap(map2);
 
-        batch = new SpriteBatch(); // the paper
-        Texture splashTexture = new Texture("splash.png"); // new texture splash.png
-        splash = new Sprite(splashTexture); // makes a picture from the texture
-        splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()); //the size of the graphics/picture we have
+        batch = new SpriteBatch();
+        Texture splashTexture = new Texture("background.jpg");
+        splash = new Sprite(splashTexture);
+        splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        MainMenu mainMenu = new MainMenu(mapRepository,stateRepository); //the mainmenu state
+        MainMenu mainMenu = new MainMenu(mapRepository,stateRepository);
         stateRepository.push(mainMenu);
-        ((Game)Gdx.app.getApplicationListener()).setScreen(mainMenu); //runs mainmenu
+        ((Game)Gdx.app.getApplicationListener()).setScreen(mainMenu);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1,0,0,0); //sets color of background
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //doing the color of the background
-        batch.begin(); //have to begin and end (open the paper)
-        splash.draw(batch); //draw splash on the batch / paper
+        Gdx.gl.glClearColor(1,0,0,0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        splash.draw(batch);
         batch.end();
     }
 
