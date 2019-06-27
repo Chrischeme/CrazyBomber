@@ -26,7 +26,7 @@ public class LoadScreen implements Screen {
         splash = new Sprite(splashTexture);
         splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        MainMenu mainMenu = new MainMenu(mapRepository,stateRepository);
+        MainMenu mainMenu = new MainMenu(mapRepository,stateRepository); //TODO: need to fade in/out before going to next stage
         stateRepository.push(mainMenu);
         ((Game)Gdx.app.getApplicationListener()).setScreen(mainMenu);
     }
