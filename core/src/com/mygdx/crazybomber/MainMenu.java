@@ -1,3 +1,4 @@
+//TODO: player set name in order to progress to picking a room
 package com.mygdx.crazybomber;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -22,20 +23,21 @@ public class MainMenu implements Screen {
     private Sprite splash;
     private SpriteBatch batch;
     private MapRepository mapRepository;
+    private RoomRepository roomRepository;
     private StateRepository stateRepository;
     private TextField usernameTextField;
 
-    public MainMenu(MapRepository mapRepository, StateRepository stateRepository) {
+    public MainMenu(MapRepository mapRepository, RoomRepository roomRepository, StateRepository stateRepository) {
         this.mapRepository = mapRepository;
+        this.roomRepository = roomRepository;
         this.stateRepository = stateRepository;
     }
     @Override
     public void show() {
-        final MainRooms mainRooms = new MainRooms(mapRepository,stateRepository);
+        final MainRooms mainRooms = new MainRooms(mapRepository, roomRepository, stateRepository);
 
         batch = new SpriteBatch();
-        Texture splashTexture = new Texture("background1.png");
-        splash = new Sprite(splashTexture);
+        splash = new Sprite(new Texture(("background.jpg")));
         splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         stage = new Stage();
@@ -59,17 +61,15 @@ public class MainMenu implements Screen {
                 Gdx.app.exit();
             }
         });
-        buttonExit.pad(15);
         buttonPlay = new TextButton("PLAY",skin); //clickable play button
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(mainRooms);
                 stateRepository.push(mainRooms);
+                ((Game)Gdx.app.getApplicationListener()).setScreen(mainRooms);
+
             }
         });
-        buttonPlay.pad(15);
-
         table.add(heading);
         table.getCell(heading).spaceBottom(10);
         table.row();

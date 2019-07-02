@@ -20,24 +20,25 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MainRooms implements Screen {
     private Stage stage;
     private Table table;
-    private TextButton buttonPlay, buttonExit, buttonPlay2;
+    private TextButton buttonRoom1,buttonRoom2,buttonRoom3,buttonBack;
     private Label heading;
     private Skin skin;
     private TextureAtlas atlas;
     private Sprite splash;
     private SpriteBatch batch;
     private MapRepository mapRepository;
+    private RoomRepository roomRepository;
     private StateRepository stateRepository;
 
-    public MainRooms(MapRepository mapRepository, StateRepository stateRepository) {
+    public MainRooms(MapRepository mapRepository, RoomRepository roomRepository,  StateRepository stateRepository) {
         this.mapRepository = mapRepository;
+        this.roomRepository = roomRepository;
         this.stateRepository = stateRepository;
     }
     @Override
     public void show() {
         batch = new SpriteBatch();
-        Texture splashTexture = new Texture("background1.png");
-        splash = new Sprite(splashTexture);
+        splash = new Sprite(new Texture("background1.png"));
         splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         stage = new Stage();
@@ -47,41 +48,52 @@ public class MainRooms implements Screen {
         table = new Table(skin);
         table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        buttonExit = new TextButton("EXIT",skin);
-        buttonExit.addListener(new ClickListener(){
+        buttonRoom1 = new TextButton("ROOM1",skin);
+        buttonRoom1.setWidth(1000);
+        buttonRoom1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                ((Game)Gdx.app.getApplicationListener()).setScreen(roomRepository.getRoom(0));
             }
         });
-        buttonExit.pad(15);
-
-        buttonPlay = new TextButton("MAP1",skin);
-        buttonPlay.addListener(new ClickListener(){
+        buttonRoom2 = new TextButton("ROOM2",skin);
+        buttonRoom2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(mapRepository.getMap(0));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(roomRepository.getRoom(1));
             }
         });
-        buttonPlay.pad(15);
-
-        buttonPlay2 = new TextButton("MAP2",skin);
-        buttonPlay2.addListener(new ClickListener(){
+        buttonRoom3 = new TextButton("ROOM3",skin);
+        buttonRoom3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(mapRepository.getMap(1));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(roomRepository.getRoom(2));
             }
         });
-        heading =  new Label(CrazyBomber.TITLE, skin);
+        buttonBack = new TextButton("BACK",skin);
+        buttonBack.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stateRepository.pop();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(stateRepository.peek());
+            }
+        });
+        heading =  new Label("Rooms", skin);
         heading.setFontScale(2);
         table.add(heading);
-        table.getCell(heading).spaceBottom(10);
         table.row();
-        table.padBottom(1);
-        table.add(buttonPlay);
-        table.add(buttonPlay2);
         table.row();
-        table.add(buttonExit);
+        table.padBottom(50);
+        table.add(buttonRoom1);
+        table.getCell(buttonRoom1).size(1000,150);
+        table.row();
+        table.add(buttonRoom2);
+        table.getCell(buttonRoom2).size(1000,150);
+        table.row();
+        table.add(buttonRoom3);
+        table.getCell(buttonRoom3).size(1000,150);
+        table.row();
+        table.add(buttonBack).bottom().left();
         table.debug();
         stage.addActor(table);
     }

@@ -16,17 +16,24 @@ public class LoadScreen implements Screen {
     public void show() {
         StateRepository stateRepository = new StateRepository();
         MapRepository mapRepository = new MapRepository();
+        RoomRepository roomRepository = new RoomRepository();
+
         Map map = new Map((new Texture("background.jpg")),stateRepository);
-        Map map1 = new Map((new Texture("background2.png")),stateRepository); //TODO: this should be room1,room2 etc
+        Map map1 = new Map((new Texture("background2.png")),stateRepository); //keeping maps & maprepository in case future use
         mapRepository.addMap(map);
         mapRepository.addMap(map1);
 
+        Room room = new Room((new Texture("background.jpg")),stateRepository, mapRepository);
+        Room room1 = new Room((new Texture("background1.png")),stateRepository, mapRepository);
+        Room room2 = new Room((new Texture("background2.png")), stateRepository, mapRepository);
+        roomRepository.addRoom(room);
+        roomRepository.addRoom(room1);
+        roomRepository.addRoom(room2);
         batch = new SpriteBatch();
-        Texture splashTexture = new Texture("background.jpg");
-        splash = new Sprite(splashTexture);
+        splash = new Sprite(new Texture(("background.jpg")));
         splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        MainMenu mainMenu = new MainMenu(mapRepository,stateRepository); //TODO: need to fade in/out before going to next stage
+        MainMenu mainMenu = new MainMenu(mapRepository,roomRepository,stateRepository); //TODO: need to fade in/out before going to next stage
         stateRepository.push(mainMenu);
         ((Game)Gdx.app.getApplicationListener()).setScreen(mainMenu);
     }

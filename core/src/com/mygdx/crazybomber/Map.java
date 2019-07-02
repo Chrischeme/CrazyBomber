@@ -4,32 +4,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.mygdx.crazybomber.Player;
-
-
-/* just notes for myself
-make texture a field in player - done
-in show method, new player instead of new sprite, copy over the draw method from sprite to player class - done
-send to server whenever making a new map - gotta do this
-use the game state data to populate and render
-spawn the player class and move it
-gotta pass state repository to map, for back button */
 
 public class Map implements Screen {
     private Sprite splash;
@@ -39,7 +25,6 @@ public class Map implements Screen {
     private TextButton buttonBack;
     private Label heading;
     private Skin skin;
-    private BitmapFont black, white;
     private TextureAtlas atlas;
     private Texture splashTexture;
     private StateRepository stateRepository;
@@ -48,7 +33,7 @@ public class Map implements Screen {
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE, isPressedSHIFT;
 
     public Map (Texture texture, final StateRepository stateRepository) {
-        this.splashTexture = texture; // gonna take in a texture instead of int
+        this.splashTexture = texture;
         this.stateRepository = stateRepository;
     }
 
@@ -66,21 +51,11 @@ public class Map implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(atlas); //using this for the text button
-        table = new Table(skin); //table with the skin's atlas
+        skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
+        table = new Table(skin);
         table.setBounds(1050, 600, 100,100 );
 
-        white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
-        black = new BitmapFont(Gdx.files.internal("font/black.fnt"), false);
-
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up");
-        textButtonStyle.down = skin.getDrawable("button.down");
-        textButtonStyle.pressedOffsetX = 1; //when button is pressed, text moves to right by 1
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = black;
-
-        buttonBack = new TextButton("BACK", textButtonStyle);
+        buttonBack = new TextButton("BACK", skin);
         buttonBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -88,10 +63,8 @@ public class Map implements Screen {
             }
         });
 
-
-        LabelStyle headingStyle = new LabelStyle(white, Color.WHITE);
-        heading =  new Label(CrazyBomber.TITLE, headingStyle);
-        heading.setFontScale(2); //doubles the font size
+        heading =  new Label(CrazyBomber.TITLE, skin);
+        heading.setFontScale(2);
         table.add(heading);
         table.getCell(heading).spaceBottom(10);
         table.row();
@@ -99,11 +72,8 @@ public class Map implements Screen {
         table.row();
         table.add(buttonBack);
         table.debug();
-
         stage.addActor(table);
     }
-
-
 
     @Override
     public void render(float delta) {
@@ -112,8 +82,6 @@ public class Map implements Screen {
         stage.act(delta);
         batch.begin();
         splash.draw(batch);
-
-
         isPressedUP = Gdx.input.isKeyPressed(Input.Keys.UP);
         isPressedDOWN = Gdx.input.isKeyPressed(Input.Keys.DOWN);
         isPressedRIGHT = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
@@ -142,13 +110,12 @@ public class Map implements Screen {
             direction = 'D';
         }
         if (direction != '\0') {
-            player.move(direction);  //kek, kek
+            player.move(direction);
         }
 
-        player.draw(batch); //doesnt work rn
+        player.draw(batch);
         batch.end();
         stage.draw();
-
     }
 
     @Override
