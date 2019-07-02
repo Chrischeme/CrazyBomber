@@ -1,8 +1,5 @@
-//TODO: LoadScreen > MainMenu > MainRooms > Room (this class) > Map
 //TODO: when player enters, avatar is red for not ready, if blank, leave blank
-//TODO: need a back button to get back to mainrooms class
 package com.mygdx.crazybomber;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -101,12 +98,12 @@ public class Room implements Screen {
         table.getCell(buttonReady).size(1000,100);
         table.getCell(buttonReady).padBottom(300);
         table.row();
+        table.add(buttonStart);
+        table.row();
         table.add(buttonBack);
         table.getCell(buttonBack).bottom().left();
         table.debug();
         stage.addActor(table);
-
-
     }
 
     @Override
