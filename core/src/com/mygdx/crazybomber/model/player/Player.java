@@ -149,7 +149,6 @@ public class Player {
         setNumRangeUpgrades(getNumRangeUpgrades() + 1);
     }
 
-
     public Map getMap() {
         return _map;
     }

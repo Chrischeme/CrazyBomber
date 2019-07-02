@@ -62,13 +62,13 @@ public class Bomb {
 
         getMap().getActiveBombArray().remove(this);
         getBombStack().push(this);
-        explodeBombsInRange(this);
+        explodeBombsInRange();
     }
 
-    public void explodeBombsInRange(Bomb explodedBomb){
-        int explodedBombXCoordinate = explodedBomb.getXCoordinate();
-        int explodedBombYCoordinate = explodedBomb.getYCoordinate();
-        int explodedBombRange = explodedBomb.getRangeBomb();
+    public void explodeBombsInRange(){
+        int explodedBombXCoordinate = getXCoordinate();
+        int explodedBombYCoordinate = getYCoordinate();
+        int explodedBombRange = getRangeBomb();
         for (Bomb activeBomb : getMap().getActiveBombArray()) {
             if (activeBomb.getYCoordinate() == explodedBombYCoordinate &&
                     activeBomb.getXCoordinate() >= explodedBombXCoordinate - explodedBombRange &&
