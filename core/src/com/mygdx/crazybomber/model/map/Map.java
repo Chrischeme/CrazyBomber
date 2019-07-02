@@ -11,6 +11,7 @@ public class Map {
 
     //todo population logic will go here
     public Map(int[][] intMap) {
+        _activeBombArray = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
             }
