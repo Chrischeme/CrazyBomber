@@ -1,5 +1,6 @@
 //TODO: LoadScreen > MainMenu > MainRooms > Room (this class) > Map
 //TODO: when player enters, avatar is red for not ready, if blank, leave blank
+//TODO: need a back button to get back to mainrooms class
 package com.mygdx.crazybomber;
 
 import com.badlogic.gdx.Game;
@@ -44,16 +45,20 @@ public class Room implements Screen {
         splash = new Sprite(splashTexture);
         splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        avatar = new Sprite(new Texture("notready.png"));
         avatarReady = new Sprite(new Texture("ready.png"));
-        avatarNotReady = avatar;
+        avatarReady.setPosition(100,300);
+        avatarReady.setSize(200,200);
+        avatarNotReady = new Sprite(new Texture("notready.png"));
+        avatarNotReady.setPosition(100,300);
+        avatarNotReady.setSize(200,200);
+        avatar = avatarNotReady;
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
         table = new Table(skin);
-        table.setBounds(1050, 600, 100,100 );
+        table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         buttonBack = new TextButton("BACK", skin);
         buttonBack.addListener(new ClickListener() {
@@ -94,12 +99,13 @@ public class Room implements Screen {
         table.row();
         table.add(buttonReady);
         table.getCell(buttonReady).size(1000,100);
+        table.getCell(buttonReady).padBottom(300);
         table.row();
         table.add(buttonBack);
+        table.getCell(buttonBack).bottom().left();
         table.debug();
         stage.addActor(table);
-        avatar.setPosition(100,400);
-        avatar.setSize(200,200);
+
 
     }
 

@@ -7,7 +7,7 @@ import com.mygdx.crazybomber.CrazyBomber;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration(); //java game
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Bomberman";
 		config.width = 1080;
 		config.height = 720;

@@ -30,7 +30,7 @@ public class MainRooms implements Screen {
     private RoomRepository roomRepository;
     private StateRepository stateRepository;
 
-    public MainRooms(MapRepository mapRepository, RoomRepository roomRepository,  StateRepository stateRepository) {
+    public MainRooms(MapRepository mapRepository, RoomRepository roomRepository, StateRepository stateRepository) {
         this.mapRepository = mapRepository;
         this.roomRepository = roomRepository;
         this.stateRepository = stateRepository;
