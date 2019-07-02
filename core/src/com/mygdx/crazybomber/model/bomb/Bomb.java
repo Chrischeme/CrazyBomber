@@ -1,23 +1,25 @@
 package com.mygdx.crazybomber.model.bomb;
 
 import com.mygdx.crazybomber.model.map.Map;
+import com.mygdx.crazybomber.model.player.Player;
+
 import java.util.Stack;
 
-public class Bomb{
+public class Bomb {
     private int _rangeBomb;
     private int _xCoordinate;
     private int _yCoordinate;
     private Stack<Bomb> _bombStack;
     private Map _map;
+    private Player _bombOwner;
 
-
-
-    public Bomb(int playerXCoordinate, int playerYCoordinate, int rangeBombs, Stack<Bomb> bombStack, Map map) {
-        setXCoordinate(playerXCoordinate);
-        setYCoordinate(playerYCoordinate);
-        setRangeBomb(rangeBombs);
+    public Bomb(Player player, Stack<Bomb> bombStack) {
+        setXCoordinate((int)Math.round(player.getXCoordinate()));
+        setYCoordinate((int)Math.round(player.getYCoordinate()));
+        setRangeBomb(player.getNumRangeUpgrades()+1);
         _bombStack = bombStack;
-        _map = map;
+        _map = player.getMap();
+        _bombOwner = player;
     }
 
     public int getRangeBomb() {
@@ -51,13 +53,39 @@ public class Bomb{
     public Map getMap() {
         return _map;
     }
-    public void explode(){
-        System.out.println(getXCoordinate()+getYCoordinate());
-        System.out.println("boom!");
+
+    public void explode() {
+        //todo to factor in walls
+        //todo System.out.println("bomb x coordinate is " + getXCoordinate());
+        //todo System.out.println("bomb y coordinate is " + getYCoordinate());
+        //todo System.out.println("bomb exploded at " + (double)System.nanoTime()/(1000000000));
+
         getMap().getActiveBombArray().remove(this);
         getBombStack().push(this);
-
+        explodeBombsInRange(this);
     }
 
+    public void explodeBombsInRange(Bomb explodedBomb){
+        int explodedBombXCoordinate = explodedBomb.getXCoordinate();
+        int explodedBombYCoordinate = explodedBomb.getYCoordinate();
+        int explodedBombRange = explodedBomb.getRangeBomb();
+        for (Bomb activeBomb : getMap().getActiveBombArray()) {
+            if (activeBomb.getYCoordinate() == explodedBombYCoordinate &&
+                    activeBomb.getXCoordinate() >= explodedBombXCoordinate - explodedBombRange &&
+                    activeBomb.getXCoordinate() <= explodedBombXCoordinate + explodedBombRange) {
+                activeBomb.getBombOwner().getScheduledFuture().cancel(true);
+                activeBomb.explode();
+            }
+            if (activeBomb.getXCoordinate() == explodedBombXCoordinate &&
+                    activeBomb.getYCoordinate() >= explodedBombYCoordinate - explodedBombRange &&
+                    activeBomb.getYCoordinate() <= explodedBombYCoordinate + explodedBombRange) {
+                activeBomb.getBombOwner().getScheduledFuture().cancel(true);
+                activeBomb.explode();
+            }
+        }
+    }
+    public Player getBombOwner() {
+        return _bombOwner;
+    }
 
 }
