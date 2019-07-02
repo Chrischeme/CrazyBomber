@@ -131,17 +131,17 @@ public class Player {
         setXCoordinate(playerSpawnXCoordinate);
         setYCoordinate(playerSpawnYCoordinate);
         _map = map;
-        Bomb bomb = new Bomb(this, (int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
+        Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
         getMap().getActiveBombArray().add(bomb);
     }
 
     public void addBomb(Map map) {
-        final Bomb newBomb = new Bomb(this, (int) getXCoordinate(), (int) getYCoordinate(), getNumRangeUpgrades() + 1, _bombStack, map);
+        final Bomb newBomb = new Bomb(this, _bombStack);
         this._bombStack.push(newBomb);
     }
 
-    public void increaseSpeed() {
+    public void pickUpSpeedUpgrade() {
         setSpeed(getSpeed() + 1.0);
     }
 

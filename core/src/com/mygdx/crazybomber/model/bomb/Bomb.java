@@ -13,12 +13,12 @@ public class Bomb {
     private Map _map;
     private Player _bombOwner;
 
-    public Bomb(Player player, int playerXCoordinate, int playerYCoordinate, int rangeBombs, Stack<Bomb> bombStack, Map map) {
-        setXCoordinate(playerXCoordinate);
-        setYCoordinate(playerYCoordinate);
-        setRangeBomb(rangeBombs);
+    public Bomb(Player player, Stack<Bomb> bombStack) {
+        setXCoordinate((int)Math.round(player.getXCoordinate()));
+        setYCoordinate((int)Math.round(player.getYCoordinate()));
+        setRangeBomb(player.getNumRangeUpgrades()+1);
         _bombStack = bombStack;
-        _map = map;
+        _map = player.getMap();
         _bombOwner = player;
     }
 
@@ -55,14 +55,20 @@ public class Bomb {
     }
 
     public void explode() {
-        //System.out.println("bomb x coordinate is " + getXCoordinate());
-        //System.out.println("bomb y coordinate is " + getYCoordinate());
-        //System.out.println("bomb exploded at " + (double)System.nanoTime()/(1000000000));
-        int explodedBombXCoordinate = getXCoordinate();
-        int explodedBombYCoordinate = getYCoordinate();
-        int explodedBombRange = getRangeBomb();
+        //todo to factor in walls
+        //todo System.out.println("bomb x coordinate is " + getXCoordinate());
+        //todo System.out.println("bomb y coordinate is " + getYCoordinate());
+        //todo System.out.println("bomb exploded at " + (double)System.nanoTime()/(1000000000));
+
         getMap().getActiveBombArray().remove(this);
         getBombStack().push(this);
+        explodeBombsInRange(this);
+    }
+
+    public void explodeBombsInRange(Bomb explodedBomb){
+        int explodedBombXCoordinate = explodedBomb.getXCoordinate();
+        int explodedBombYCoordinate = explodedBomb.getYCoordinate();
+        int explodedBombRange = explodedBomb.getRangeBomb();
         for (Bomb activeBomb : getMap().getActiveBombArray()) {
             if (activeBomb.getYCoordinate() == explodedBombYCoordinate &&
                     activeBomb.getXCoordinate() >= explodedBombXCoordinate - explodedBombRange &&
@@ -78,7 +84,6 @@ public class Bomb {
             }
         }
     }
-
     public Player getBombOwner() {
         return _bombOwner;
     }
