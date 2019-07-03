@@ -1,4 +1,9 @@
-package com.mygdx.crazybomber.server;
+package com.mygdx.crazybomber.model.player;
+
+import com.mygdx.crazybomber.model.item.BombUp;
+import com.mygdx.crazybomber.model.item.Item;
+import com.mygdx.crazybomber.model.item.RangeUp;
+import com.mygdx.crazybomber.model.map.Map;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,8 +16,10 @@ public class CrazyBomberClient {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
+    private Map _map;
 
-    public CrazyBomberClient(String serverAddress) throws IOException {
+    public CrazyBomberClient(String serverAddress, Map map) throws IOException {
+        _map = map;
         this.socket = new Socket(serverAddress, 59898);
         out = new DataOutputStream(socket.getOutputStream());
         in = new DataInputStream(socket.getInputStream());
@@ -118,5 +125,9 @@ public class CrazyBomberClient {
     public void sendByteArray(byte[] data) throws IOException {
         out.writeInt(data.length);
         out.write(data);
+    }
+
+    public Map getMap() {
+        return _map;
     }
 }

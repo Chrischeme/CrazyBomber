@@ -3,9 +3,11 @@ package com.mygdx.crazybomber.model.player;
 import com.mygdx.crazybomber.model.map.InitialMap;
 import com.mygdx.crazybomber.model.map.Map;
 
+import java.io.IOException;
+
 //just a test class will not be in the product
 public class TestClass {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         int[][] intMap = new InitialMap().getIntMap1();
         Map firstMap = new Map(intMap);
         Player player1 = new Player(0,0,firstMap);
@@ -23,8 +25,6 @@ public class TestClass {
         player2.dropBomb();
         player3.dropBomb();
         player4.dropBomb();
-
-
     }
 
        /* while (true) {

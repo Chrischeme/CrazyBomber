@@ -19,9 +19,7 @@ public class InitialMap {
                     {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
     public InitialMap(){
-
     }
-
     public static int[][] getIntMap1() {
         return _intMap1;
     }

@@ -1,9 +1,10 @@
 package com.mygdx.crazybomber.model.player;
 
 import com.mygdx.crazybomber.model.bomb.Bomb;
+import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.Map;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,6 +23,7 @@ public class Player {
     private ScheduledExecutorService _scheduledExecutorService;
     private ScheduledFuture _scheduledFuture;
     private Map _map;
+    private CrazyBomberClient _playerClient;
 
     public double getXCoordinate() {
         return _xCoordinate;
@@ -100,7 +102,7 @@ public class Player {
         }
     }
 
-    public Bomb dropBomb() {
+    public Bomb dropBomb() throws IOException {
         if (_bombStack.isEmpty()) {
             System.out.println("out of bombs");
             return null;
@@ -110,7 +112,7 @@ public class Player {
         droppedBomb.setXCoordinate((int) Math.round(getXCoordinate()));
         droppedBomb.setYCoordinate((int) Math.round(getYCoordinate()));
 
-        _scheduledExecutorService = Executors.newScheduledThreadPool(0);
+        _scheduledExecutorService = Executors.newScheduledThreadPool(1);
         System.out.println("bomb dropped");
         _scheduledFuture =
                 _scheduledExecutorService.schedule(new Runnable() {
@@ -119,6 +121,7 @@ public class Player {
                         _scheduledExecutorService.shutdown();
                     }
                 }, 3, TimeUnit.SECONDS);
+        getPlayerClient().sendOnBombPlaced(droppedBomb.getXCoordinate(), droppedBomb.getYCoordinate());
         return droppedBomb;
     }
 
@@ -137,17 +140,16 @@ public class Player {
         getMap().getActiveBombArray().add(bomb);
     }
 
-    public void addBomb(Map map) {
-        final Bomb newBomb = new Bomb(this, _bombStack);
-        this._bombStack.push(newBomb);
-    }
-
-    public void pickUpSpeedUpgrade() {
-        setSpeed(getSpeed() + 1.0);
-    }
-
-    public void pickUpRangeUpgrade() {
-        setNumRangeUpgrades(getNumRangeUpgrades() + 1);
+    public void pickUpItem(Item item, Map map) {
+        if (item.getItemType() == 0) {
+            final Bomb newBomb = new Bomb(this, _bombStack);
+            this._bombStack.push(newBomb);
+        } else if ( item.getItemType()== 1){
+            setNumRangeUpgrades(getNumRangeUpgrades() + 1);
+        } else {
+            setSpeed(getSpeed() + 1.0);
+        }
+        item = null;
     }
 
     public Map getMap() {
@@ -158,4 +160,7 @@ public class Player {
         return _scheduledFuture;
     }
 
+    public CrazyBomberClient getPlayerClient() {
+        return _playerClient;
+    }
 }
