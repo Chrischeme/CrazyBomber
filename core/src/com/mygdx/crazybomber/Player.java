@@ -1,3 +1,4 @@
+//TODO: FIX MOVE LATER
 package com.mygdx.crazybomber;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -68,6 +69,18 @@ public class Player extends Sprite {
 
     //todo: will need logic to not walk through walls and make traveling constant (frame rate or constant velocity, libgdx physics?)
     public void move(char direction) {
+        if (direction == 'W'){
+            setY(getY() + getSpeed());
+        }
+        if (direction == 'A'){
+            setX(getX() - getSpeed());
+        }if (direction == 'S'){
+            setY(getY() - getSpeed());
+        }if (direction == 'D'){
+            setX(getX() + getSpeed());
+        }
+
+        /*
         switch (direction) {
             case 'W':
                 setY(getY() + getSpeed());
@@ -81,7 +94,7 @@ public class Player extends Sprite {
             case 'D':
                 setX(getX() + getSpeed());
                 break;
-        }
+        } */
     }
 
     public Bomb dropBomb() {

@@ -1,4 +1,5 @@
-//TODO: do we need a back button here? if we do, should it go back to the room or all the way to the mainrooms? 
+//TODO: do we need a back button here? if we do, should it go back to the room or all the way to the mainrooms?
+//TODO: FIX MOVE LATER
 package com.mygdx.crazybomber;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -32,6 +33,9 @@ public class Map implements Screen {
     private Texture playerTexture;
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE, isPressedSHIFT;
 
+   private int x = 0; // FOR FUNSIES
+   private Sprite A[] = new Sprite [1000]; // FOR FUNSIES
+
     public Map (Texture texture, final StateRepository stateRepository) {
         this.splashTexture = texture;
         this.stateRepository = stateRepository;
@@ -47,6 +51,9 @@ public class Map implements Screen {
         player = new Player(0f, 0f, playerTexture);
         player.setSize(50,50);
         player.setPosition(615,600);
+        for (int i = 0; i < 20; i++){
+            player.increaseSpeed();
+        }
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -90,30 +97,37 @@ public class Map implements Screen {
         isPressedS = Gdx.input.isKeyPressed(Input.Keys.S);
         isPressedD = Gdx.input.isKeyPressed(Input.Keys.D);
         isPressedA = Gdx.input.isKeyPressed(Input.Keys.A);
-        isPressedSHIFT = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT); //run
-        isPressedSPACE = Gdx.input.isKeyPressed(Input.Keys.SPACE); //runevenfaster
-        char direction = '\0';
+        isPressedSPACE = Gdx.input.isKeyPressed(Input.Keys.SPACE);
+
         if (isPressedUP == true || isPressedW == true)
         {
-            direction = 'W';
+            player.move('W');
         }
-        if (isPressedDOWN == true || isPressedS == true)
+        else if (isPressedDOWN == true || isPressedS == true)
         {
-            direction = 'S';
+            player.move('S');
         }
-        if (isPressedLEFT == true || isPressedA == true)
+        else if (isPressedLEFT == true || isPressedA == true)
         {
-            direction = 'A';
+            player.move('A');
         }
-        if (isPressedRIGHT == true || isPressedD == true)
+        else if (isPressedRIGHT == true || isPressedD == true)
         {
-            direction = 'D';
+            player.move('D');
         }
-        if (direction != '\0') {
-            player.move(direction);
+        if (isPressedSPACE){ //FUN FUN FUN
+            A[x] = new Sprite(new Texture(("player.png")));
+            A[x].setSize(50,50);
+            A[x].setPosition(player.getX(), player.getY());
+            x++;
         }
-
         player.draw(batch);
+
+         for (int i = 0; i < 1000; i++){ //FUN FUN FUN FUN
+            if (A[i] != null) {
+                A[i].draw(batch);
+             }
+        }
         batch.end();
         stage.draw();
     }
