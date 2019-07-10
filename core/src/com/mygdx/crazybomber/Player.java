@@ -79,22 +79,6 @@ public class Player extends Sprite {
         }if (direction == 'D'){
             setX(getX() + getSpeed());
         }
-
-        /*
-        switch (direction) {
-            case 'W':
-                setY(getY() + getSpeed());
-                break;
-            case 'A':
-                setX(getX() - getSpeed());
-                break;
-            case 'S':
-                setY(getY() - getSpeed());
-                break;
-            case 'D':
-                setX(getX() + getSpeed());
-                break;
-        } */
     }
 
     public Bomb dropBomb() {

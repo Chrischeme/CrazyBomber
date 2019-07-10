@@ -24,7 +24,7 @@ public class MainRooms implements Screen {
     private Label heading;
     private Skin skin;
     private TextureAtlas atlas;
-    private Sprite splash;
+    private Sprite background;
     private SpriteBatch batch;
     private MapRepository mapRepository;
     private RoomRepository roomRepository;
@@ -38,8 +38,8 @@ public class MainRooms implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        splash = new Sprite(new Texture("background1.png"));
-        splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background = new Sprite(new Texture("background1.png"));
+        background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -104,7 +104,7 @@ public class MainRooms implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         batch.begin();
-        splash.draw(batch);
+        background.draw(batch);
         batch.end();
         stage.draw();
     }

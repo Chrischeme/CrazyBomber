@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LoadScreen implements Screen {
-    private Sprite splash;
+    private Sprite background;
     private SpriteBatch batch;
     @Override
     public void show() {
@@ -30,8 +30,8 @@ public class LoadScreen implements Screen {
         roomRepository.addRoom(room1);
         roomRepository.addRoom(room2);
         batch = new SpriteBatch();
-        splash = new Sprite(new Texture(("background.jpg")));
-        splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background = new Sprite(new Texture(("background.jpg")));
+        background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         MainMenu mainMenu = new MainMenu(mapRepository,roomRepository,stateRepository); //TODO: need to fade in/out before going to next stage
         stateRepository.push(mainMenu);
@@ -43,7 +43,7 @@ public class LoadScreen implements Screen {
         Gdx.gl.glClearColor(1,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        splash.draw(batch);
+        background.draw(batch);
         batch.end();
     }
 

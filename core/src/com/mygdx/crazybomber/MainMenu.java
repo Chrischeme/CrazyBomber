@@ -20,7 +20,7 @@ public class MainMenu implements Screen {
     private Label heading;
     private Skin skin;
     private TextureAtlas atlas;
-    private Sprite splash;
+    private Sprite background;
     private SpriteBatch batch;
     private MapRepository mapRepository;
     private RoomRepository roomRepository;
@@ -37,8 +37,8 @@ public class MainMenu implements Screen {
         final MainRooms mainRooms = new MainRooms(mapRepository, roomRepository, stateRepository);
 
         batch = new SpriteBatch();
-        splash = new Sprite(new Texture(("background.jpg")));
-        splash.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background = new Sprite(new Texture(("background.jpg")));
+        background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -88,7 +88,7 @@ public class MainMenu implements Screen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             stage.act(delta);
             batch.begin();
-            splash.draw(batch);
+            background.draw(batch);
             batch.end();
             stage.draw();
             stage.act();

@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Room implements Screen {
-    private Sprite splash,avatar, avatarReady, avatarNotReady;
+    private Sprite background,avatar, avatarReady, avatarNotReady;
     private SpriteBatch batch;
     private Stage stage;
     private Table table;
@@ -39,8 +39,8 @@ public class Room implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        splash = new Sprite(splashTexture);
-        splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        background = new Sprite(splashTexture);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         avatarReady = new Sprite(new Texture("ready.png"));
         avatarReady.setPosition(100,300);
@@ -112,7 +112,7 @@ public class Room implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         batch.begin();
-        splash.draw(batch);
+        background.draw(batch);
         avatar.draw(batch);
         batch.end();
         stage.draw();

@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Map implements Screen {
-    private Sprite splash;
+    private Sprite background;
     private SpriteBatch batch;
     private Stage stage;
     private Table table;
@@ -31,7 +31,7 @@ public class Map implements Screen {
     private StateRepository stateRepository;
     private Player player;
     private Texture playerTexture;
-    boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE, isPressedSHIFT;
+    boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE;
 
    private int x = 0; // FOR FUNSIES
    private Sprite A[] = new Sprite [1000]; // FOR FUNSIES
@@ -45,8 +45,8 @@ public class Map implements Screen {
     public void show() {
         playerTexture = new Texture("player.png");
         batch = new SpriteBatch();
-        splash = new Sprite(splashTexture);
-        splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        background = new Sprite(splashTexture);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         player = new Player(0f, 0f, playerTexture);
         player.setSize(50,50);
@@ -88,7 +88,7 @@ public class Map implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         batch.begin();
-        splash.draw(batch);
+        background.draw(batch);
         isPressedUP = Gdx.input.isKeyPressed(Input.Keys.UP);
         isPressedDOWN = Gdx.input.isKeyPressed(Input.Keys.DOWN);
         isPressedRIGHT = Gdx.input.isKeyPressed(Input.Keys.RIGHT);

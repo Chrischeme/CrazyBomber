@@ -1,11 +1,16 @@
 package com.mygdx.crazybomber.model.player;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.crazybomber.Player;
+
 import java.util.Scanner;
 
 //just a test class will not be in the product
 public class TestClass {
+
     public static void main(String args[]) {
-        Player player1 = new Player(1, 1);
+        Texture playerTexture = new Texture("player.png");
+        Player player1 = new Player(1,1,playerTexture);
 
         while (true) {
             String userInput = new Scanner(System.in).nextLine();
