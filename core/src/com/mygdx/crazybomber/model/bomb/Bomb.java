@@ -62,7 +62,9 @@ public class Bomb {
 
         getMap().getActiveBombArray().remove(this);
         getBombStack().push(this);
+        explodeBreakableBlocksInRange();
         explodeBombsInRange();
+
     }
 
     public void explodeBombsInRange(){
@@ -88,4 +90,7 @@ public class Bomb {
         return _bombOwner;
     }
 
+    public void explodeBreakableBlocksInRange(){
+
+    }
 }

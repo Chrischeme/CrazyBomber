@@ -54,7 +54,7 @@ public class CrazyBomberServer {
                         {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-                gameState = new GameState(intMap, new ArrayList<>());
+                gameState = new GameState(intMap, new ArrayList<Player>());
                 out = new DataOutputStream(socket.getOutputStream());
                 in = new DataInputStream(socket.getInputStream());
 

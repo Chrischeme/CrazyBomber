@@ -5,6 +5,6 @@ public class SpeedUp extends Item {
         setXCoordinate(blockXCoordinate);
         setYCoordinate(blockYCoordinate);
         setItemID(itemId);
-        setItemType((byte) 1);
+        setItemType((byte) 2);
     }
 }

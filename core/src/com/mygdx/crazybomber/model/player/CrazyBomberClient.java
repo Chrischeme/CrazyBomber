@@ -1,14 +1,16 @@
 package com.mygdx.crazybomber.model.player;
 
-import com.mygdx.crazybomber.model.item.BombUp;
-import com.mygdx.crazybomber.model.item.Item;
-import com.mygdx.crazybomber.model.item.RangeUp;
 import com.mygdx.crazybomber.model.map.Map;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static java.lang.Thread.sleep;
 
 public class CrazyBomberClient {
     // this class should have two threads; one for listening and one for running the game
@@ -24,12 +26,33 @@ public class CrazyBomberClient {
         out = new DataOutputStream(socket.getOutputStream());
         in = new DataInputStream(socket.getInputStream());
 
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+        pool.execute(new CrazyBomberClient.Handler(in));
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
+
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+
+
+
+
+
+
+
         int length = in.readInt();
         byte[] data = new byte[length];
         if (length > 0) {
             in.readFully(data, 0, data.length);
         }
-        for (byte b: data) {
+        for (byte b : data) {
             System.out.println(b);
         }
         ByteBuffer wrapped = ByteBuffer.wrap(data);
@@ -116,7 +139,7 @@ public class CrazyBomberClient {
     }
 
     public void copyArrayToAnotherWithStartingIndexes(byte[] fromArray, byte[] toArray, int toArrayIndex) {
-        for(byte fromArrayByte : fromArray){
+        for (byte fromArrayByte : fromArray) {
             toArray[toArrayIndex] = fromArrayByte;
             toArrayIndex++;
         }
@@ -129,5 +152,24 @@ public class CrazyBomberClient {
 
     public Map getMap() {
         return _map;
+    }
+
+    private static class Handler implements Runnable {
+        private DataInputStream in;
+
+        public Handler(DataInputStream in) {
+            this.in = in;
+        }
+
+        public void run() {
+            while (true) {
+                System.out.println("A");
+                try {
+                    sleep(100);
+                } catch (InterruptedException e) {
+                }
+            }
+            //e.printStackTrace();
+        }
     }
 }

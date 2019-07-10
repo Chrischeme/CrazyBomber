@@ -18,11 +18,11 @@ public class BreakableBlock extends Block {
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
         double randNum = Math.random();
-        if (randNum < 0.066) {
+        if (randNum <= 0.1) {
             setItem(new BombUp(getXCoordinate(), getYCoordinate(), itemID));
-        } else if (randNum < 0.132) {
+        } else if (randNum <= 0.2) {
             setItem(new RangeUp(getXCoordinate(), getYCoordinate(), itemID));
-        } else if (randNum < 0.20) {
+        } else if (randNum <= 0.30) {
             setItem(new SpeedUp(getXCoordinate(), getYCoordinate(), itemID));
         } else {
             setItem(null);

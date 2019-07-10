@@ -1,5 +1,6 @@
 package com.mygdx.crazybomber.model.player;
 
+import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.InitialMap;
 import com.mygdx.crazybomber.model.map.Map;
 
@@ -10,21 +11,25 @@ public class TestClass {
     public static void main(String args[]) throws IOException {
         int[][] intMap = new InitialMap().getIntMap1();
         Map firstMap = new Map(intMap);
-        Player player1 = new Player(0,0,firstMap);
-        Player player2 = new Player(0,1,firstMap);
-        Player player3 = new Player(1,1,firstMap);
-        Player player4 = new Player(1,0,firstMap);
-        System.out.println(player2.getXCoordinate());
-        System.out.println(player2.getXCoordinate());
-        System.out.println((double)System.nanoTime()/(1000000000));
-        player1.dropBomb();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e){}
-        System.out.println((double)System.nanoTime()/(1000000000));
-        player2.dropBomb();
-        player3.dropBomb();
-        player4.dropBomb();
+        CrazyBomberClient firstClient = new CrazyBomberClient("localhost", firstMap);
+        /*for (Item item :firstMap.getItemArray()) {
+            System.out.println("itemID: " + item.getItemID() + " itemType: " +item.getItemType());
+        }
+        Player player1 = new Player(0, 0, firstMap);*/
+//        Player player2 = new Player(0,1,firstMap);
+//        Player player3 = new Player(1,1,firstMap);
+//        Player player4 = new Player(1,0,firstMap);
+//        System.out.println(player2.getXCoordinate());
+//        System.out.println(player2.getXCoordinate());
+//        System.out.println((double)System.nanoTime()/(1000000000));
+//        player1.dropBomb();
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e){}
+//        System.out.println((double)System.nanoTime()/(1000000000));
+//        player2.dropBomb();
+//        player3.dropBomb();
+//        player4.dropBomb();
     }
 
        /* while (true) {

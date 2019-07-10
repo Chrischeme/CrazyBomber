@@ -16,7 +16,6 @@ public class Map {
     private byte _itemIDCounter = 0;
 
     public Map(int[][] intMap) {
-        double randnum = Math.random();
         _activeBombArray = new ArrayList<Bomb>();
         _activeItemArray = new ArrayList<Item>();
 
@@ -28,6 +27,7 @@ public class Map {
                     blockMatrix[i][j] = new BreakableBlock(i, j, getItemIDCounter());
                     if (((BreakableBlock) (blockMatrix[i][j])).getItem() != null) {
                         setItemIDCounter((byte) (getItemIDCounter() + 1));
+                        getItemArray().add(((BreakableBlock) blockMatrix[i][j]).getItem());
                     } else {
                         blockMatrix[i][j] = new BreakableBlock(i, j);
                     }
