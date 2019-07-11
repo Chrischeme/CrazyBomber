@@ -28,24 +28,6 @@ public class CrazyBomberClient {
 
         ExecutorService pool = Executors.newFixedThreadPool(1);
         pool.execute(new CrazyBomberClient.Handler(in));
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            //e.printStackTrace();
-        }
-
-        System.out.println("\n");
-        System.out.println("\n");
-        System.out.println("\n");
-        System.out.println("\n");
-        System.out.println("\n");
-        System.out.println("\n");
-
-
-
-
-
-
 
         int length = in.readInt();
         byte[] data = new byte[length];
@@ -163,13 +145,8 @@ public class CrazyBomberClient {
 
         public void run() {
             while (true) {
-                System.out.println("A");
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {
-                }
             }
-            //e.printStackTrace();
         }
+        //e.printStackTrace();
     }
 }
