@@ -1,5 +1,6 @@
 package com.mygdx.crazybomber.model.player;
 
+import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.map.Map;
 
 import java.io.DataInputStream;
@@ -149,7 +150,15 @@ public class CrazyBomberClient {
         public void run() {
             while (true) {
                 //todo implement switch case to handle data from the server and do things
-
+               /* if (item.getItemType() == 0) {
+                    final Bomb newBomb = new Bomb(this, _bombStack);
+                    this._bombStack.push(newBomb);
+                } else if ( item.getItemType()== 1){
+                    setNumRangeUpgrades(getNumRangeUpgrades() + 1);
+                } else {
+                    setSpeed(getSpeed() + 1.0);
+                }
+                item = null;*/
             }
         }
         //e.printStackTrace();

@@ -143,15 +143,7 @@ public class Player {
     public void pickUpItem(Item item, Map map) throws IOException {
         getPlayerClient().sendOnItemPickedUp(item.getItemType(),item.getItemID());
 
-        if (item.getItemType() == 0) {
-            final Bomb newBomb = new Bomb(this, _bombStack);
-            this._bombStack.push(newBomb);
-        } else if ( item.getItemType()== 1){
-            setNumRangeUpgrades(getNumRangeUpgrades() + 1);
-        } else {
-            setSpeed(getSpeed() + 1.0);
-        }
-        item = null;
+
     }
 
     public Map getMap() {
