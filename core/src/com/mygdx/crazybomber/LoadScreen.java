@@ -19,9 +19,9 @@ public class LoadScreen implements Screen {
         Map map1 = new Map((new Texture("background2.png")),repository); //keeping maps & maprepository in case future usemapRepository.addMap(map);
         repository.addMap(map);
         repository.addMap(map1);
-        Room room = new Room((new Texture("background.jpg")),repository, repository);
-        Room room1 = new Room((new Texture("background1.png")),repository, repository);
-        Room room2 = new Room((new Texture("background2.png")), repository, repository);
+        Room room = new Room((new Texture("background.jpg")),repository);
+        Room room1 = new Room((new Texture("background1.png")),repository);
+        Room room2 = new Room((new Texture("background2.png")), repository);
         repository.addRoom(room);
         repository.addRoom(room1);
         repository.addRoom(room2);
@@ -30,21 +30,6 @@ public class LoadScreen implements Screen {
 
     @Override
     public void show() {
-       /* Repository stateRepository = new Repository();
-        Repository mapRepository = new Repository();
-        Repository roomRepository = new Repository();
-
-        Map map = new Map((new Texture("background.jpg")),stateRepository);
-        Map map1 = new Map((new Texture("background2.png")),stateRepository); //keeping maps & maprepository in case future usemapRepository.addMap(map);
-        mapRepository.addMap(map);
-        mapRepository.addMap(map1);
-
-        Room room = new Room((new Texture("background.jpg")),stateRepository, mapRepository);
-        Room room1 = new Room((new Texture("background1.png")),stateRepository, mapRepository);
-        Room room2 = new Room((new Texture("background2.png")), stateRepository, mapRepository);
-        roomRepository.addRoom(room);
-        roomRepository.addRoom(room1);
-        roomRepository.addRoom(room2); */
         batch = new SpriteBatch();
         background = new Sprite(new Texture(("background.jpg")));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());

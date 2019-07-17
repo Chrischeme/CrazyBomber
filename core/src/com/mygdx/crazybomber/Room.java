@@ -26,14 +26,12 @@ public class Room implements Screen {
     private Skin skin;
     private TextureAtlas atlas;
     private Texture splashTexture;
-    private Repository mapRepository;
-    private Repository stateRepository;
+    private Repository repository;
     private boolean ready = false;
 
-    public Room (Texture texture, final Repository stateRepository, Repository mapRepository) {
-        this.mapRepository = mapRepository;
+    public Room (Texture texture, final Repository repository) {
+        this.repository = repository;
         this.splashTexture = texture;
-        this.stateRepository = stateRepository;
     }
 
     @Override
@@ -61,7 +59,7 @@ public class Room implements Screen {
         buttonBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(stateRepository.peek());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.peek());
             }
         });
 
@@ -85,7 +83,7 @@ public class Room implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: if logic to check if everyone's ready
-                ((Game) Gdx.app.getApplicationListener()).setScreen(mapRepository.getMap(1)); // default map for now
+                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getMap(1)); // default map for now
                 //TODO: if we're doing multiple maps, the flow has to change
             }
         });

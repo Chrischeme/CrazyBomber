@@ -33,9 +33,6 @@ public class Map implements Screen {
     private Texture playerTexture;
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE;
 
-   private int x = 0; // FOR FUNSIES
-   private Sprite A[] = new Sprite [1000]; // FOR FUNSIES
-
     public Map (Texture texture, final Repository repository) {
         this.splashTexture = texture;
         this.repository = repository;
@@ -115,19 +112,7 @@ public class Map implements Screen {
         {
             player.move('D');
         }
-        if (isPressedSPACE){ //FUN FUN FUN
-            A[x] = new Sprite(new Texture(("player.png")));
-            A[x].setSize(50,50);
-            A[x].setPosition(player.getX(), player.getY());
-            x++;
-        }
         player.draw(batch);
-
-         for (int i = 0; i < 1000; i++){ //FUN FUN FUN FUN
-            if (A[i] != null) {
-                A[i].draw(batch);
-             }
-        }
         batch.end();
         stage.draw();
     }
