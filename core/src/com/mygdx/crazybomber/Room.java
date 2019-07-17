@@ -26,11 +26,11 @@ public class Room implements Screen {
     private Skin skin;
     private TextureAtlas atlas;
     private Texture splashTexture;
-    private MapRepository mapRepository;
-    private StateRepository stateRepository;
+    private Repository mapRepository;
+    private Repository stateRepository;
     private boolean ready = false;
 
-    public Room (Texture texture, final StateRepository stateRepository, MapRepository mapRepository) {
+    public Room (Texture texture, final Repository stateRepository, Repository mapRepository) {
         this.mapRepository = mapRepository;
         this.splashTexture = texture;
         this.stateRepository = stateRepository;

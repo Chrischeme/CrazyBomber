@@ -26,15 +26,12 @@ public class MainRooms implements Screen {
     private TextureAtlas atlas;
     private Sprite background;
     private SpriteBatch batch;
-    private MapRepository mapRepository;
-    private RoomRepository roomRepository;
-    private StateRepository stateRepository;
+    private Repository repository;
 
-    public MainRooms(MapRepository mapRepository, RoomRepository roomRepository, StateRepository stateRepository) {
-        this.mapRepository = mapRepository;
-        this.roomRepository = roomRepository;
-        this.stateRepository = stateRepository;
+    public MainRooms(Repository repository) {
+        this.repository = repository;
     }
+
     @Override
     public void show() {
         batch = new SpriteBatch();
@@ -53,29 +50,29 @@ public class MainRooms implements Screen {
         buttonRoom1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(roomRepository.getRoom(0));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(0));
             }
         });
         buttonRoom2 = new TextButton("ROOM2",skin);
         buttonRoom2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(roomRepository.getRoom(1));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(1));
             }
         });
         buttonRoom3 = new TextButton("ROOM3",skin);
         buttonRoom3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(roomRepository.getRoom(2));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(2));
             }
         });
         buttonBack = new TextButton("BACK",skin);
         buttonBack.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                stateRepository.pop();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(stateRepository.peek());
+                repository.pop();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.peek());
             }
         });
         heading =  new Label("Rooms", skin);

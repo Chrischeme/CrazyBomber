@@ -22,19 +22,16 @@ public class MainMenu implements Screen {
     private TextureAtlas atlas;
     private Sprite background;
     private SpriteBatch batch;
-    private MapRepository mapRepository;
-    private RoomRepository roomRepository;
-    private StateRepository stateRepository;
+    private Repository repository;
     private TextField usernameTextField;
 
-    public MainMenu(MapRepository mapRepository, RoomRepository roomRepository, StateRepository stateRepository) {
-        this.mapRepository = mapRepository;
-        this.roomRepository = roomRepository;
-        this.stateRepository = stateRepository;
+    public MainMenu(Repository repository) {
+        this.repository = repository;
     }
+
     @Override
     public void show() {
-        final MainRooms mainRooms = new MainRooms(mapRepository, roomRepository, stateRepository);
+        final MainRooms mainRooms = new MainRooms(repository);
 
         batch = new SpriteBatch();
         background = new Sprite(new Texture(("background.jpg")));
@@ -65,7 +62,7 @@ public class MainMenu implements Screen {
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                stateRepository.push(mainRooms);
+                repository.push(mainRooms);
                 ((Game)Gdx.app.getApplicationListener()).setScreen(mainRooms);
 
             }

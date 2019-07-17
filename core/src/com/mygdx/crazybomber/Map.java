@@ -28,7 +28,7 @@ public class Map implements Screen {
     private Skin skin;
     private TextureAtlas atlas;
     private Texture splashTexture;
-    private StateRepository stateRepository;
+    private Repository repository;
     private Player player;
     private Texture playerTexture;
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE;
@@ -36,9 +36,9 @@ public class Map implements Screen {
    private int x = 0; // FOR FUNSIES
    private Sprite A[] = new Sprite [1000]; // FOR FUNSIES
 
-    public Map (Texture texture, final StateRepository stateRepository) {
+    public Map (Texture texture, final Repository repository) {
         this.splashTexture = texture;
-        this.stateRepository = stateRepository;
+        this.repository = repository;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Map implements Screen {
         buttonBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(stateRepository.peek());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.peek());
             }
         });
 
