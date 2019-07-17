@@ -1,9 +1,17 @@
-package com.mygdx.crazybomber.server;
+package com.mygdx.crazybomber.model.player;
 
-import java.io.*;
+import com.mygdx.crazybomber.model.bomb.Bomb;
+import com.mygdx.crazybomber.model.map.Map;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static java.lang.Thread.sleep;
 
 public class CrazyBomberClient {
     // this class should have two threads; one for listening and one for running the game
@@ -11,18 +19,26 @@ public class CrazyBomberClient {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
+    private Map _map;
 
-    public CrazyBomberClient(String serverAddress) throws IOException {
+    public CrazyBomberClient(String serverAddress, Map map) throws IOException {
+        _map = map;
         this.socket = new Socket(serverAddress, 59898);
         out = new DataOutputStream(socket.getOutputStream());
         in = new DataInputStream(socket.getInputStream());
+
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+        pool.execute(new CrazyBomberClient.Handler(in));
 
         int length = in.readInt();
         byte[] data = new byte[length];
         if (length > 0) {
             in.readFully(data, 0, data.length);
+
+
+
         }
-        for (byte b: data) {
+        for (byte b : data) {
             System.out.println(b);
         }
         ByteBuffer wrapped = ByteBuffer.wrap(data);
@@ -109,7 +125,7 @@ public class CrazyBomberClient {
     }
 
     public void copyArrayToAnotherWithStartingIndexes(byte[] fromArray, byte[] toArray, int toArrayIndex) {
-        for(byte fromArrayByte : fromArray){
+        for (byte fromArrayByte : fromArray) {
             toArray[toArrayIndex] = fromArrayByte;
             toArrayIndex++;
         }
@@ -118,5 +134,33 @@ public class CrazyBomberClient {
     public void sendByteArray(byte[] data) throws IOException {
         out.writeInt(data.length);
         out.write(data);
+    }
+
+    public Map getMap() {
+        return _map;
+    }
+
+    private static class Handler implements Runnable {
+        private DataInputStream in;
+
+        public Handler(DataInputStream in) {
+            this.in = in;
+        }
+
+        public void run() {
+            while (true) {
+                //todo implement switch case to handle data from the server and do things
+               /* if (item.getItemType() == 0) {
+                    final Bomb newBomb = new Bomb(this, _bombStack);
+                    this._bombStack.push(newBomb);
+                } else if ( item.getItemType()== 1){
+                    setNumRangeUpgrades(getNumRangeUpgrades() + 1);
+                } else {
+                    setSpeed(getSpeed() + 1.0);
+                }
+                item = null;*/
+            }
+        }
+        //e.printStackTrace();
     }
 }

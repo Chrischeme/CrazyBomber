@@ -11,17 +11,29 @@ public class BreakableBlock extends Block {
     public BreakableBlock(int xCoordinate, int yCoordinate) {
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
+        setItem(null);
+    }
+
+    public BreakableBlock(int xCoordinate, int yCoordinate, byte itemID) {
+        setXCoordinate(xCoordinate);
+        setYCoordinate(yCoordinate);
         double randNum = Math.random();
-        if (randNum < 0.066) {
-            _item = new BombUp(getXCoordinate(), getYCoordinate());
-        } else if (randNum < 0.132) {
-            _item = new RangeUp(getXCoordinate(), getYCoordinate());
-        } else if (randNum < 0.20) {
-            _item = new SpeedUp(getXCoordinate(), getYCoordinate());
+        if (randNum <= 0.1) {
+            setItem(new BombUp(getXCoordinate(), getYCoordinate(), itemID));
+        } else if (randNum <= 0.2) {
+            setItem(new RangeUp(getXCoordinate(), getYCoordinate(), itemID));
+        } else if (randNum <= 0.30) {
+            setItem(new SpeedUp(getXCoordinate(), getYCoordinate(), itemID));
         } else {
-            _item = null;
+            setItem(null);
         }
+    }
 
+    public Item getItem() {
+        return _item;
+    }
 
+    public void setItem(Item _item) {
+        this._item = _item;
     }
 }
