@@ -4,8 +4,10 @@ public abstract class Item {
     private int _xCoordinate;
     private int _yCoordinate;
     private double _dropChance;
+    private byte _itemId;
+    private byte _itemType;
 
-    public int getSCoordinate() {
+    public int getXCoordinate() {
         return _xCoordinate;
     }
 
@@ -28,4 +30,21 @@ public abstract class Item {
     public void setDropChance(double _dropChance) {
         this._dropChance = _dropChance;
     }
+
+    public byte getItemID() {
+        return _itemId;
+    }
+
+    public void setItemID(byte _itemID) {
+        this._itemId = _itemID;
+    }
+
+    public byte getItemType() {
+        return _itemType;
+    }
+
+    public void setItemType(byte _itemType) {
+        this._itemType = _itemType;
+    }
+
 }
