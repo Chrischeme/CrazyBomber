@@ -7,7 +7,7 @@ public abstract class Item {
     private byte _itemId;
     private byte _itemType;
 
-    public int getSCoordinate() {
+    public int getXCoordinate() {
         return _xCoordinate;
     }
 
@@ -46,4 +46,5 @@ public abstract class Item {
     public void setItemType(byte _itemType) {
         this._itemType = _itemType;
     }
+
 }

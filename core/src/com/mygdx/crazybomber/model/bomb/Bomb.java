@@ -1,5 +1,6 @@
 package com.mygdx.crazybomber.model.bomb;
 
+import com.mygdx.crazybomber.model.block.BreakableBlock;
 import com.mygdx.crazybomber.model.map.Map;
 import com.mygdx.crazybomber.model.player.Player;
 
@@ -64,7 +65,6 @@ public class Bomb {
         getBombStack().push(this);
         explodeBreakableBlocksInRange();
         explodeBombsInRange();
-
     }
 
     public void explodeBombsInRange(){
@@ -91,6 +91,9 @@ public class Bomb {
     }
 
     public void explodeBreakableBlocksInRange(){
+        int explodedBombXCoordinate = getXCoordinate();
+        int explodedBombYCoordinate = getYCoordinate();
+        int explodedBombRange = getRangeBomb();
 
     }
 }

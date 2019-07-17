@@ -140,7 +140,9 @@ public class Player {
         getMap().getActiveBombArray().add(bomb);
     }
 
-    public void pickUpItem(Item item, Map map) {
+    public void pickUpItem(Item item, Map map) throws IOException {
+        getPlayerClient().sendOnItemPickedUp(item.getItemType(),item.getItemID());
+
         if (item.getItemType() == 0) {
             final Bomb newBomb = new Bomb(this, _bombStack);
             this._bombStack.push(newBomb);

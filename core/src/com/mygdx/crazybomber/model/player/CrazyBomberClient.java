@@ -33,6 +33,9 @@ public class CrazyBomberClient {
         byte[] data = new byte[length];
         if (length > 0) {
             in.readFully(data, 0, data.length);
+
+
+
         }
         for (byte b : data) {
             System.out.println(b);
@@ -145,6 +148,8 @@ public class CrazyBomberClient {
 
         public void run() {
             while (true) {
+                //todo implement switch case to handle data from the server and do things
+
             }
         }
         //e.printStackTrace();
