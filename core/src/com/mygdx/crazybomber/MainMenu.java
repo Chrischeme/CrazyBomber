@@ -49,7 +49,7 @@ public class MainMenu implements Screen {
         usernameTextField.setSize(1000, 30);
 
         heading =  new Label(CrazyBomber.TITLE, skin);
-        heading.setFontScale(2); //doubles the font size
+        heading.setFontScale(2);
 
         buttonExit = new TextButton("EXIT",skin);
         buttonExit.addListener(new ClickListener(){
@@ -58,7 +58,7 @@ public class MainMenu implements Screen {
                 Gdx.app.exit();
             }
         });
-        buttonPlay = new TextButton("PLAY",skin); //clickable play button
+        buttonPlay = new TextButton("PLAY",skin);
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

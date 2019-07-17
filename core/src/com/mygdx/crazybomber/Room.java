@@ -67,7 +67,7 @@ public class Room implements Screen {
         buttonReady.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(ready == false){
+                if(!ready){
                     ready = true;
                     avatar = avatarReady;
                 }
