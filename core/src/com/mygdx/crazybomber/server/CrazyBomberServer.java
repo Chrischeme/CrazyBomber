@@ -115,7 +115,7 @@ public class CrazyBomberServer {
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
                             // update bomb in bomb data + send to all other players => NOT SURE
-                            break;
+\                            break;
                         case 3:
                             // On block broken
                             // data should have coord of broken block.
@@ -141,16 +141,32 @@ public class CrazyBomberServer {
                             // data should have player data
                             // send to all other players
                             break;
+                        case 8:
+                            // on Bomb explodes
+                            // data should have player data
+                            // send to all other players
+                            break;
                         default:
                             // Unspecified
                             // ignore??
                             break;
                     }
+                    sendDataToOtherPlayers(data, out);
                 }
             } catch (IOException e) {
                 //e.printStackTrace();
             }
         }
+
+        private void sendDataToOtherPlayers(byte[] data, DataOutputStream out) throws IOException {
+            for(DataOutputStream outputStream : clientList) {
+                if (out != outputStream) {
+                    outputStream.writeInt(data.length);
+                    outputStream.write(data);
+                }
+            }
+        }
+
         public void copyArrayToAnotherWithStartingIndexes(byte[] fromArray, byte[] toArray, int toArrayIndex) {
             for(byte fromArrayByte : fromArray){
                 toArray[toArrayIndex] = fromArrayByte;
