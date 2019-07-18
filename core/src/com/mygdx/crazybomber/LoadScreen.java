@@ -12,11 +12,10 @@ public class LoadScreen implements Screen {
     private Sprite background;
     private SpriteBatch batch;
 
-    public static Repository populateRepository()
+    public void populateRepository(Repository repository)
     {
-        Repository repository = new Repository();
         Map map = new Map((new Texture("background.jpg")),repository);
-        Map map1 = new Map((new Texture("background2.png")),repository); //keeping maps & maprepository in case future usemapRepository.addMap(map);
+        Map map1 = new Map((new Texture("background2.png")),repository);
         repository.addMap(map);
         repository.addMap(map1);
         Room room = new Room((new Texture("background.jpg")),repository);
@@ -25,7 +24,6 @@ public class LoadScreen implements Screen {
         repository.addRoom(room);
         repository.addRoom(room1);
         repository.addRoom(room2);
-        return repository;
     }
 
     @Override
@@ -33,9 +31,10 @@ public class LoadScreen implements Screen {
         batch = new SpriteBatch();
         background = new Sprite(new Texture(("background.jpg")));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
-        MainMenu mainMenu = new MainMenu(populateRepository()); //TODO: need to fade in/out before going to next stage
-        populateRepository().push(mainMenu);
+        Repository repository = new Repository();
+        populateRepository(repository);
+        MainMenu mainMenu = new MainMenu(repository); //TODO: need to fade in/out before going to next stage
+        repository.push(mainMenu);
         ((Game)Gdx.app.getApplicationListener()).setScreen(mainMenu);
     }
 

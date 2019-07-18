@@ -83,8 +83,10 @@ public class Room implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: if logic to check if everyone's ready
-                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getMap(1)); // default map for now
-                //TODO: if we're doing multiple maps, the flow has to change
+                if (ready) {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getMap(1)); // default map for now
+                    //TODO: if we're doing multiple maps, the flow has to change
+                }
             }
         });
 
