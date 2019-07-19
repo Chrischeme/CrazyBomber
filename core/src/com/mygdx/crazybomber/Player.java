@@ -1,8 +1,12 @@
-package com.mygdx.crazybomber.model.player;
-
+//TODO: FIX MOVE LATER
+package com.mygdx.crazybomber;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.Map;
+import com.mygdx.crazybomber.model.player.CrazyBomberClient;
 
 import java.io.IOException;
 import java.util.Stack;
@@ -11,11 +15,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class Player {
+public class Player extends Sprite {
     private boolean _isKnockedUp;
     private boolean _isAlive;
     private int _numRangeUpgrades;
-    private double _speed;
+    private float _speed;
     private boolean onItem;
     private double _xCoordinate;
     private double _yCoordinate;
@@ -33,19 +37,11 @@ public class Player {
         this._xCoordinate = _xCoordinate;
     }
 
-    public double getYCoordinate() {
-        return _yCoordinate;
-    }
-
-    public void setYCoordinate(double _yCoordinate) {
-        this._yCoordinate = _yCoordinate;
-    }
-
-    public double getSpeed() {
+    public float getSpeed() {
         return _speed;
     }
 
-    public void setSpeed(double _speed) {
+    public void setSpeed(float _speed) {
         this._speed = _speed;
     }
 
@@ -86,19 +82,15 @@ public class Player {
 
     //todo: will need logic to not walk through walls and make traveling constant (frame rate or constant velocity, libgdx physics?)
     public void move(char direction) {
-        switch (direction) {
-            case 'W':
-                setYCoordinate(getYCoordinate() + getSpeed());
-                break;
-            case 'A':
-                setXCoordinate(getXCoordinate() - getSpeed());
-                break;
-            case 'S':
-                setYCoordinate(getYCoordinate() - getSpeed());
-                break;
-            case 'D':
-                setXCoordinate(getXCoordinate() + getSpeed());
-                break;
+        if (direction == 'W'){
+            setY(getY() + getSpeed());
+        }
+        if (direction == 'A'){
+            setX(getX() - getSpeed());
+        }if (direction == 'S'){
+            setY(getY() - getSpeed());
+        }if (direction == 'D'){
+            setX(getX() + getSpeed());
         }
     }
 
@@ -109,8 +101,8 @@ public class Player {
         }
         final Bomb droppedBomb = _bombStack.pop();
         droppedBomb.setRangeBomb(getNumRangeUpgrades() + 1);
-        droppedBomb.setXCoordinate((int) Math.round(getXCoordinate()));
-        droppedBomb.setYCoordinate((int) Math.round(getYCoordinate()));
+        droppedBomb.setXCoordinate((int) Math.round(getX()));
+        droppedBomb.setYCoordinate((int) Math.round(getY()));
 
         _scheduledExecutorService = Executors.newScheduledThreadPool(1);
         System.out.println("bomb dropped");
@@ -125,16 +117,16 @@ public class Player {
         return droppedBomb;
     }
 
-    public Player(double playerSpawnXCoordinate, double playerSpawnYCoordinate, Map map) {
+    public Player(float playerSpawnXCoordinate, float playerSpawnYCoordinate, Texture texture) {
+        super(texture);
         _bombStack = new Stack<Bomb>();
         setIsAlive(false);
         setIsKnockedUp(false);
         setOnItem(false);
-        setSpeed(2.0);
+        setSpeed(1.5f);
         setNumRangeUpgrades(0);
-        setXCoordinate(playerSpawnXCoordinate);
-        setYCoordinate(playerSpawnYCoordinate);
-        _map = map;
+        setX(playerSpawnXCoordinate);
+        setY(playerSpawnYCoordinate);
         Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
         getMap().getActiveBombArray().add(bomb);
