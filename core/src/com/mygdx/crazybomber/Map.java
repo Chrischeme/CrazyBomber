@@ -17,8 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.crazybomber.server.GameState;
+
+import java.util.ArrayList;
 
 public class Map implements Screen {
+
     private Sprite background;
     private SpriteBatch batch;
     private Stage stage;
@@ -45,11 +49,43 @@ public class Map implements Screen {
         background = new Sprite(splashTexture);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        player = new Player(0f, 0f, playerTexture);
+
+
+
+
+
+
+
+
+        int[][] intMap =
+                {{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
+                        {0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+        GameState gameState = new GameState(intMap, new ArrayList<>());
+
+
+
+
+
+
+        player = new Player(0f, 0f, gameState.getMap(), playerTexture);
         player.setSize(50,50);
         player.setPosition(615,600);
         for (int i = 0; i < 20; i++){
-            player.increaseSpeed();
+            //player.increaseSpeed();
         }
 
         stage = new Stage();
