@@ -1,32 +1,35 @@
 package com.mygdx.crazybomber.server;
 
+import com.badlogic.gdx.Game;
+import com.mygdx.crazybomber.model.player.Player;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.net.SocketException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CrazyBomberServer {
-    private static Set<String> names = new HashSet<>();
-    private static Set<PrintWriter> writers = new HashSet<>();
+    private static int numPlayers = 0;
+    public static ArrayList<DataOutputStream> clientList = new ArrayList<>();
 
     public static void main (String[] args) throws IOException {
         try (ServerSocket listener = new ServerSocket(59898)) {
             System.out.println("The server is running...");
-            ExecutorService pool = Executors.newFixedThreadPool(20);
+            ExecutorService pool = Executors.newFixedThreadPool(4);
             while (true) {
                 pool.execute(new Handler(listener.accept()));
             }
         }
     }
     private static class Handler implements Runnable {
-        private String name;
         private Socket socket;
         private DataInputStream in;
         private DataOutputStream out;
+        private GameState gameState;
 
         public Handler(Socket socket) {
             this.socket = socket;
@@ -34,15 +37,72 @@ public class CrazyBomberServer {
 
         public void run() {
             try {
+                int[][] intMap =
+                        {{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
+                        {0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+                gameState = new GameState(intMap, new ArrayList<Player>());
                 out = new DataOutputStream(socket.getOutputStream());
                 in = new DataInputStream(socket.getInputStream());
+
+                clientList.add(out);
+                Player player;
+                int x = 0, y = 0;
+
+                switch (numPlayers) {
+                    case 0:
+                        player = new Player(0, 0, gameState.getMap());
+                        break;
+                    case 1:
+                        player = new Player(0, 14, gameState.getMap());
+                        y = 14;
+                        break;
+                    case 2:
+                        player = new Player(14, 0, gameState.getMap());
+                         x = 14;
+                        break;
+                    case 3:
+                        player = new Player(14, 14, gameState.getMap());
+                        x = 14;
+                        y = 14;
+                        break;
+                    default:
+                        player = null;
+                        break;
+                }
+                numPlayers++;
+                if (player != null) {
+                    gameState.getPlayerList().add(player);
+                    byte[] data = new byte[8];
+                    byte[] intInByteArray = new byte[4];
+                    ByteBuffer.wrap(intInByteArray).putInt(x);
+                    copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 0);
+                    ByteBuffer.wrap(intInByteArray).putInt(y);
+                    copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 4);
+                    out.writeInt(data.length);
+                    out.write(data);
+                }
+
                 while(true) {
                     int length = in.readInt();
                     byte[] data = new byte[length];
                     if (length > 0) {
                         in.readFully(data, 0, data.length);
                     }
-                    int switchByte = (int) data[0];
+                    byte switchByte = data[0];
                     System.out.println("Updating: " + switchByte);
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
@@ -55,7 +115,7 @@ public class CrazyBomberServer {
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
                             // update bomb in bomb data + send to all other players => NOT SURE
-                            break;
+\                            break;
                         case 3:
                             // On block broken
                             // data should have coord of broken block.
@@ -81,14 +141,36 @@ public class CrazyBomberServer {
                             // data should have player data
                             // send to all other players
                             break;
+                        case 8:
+                            // on Bomb explodes
+                            // data should have player data
+                            // send to all other players
+                            break;
                         default:
                             // Unspecified
                             // ignore??
                             break;
                     }
+                    sendDataToOtherPlayers(data, out);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+            }
+        }
+
+        private void sendDataToOtherPlayers(byte[] data, DataOutputStream out) throws IOException {
+            for(DataOutputStream outputStream : clientList) {
+                if (out != outputStream) {
+                    outputStream.writeInt(data.length);
+                    outputStream.write(data);
+                }
+            }
+        }
+
+        public void copyArrayToAnotherWithStartingIndexes(byte[] fromArray, byte[] toArray, int toArrayIndex) {
+            for(byte fromArrayByte : fromArray){
+                toArray[toArrayIndex] = fromArrayByte;
+                toArrayIndex++;
             }
         }
     }

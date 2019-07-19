@@ -4,6 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.crazybomber.model.bomb.Bomb;
+import com.mygdx.crazybomber.model.item.Item;
+import com.mygdx.crazybomber.model.map.Map;
+import com.mygdx.crazybomber.model.player.CrazyBomberClient;
+
+import java.io.IOException;
 import java.util.Stack;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,12 +21,20 @@ public class Player extends Sprite {
     private int _numRangeUpgrades;
     private float _speed;
     private boolean onItem;
+    private double _xCoordinate;
+    private double _yCoordinate;
     private Stack<Bomb> _bombStack;
     private ScheduledExecutorService _scheduledExecutorService;
+    private ScheduledFuture _scheduledFuture;
+    private Map _map;
+    private CrazyBomberClient _playerClient;
 
-    public void draw(Batch batch)
-    {
-        super.draw(batch);
+    public double getXCoordinate() {
+        return _xCoordinate;
+    }
+
+    public void setXCoordinate(double _xCoordinate) {
+        this._xCoordinate = _xCoordinate;
     }
 
     public float getSpeed() {
@@ -81,32 +94,26 @@ public class Player extends Sprite {
         }
     }
 
-    public Bomb dropBomb() {
+    public Bomb dropBomb() throws IOException {
         if (_bombStack.isEmpty()) {
             System.out.println("out of bombs");
             return null;
         }
         final Bomb droppedBomb = _bombStack.pop();
         droppedBomb.setRangeBomb(getNumRangeUpgrades() + 1);
-        if (getX() % 0.5 == 0) {
-            droppedBomb.setXCoordinate((int) Math.round((getX() - 0.01)));
-        } else {
-            droppedBomb.setXCoordinate((int) Math.round(getX()));
-        }
-        if (getY() % 0.5 == 0) {
-            droppedBomb.setXCoordinate((int) Math.round((getY() - 0.01)));
-        } else {
-            droppedBomb.setXCoordinate((int) Math.round(getY()));
-        }
+        droppedBomb.setXCoordinate((int) Math.round(getX()));
+        droppedBomb.setYCoordinate((int) Math.round(getY()));
+
         _scheduledExecutorService = Executors.newScheduledThreadPool(1);
         System.out.println("bomb dropped");
-        ScheduledFuture _scheduledFuture =
+        _scheduledFuture =
                 _scheduledExecutorService.schedule(new Runnable() {
                     public void run() {
                         droppedBomb.explode();
+                        _scheduledExecutorService.shutdown();
                     }
                 }, 3, TimeUnit.SECONDS);
-        _scheduledExecutorService.shutdown();
+        getPlayerClient().sendOnBombPlaced(droppedBomb.getXCoordinate(), droppedBomb.getYCoordinate());
         return droppedBomb;
     }
 
@@ -120,22 +127,26 @@ public class Player extends Sprite {
         setNumRangeUpgrades(0);
         setX(playerSpawnXCoordinate);
         setY(playerSpawnYCoordinate);
-        Bomb bomb = new Bomb((int) getX(), (int) getY(), getNumRangeUpgrades() + 1, _bombStack);
+        Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
+        getMap().getActiveBombArray().add(bomb);
     }
 
-    public void addBomb() {
-        final Bomb newBomb = new Bomb((int) getX(), (int) getY(), getNumRangeUpgrades() + 1, _bombStack);
-        this._bombStack.push(newBomb);
+    public void pickUpItem(Item item, Map map) throws IOException {
+        getPlayerClient().sendOnItemPickedUp(item.getItemType(),item.getItemID());
+
+
     }
 
-    public void increaseSpeed() {
-        setSpeed(getSpeed() + 0.5f);
+    public Map getMap() {
+        return _map;
     }
 
-    public void pickUpRangeUpgrade() {
-        setNumRangeUpgrades(getNumRangeUpgrades() + 1);
+    public ScheduledFuture getScheduledFuture() {
+        return _scheduledFuture;
     }
 
-
+    public CrazyBomberClient getPlayerClient() {
+        return _playerClient;
+    }
 }
