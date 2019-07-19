@@ -45,28 +45,26 @@ public class MainRooms implements Screen {
         table = new Table(skin);
         table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        buttonRoom1 = new TextButton("ROOM1",skin);
-        buttonRoom1.setWidth(1000);
-        buttonRoom1.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(0));
-            }
-        });
-        buttonRoom2 = new TextButton("ROOM2",skin);
-        buttonRoom2.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(1));
-            }
-        });
-        buttonRoom3 = new TextButton("ROOM3",skin);
-        buttonRoom3.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(2));
-            }
-        });
+        heading =  new Label("Rooms", skin);
+        heading.setFontScale(2);
+        table.add(heading);
+        table.row();
+
+        int i = 0;
+        for (Room room : repository.listOfRooms) {
+            TextButton button = new TextButton("ROOM " + (i + 1), skin);
+            int j = i;
+            button.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(j));
+                }
+            });
+            table.add(button);
+            table.getCell(button).size(1000, 150);
+            table.row();
+            i++;
+        }
         buttonBack = new TextButton("BACK",skin);
         buttonBack.addListener(new ClickListener(){
             @Override
@@ -75,23 +73,8 @@ public class MainRooms implements Screen {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(repository.peek());
             }
         });
-        heading =  new Label("Rooms", skin);
-        heading.setFontScale(2);
-        table.add(heading);
-        table.row();
-        table.row();
         table.padBottom(50);
-        table.add(buttonRoom1);
-        table.getCell(buttonRoom1).size(1000,150);
-        table.row();
-        table.add(buttonRoom2);
-        table.getCell(buttonRoom2).size(1000,150);
-        table.row();
-        table.add(buttonRoom3);
-        table.getCell(buttonRoom3).size(1000,150);
-        table.row();
         table.add(buttonBack).bottom().left();
-        table.debug();
         stage.addActor(table);
     }
 

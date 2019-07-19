@@ -23,7 +23,7 @@ public class MainMenu implements Screen {
     private Sprite background;
     private SpriteBatch batch;
     private Repository repository;
-    private TextField usernameTextField;
+    private TextField userNameTextField;
 
     public MainMenu(Repository repository) {
         this.repository = repository;
@@ -38,15 +38,14 @@ public class MainMenu implements Screen {
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
         table = new Table(skin);
         table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        usernameTextField = new TextField("YEEAA BOIIIIIIIIIIIII", skin);
-        usernameTextField.setPosition(300,600);
-        usernameTextField.setSize(1000, 30);
+        userNameTextField = new TextField("YEEAA BOIIIIIIIIIIIII", skin);
+        userNameTextField.setPosition(300,600);
+        userNameTextField.setSize(1000, 30);
 
         heading =  new Label(CrazyBomber.TITLE, skin);
         heading.setFontScale(2);
@@ -74,9 +73,9 @@ public class MainMenu implements Screen {
         table.add(buttonPlay);
         table.row();
         table.add(buttonExit);
-        table.debug();
         stage.addActor(table);
-        stage.addActor(usernameTextField);
+        stage.addActor(userNameTextField);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

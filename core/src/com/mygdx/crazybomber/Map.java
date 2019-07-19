@@ -75,7 +75,6 @@ public class Map implements Screen {
         table.padBottom(1);
         table.row();
         table.add(buttonBack);
-        table.debug();
         stage.addActor(table);
     }
 

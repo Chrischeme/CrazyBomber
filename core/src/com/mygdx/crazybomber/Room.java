@@ -82,11 +82,11 @@ public class Room implements Screen {
         buttonStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TODO: if logic to check if everyone's ready
                 if (ready) {
                     ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getMap(1)); // default map for now
                     //TODO: if we're doing multiple maps, the flow has to change
                 }
+                ready = false;
             }
         });
 
@@ -102,7 +102,6 @@ public class Room implements Screen {
         table.row();
         table.add(buttonBack);
         table.getCell(buttonBack).bottom().left();
-        table.debug();
         stage.addActor(table);
     }
 
