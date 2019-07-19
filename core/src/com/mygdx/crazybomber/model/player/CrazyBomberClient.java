@@ -32,15 +32,7 @@ public class CrazyBomberClient {
 
         int length = in.readInt();
         byte[] data = new byte[length];
-        if (length > 0) {
-            in.readFully(data, 0, data.length);
-
-
-
-        }
-        for (byte b : data) {
-            System.out.println(b);
-        }
+        in.readFully(data, 0, data.length);
         ByteBuffer wrapped = ByteBuffer.wrap(data);
         System.out.println(wrapped.getInt(0));
         System.out.println(wrapped.getInt(4));

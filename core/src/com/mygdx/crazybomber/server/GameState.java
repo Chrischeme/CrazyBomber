@@ -1,7 +1,7 @@
 package com.mygdx.crazybomber.server;
 
+import com.mygdx.crazybomber.Player;
 import com.mygdx.crazybomber.model.map.Map;
-import com.mygdx.crazybomber.model.player.Player;
 import java.util.ArrayList;
 
 public class GameState {

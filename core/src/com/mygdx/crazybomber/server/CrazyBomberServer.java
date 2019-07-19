@@ -1,7 +1,7 @@
 package com.mygdx.crazybomber.server;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.crazybomber.model.player.Player;
+import com.mygdx.crazybomber.Player;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -54,7 +54,7 @@ public class CrazyBomberServer {
                         {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-                gameState = new GameState(intMap, new ArrayList<Player>());
+                gameState = new GameState(intMap, new ArrayList<>());
                 out = new DataOutputStream(socket.getOutputStream());
                 in = new DataInputStream(socket.getInputStream());
 
@@ -64,18 +64,18 @@ public class CrazyBomberServer {
 
                 switch (numPlayers) {
                     case 0:
-                        player = new Player(0, 0, gameState.getMap());
+                        player = new Player(0f, 0f, gameState.getMap());
                         break;
                     case 1:
-                        player = new Player(0, 14, gameState.getMap());
+                        player = new Player(0f, 14f, gameState.getMap());
                         y = 14;
                         break;
                     case 2:
-                        player = new Player(14, 0, gameState.getMap());
+                        player = new Player(14f, 0f, gameState.getMap());
                          x = 14;
                         break;
                     case 3:
-                        player = new Player(14, 14, gameState.getMap());
+                        player = new Player(14f, 14f, gameState.getMap());
                         x = 14;
                         y = 14;
                         break;
@@ -115,7 +115,7 @@ public class CrazyBomberServer {
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
                             // update bomb in bomb data + send to all other players => NOT SURE
-\                            break;
+                            break;
                         case 3:
                             // On block broken
                             // data should have coord of broken block.

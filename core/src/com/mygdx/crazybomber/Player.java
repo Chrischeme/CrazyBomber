@@ -117,7 +117,7 @@ public class Player extends Sprite {
         return droppedBomb;
     }
 
-    public Player(float playerSpawnXCoordinate, float playerSpawnYCoordinate, Texture texture) {
+    public Player(float playerSpawnXCoordinate, float playerSpawnYCoordinate, Map map, Texture texture) {
         super(texture);
         _bombStack = new Stack<Bomb>();
         setIsAlive(false);
@@ -127,6 +127,22 @@ public class Player extends Sprite {
         setNumRangeUpgrades(0);
         setX(playerSpawnXCoordinate);
         setY(playerSpawnYCoordinate);
+        _map = map;
+        Bomb bomb = new Bomb(this, _bombStack);
+        _bombStack.push(bomb);
+        getMap().getActiveBombArray().add(bomb);
+    }
+
+    public Player(float playerSpawnXCoordinate, float playerSpawnYCoordinate, Map map) {
+        _bombStack = new Stack<Bomb>();
+        setIsAlive(false);
+        setIsKnockedUp(false);
+        setOnItem(false);
+        setSpeed(1.5f);
+        setNumRangeUpgrades(0);
+        setX(playerSpawnXCoordinate);
+        setY(playerSpawnYCoordinate);
+        _map = map;
         Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
         getMap().getActiveBombArray().add(bomb);
