@@ -2,8 +2,8 @@ package com.mygdx.crazybomber.server;
 
 import com.badlogic.gdx.Game;
 import com.mygdx.crazybomber.Player;
+import com.mygdx.crazybomber.model.GameState;
 import com.mygdx.crazybomber.model.block.EmptyBlock;
-import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.item.BombUp;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.item.RangeUp;

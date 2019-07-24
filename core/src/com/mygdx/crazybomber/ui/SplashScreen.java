@@ -1,5 +1,5 @@
 //TODO: fade in & out before main menu
-package com.mygdx.crazybomber;
+package com.mygdx.crazybomber.ui;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,34 +7,21 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.crazybomber.ui.MainMenu;
+import com.mygdx.crazybomber.ui.Repository;
 
-public class LoadScreen implements Screen {
+public class SplashScreen implements Screen {
     private Sprite background;
-    private SpriteBatch batch;
-
-    public void populateRepository(Repository repository)
-    {
-        Map map = new Map((new Texture("background.jpg")),repository);
-        Map map1 = new Map((new Texture("background2.png")),repository);
-        repository.addMap(map);
-        repository.addMap(map1);
-        Room room = new Room((new Texture("background.jpg")),repository);
-        Room room1 = new Room((new Texture("background1.png")),repository);
-        Room room2 = new Room((new Texture("background2.png")), repository);
-        repository.addRoom(room);
-        repository.addRoom(room1);
-        repository.addRoom(room2);
-    }
+    private SpriteBatch batch = new SpriteBatch();
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
         background = new Sprite(new Texture(("background.jpg")));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
         Repository repository = new Repository();
-        populateRepository(repository);
         MainMenu mainMenu = new MainMenu(repository); //TODO: need to fade in/out before going to next stage
-        repository.push(mainMenu);
+        repository.getListOfStates().push(mainMenu);
         ((Game)Gdx.app.getApplicationListener()).setScreen(mainMenu);
     }
 

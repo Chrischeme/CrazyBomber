@@ -1,4 +1,4 @@
-package com.mygdx.crazybomber.server;
+package com.mygdx.crazybomber.model;
 
 import com.mygdx.crazybomber.Player;
 import com.mygdx.crazybomber.model.map.Map;
@@ -16,9 +16,9 @@ public class GameState {
         return _map;
     }
 
-    public GameState(int[][] intMap, ArrayList<Player> playerArrayList){
-        _playerList = playerArrayList;
-        _map = new Map(intMap);
+    public GameState(Map map){
+        _playerList = new ArrayList<Player>();
+        _map = map;
     }
 
 }

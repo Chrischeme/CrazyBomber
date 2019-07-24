@@ -1,6 +1,6 @@
 //TODO: right now this is basically just MainMaps and goes to the map class,
 // Need to make it go to a room instead, which is the room class
-package com.mygdx.crazybomber;
+package com.mygdx.crazybomber.ui;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -25,7 +25,7 @@ public class MainRooms implements Screen {
     private Skin skin;
     private TextureAtlas atlas;
     private Sprite background;
-    private SpriteBatch batch;
+    private SpriteBatch batch = new SpriteBatch();
     private Repository repository;
 
     public MainRooms(Repository repository) {
@@ -34,47 +34,40 @@ public class MainRooms implements Screen {
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
         background = new Sprite(new Texture("background1.png"));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
-        table = new Table(skin);
-        table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         heading =  new Label("Rooms", skin);
         heading.setFontScale(2);
+
+        table = new Table(skin);
+        table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         table.add(heading);
         table.row();
 
-        int i = 0;
-        for (Room room : repository.listOfRooms) {
-            TextButton button = new TextButton("ROOM " + (i + 1), skin);
-            int j = i;
+        for (int i = 0; i < repository.getListOfRooms().size(); i++) {
+            TextButton button = new TextButton("Room " + (i + 1), skin);
+            Room room = repository.getListOfRooms().get(i);
             button.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    ((Game)Gdx.app.getApplicationListener()).setScreen(repository.getRoom(j));
+                    ((Game)Gdx.app.getApplicationListener()).setScreen(room);
                 }
             });
             table.add(button);
             table.getCell(button).size(1000, 150);
             table.row();
-            i++;
         }
-        buttonBack = new TextButton("BACK",skin);
-        buttonBack.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                repository.pop();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.peek());
-            }
-        });
+
+        buttonBack = new BackTextButton(skin);
         table.padBottom(50);
         table.add(buttonBack).bottom().left();
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
         stage.addActor(table);
     }
 

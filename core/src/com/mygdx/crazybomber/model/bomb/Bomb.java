@@ -1,6 +1,6 @@
 package com.mygdx.crazybomber.model.bomb;
 
-import com.mygdx.crazybomber.Player;
+import com.mygdx.crazybomber.player.Player;
 import com.mygdx.crazybomber.model.map.Map;
 
 import java.util.Stack;

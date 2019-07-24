@@ -1,5 +1,6 @@
 package com.mygdx.crazybomber.model.player;
 
+import com.mygdx.crazybomber.model.GameState;
 import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.map.Map;
 
@@ -19,10 +20,10 @@ public class CrazyBomberClient {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private Map _map;
+    private GameState _gameState;
+    private int _playerId;
 
-    public CrazyBomberClient(String serverAddress, Map map) throws IOException {
-        _map = map;
+    public CrazyBomberClient(String serverAddress) throws IOException {
         this.socket = new Socket(serverAddress, 59898);
         out = new DataOutputStream(socket.getOutputStream());
         in = new DataInputStream(socket.getInputStream());
@@ -30,14 +31,36 @@ public class CrazyBomberClient {
         ExecutorService pool = Executors.newFixedThreadPool(1);
         pool.execute(new CrazyBomberClient.Handler(in));
 
-        int length = in.readInt();
-        byte[] data = new byte[length];
+        byte[] data = new byte[2];
         in.readFully(data, 0, data.length);
-        ByteBuffer wrapped = ByteBuffer.wrap(data);
-        System.out.println(wrapped.getInt(0));
-        System.out.println(wrapped.getInt(4));
+        _gameState.getPlayerList().get(_playerId).setXCoordinate(data[0]);
+        _gameState.getPlayerList().get(_playerId).setYCoordinate(data[1]);
+
+        data = new byte[2];
+        in.readFully(data, 0, data.length);
+
+        byte[] byteArray = new byte[data[0] * data[1]];
+        in.readFully(byteArray, 0, data[0] * data[1]);
+        byte[][] blockByte2dArray = new byte[data[0]][data[1]];
+        for (int i = 0; i < data[1]; i++) {
+            for (int j = 0; j < data[0]; j++) {
+                blockByte2dArray[j + i][i] = byteArray[j + i * data[0]];
+            }
+        }
+
+        in.readFully(byteArray, 0, data[0] * data[1]);
+        byte[][] itemBlockByte2dArray = new byte[data[0]][data[1]];
+        for (int i = 0; i < data[1]; i++) {
+            for (int j = 0; j < data[0]; j++) {
+                itemBlockByte2dArray[j + i][i] = byteArray[j + i * data[0]];
+            }
+        }
+        _gameState = new GameState(new Map(blockByte2dArray, itemBlockByte2dArray));
     }
 
+    public GameState getGameState() {
+        return _gameState;
+    }
     public void sendOnNewPlayer(int x, int y) throws IOException {
         byte[] data = new byte[9];
         data[0] = 7;

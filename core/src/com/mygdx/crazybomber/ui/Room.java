@@ -1,5 +1,5 @@
 //TODO: when player enters, avatar is red for not ready, if blank, leave blank
-package com.mygdx.crazybomber;
+package com.mygdx.crazybomber.ui;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Room implements Screen {
     private Sprite background,avatar, avatarReady, avatarNotReady;
-    private SpriteBatch batch;
+    private SpriteBatch batch = new SpriteBatch();
     private Stage stage;
     private Table table;
     private TextButton buttonBack, buttonReady, buttonStart;
@@ -29,14 +29,13 @@ public class Room implements Screen {
     private Repository repository;
     private boolean ready = false;
 
-    public Room (Texture texture, final Repository repository) {
+    public Room (Texture texture, Repository repository) {
         this.repository = repository;
         this.splashTexture = texture;
     }
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
         background = new Sprite(splashTexture);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -48,33 +47,17 @@ public class Room implements Screen {
         avatarNotReady.setSize(200,200);
         avatar = avatarNotReady;
 
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
-        table = new Table(skin);
-        table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        buttonBack = new TextButton("BACK", skin);
-        buttonBack.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.peek());
-            }
-        });
+        buttonBack = new BackTextButton(skin);
 
         buttonReady = new TextButton("READY", skin);
         buttonReady.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(!ready){
-                    ready = true;
-                    avatar = avatarReady;
-                }
-                else {
-                    ready = false;
-                    avatar = avatarNotReady;
-                }
+                ready = !ready;
+                avatar = ready ? avatarReady : avatarNotReady;
             }
         });
 
@@ -83,15 +66,17 @@ public class Room implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (ready) {
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getMap(1)); // default map for now
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getListOfRooms().get(1)); // default map for now
                     //TODO: if we're doing multiple maps, the flow has to change
                 }
-                ready = false;
             }
         });
 
         heading =  new Label("LOBBY", skin);
         heading.setFontScale(2);
+
+        table = new Table(skin);
+        table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         table.add(heading);
         table.row();
         table.add(buttonReady);
@@ -102,6 +87,9 @@ public class Room implements Screen {
         table.row();
         table.add(buttonBack);
         table.getCell(buttonBack).bottom().left();
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
         stage.addActor(table);
     }
 

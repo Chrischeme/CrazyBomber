@@ -1,5 +1,5 @@
 //TODO: player set name in order to progress to picking a room
-package com.mygdx.crazybomber;
+package com.mygdx.crazybomber.ui;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,9 +21,8 @@ public class MainMenu implements Screen {
     private Skin skin;
     private TextureAtlas atlas;
     private Sprite background;
-    private SpriteBatch batch;
+    private SpriteBatch batch = new SpriteBatch();
     private Repository repository;
-    private TextField userNameTextField;
 
     public MainMenu(Repository repository) {
         this.repository = repository;
@@ -31,21 +30,13 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
-        final MainRooms mainRooms = new MainRooms(repository);
-
-        batch = new SpriteBatch();
         background = new Sprite(new Texture(("background.jpg")));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        stage = new Stage();
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
         table = new Table(skin);
         table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
-        userNameTextField = new TextField("YEEAA BOIIIIIIIIIIIII", skin);
-        userNameTextField.setPosition(300,600);
-        userNameTextField.setSize(1000, 30);
 
         heading =  new Label(CrazyBomber.TITLE, skin);
         heading.setFontScale(2);
@@ -57,15 +48,17 @@ public class MainMenu implements Screen {
                 Gdx.app.exit();
             }
         });
+
         buttonPlay = new TextButton("PLAY",skin);
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                repository.push(mainRooms);
+                MainRooms mainRooms = new MainRooms(repository);
+                repository.getListOfStates().push(mainRooms);
                 ((Game)Gdx.app.getApplicationListener()).setScreen(mainRooms);
-
             }
         });
+
         table.add(heading);
         table.getCell(heading).spaceBottom(10);
         table.row();
@@ -73,6 +66,8 @@ public class MainMenu implements Screen {
         table.add(buttonPlay);
         table.row();
         table.add(buttonExit);
+
+        stage = new Stage();
         stage.addActor(table);
         stage.addActor(userNameTextField);
         Gdx.input.setInputProcessor(stage);
@@ -87,7 +82,7 @@ public class MainMenu implements Screen {
             background.draw(batch);
             batch.end();
             stage.draw();
-            stage.act();
+            //stage.act();
     }
 
     @Override

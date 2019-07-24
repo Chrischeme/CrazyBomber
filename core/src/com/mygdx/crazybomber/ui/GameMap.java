@@ -1,6 +1,6 @@
 //TODO: do we need a back button here? if we do, should it go back to the room or all the way to the mainrooms?
 //TODO: FIX MOVE LATER
-package com.mygdx.crazybomber;
+package com.mygdx.crazybomber.ui;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -17,14 +17,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.crazybomber.server.GameState;
+import com.mygdx.crazybomber.model.GameState;
+import com.mygdx.crazybomber.Repository;
+import com.mygdx.crazybomber.Player;
+import com.mygdx.crazybomber.model.player.CrazyBomberClient;
 
 import java.util.ArrayList;
 
-public class Map implements Screen {
+public class GameMap implements Screen {
 
     private Sprite background;
-    private SpriteBatch batch;
+    private SpriteBatch batch = new SpriteBatch();
     private Stage stage;
     private Table table;
     private TextButton buttonBack;
@@ -36,6 +39,7 @@ public class Map implements Screen {
     private Player player;
     private Texture playerTexture;
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE;
+    private GameState gameState;
 
     public Map (Texture texture, final Repository repository) {
         this.splashTexture = texture;
@@ -44,43 +48,13 @@ public class Map implements Screen {
 
     @Override
     public void show() {
-        playerTexture = new Texture("player.png");
-        batch = new SpriteBatch();
         background = new Sprite(splashTexture);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        CrazyBomberClient crazyBomberClient = new CrazyBomberClient("localhost");
+        gameState = crazyBomberClient.getGameState();
 
-
-
-
-
-
-
-
-        int[][] intMap =
-                {{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
-                        {0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-        GameState gameState = new GameState(intMap, new ArrayList<>());
-
-
-
-
-
-
+        playerTexture = new Texture("player.png");
         player = new Player(0f, 0f, gameState.getMap(), playerTexture);
         player.setSize(50,50);
         player.setPosition(615,600);
