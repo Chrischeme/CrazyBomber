@@ -1,8 +1,6 @@
 package com.mygdx.crazybomber.model.player;
 
-import com.mygdx.crazybomber.model.item.Item;
-import com.mygdx.crazybomber.model.map.InitialMap;
-import com.mygdx.crazybomber.model.map.Map;
+import com.mygdx.crazybomber.server.InitialMap;
 
 import java.io.IOException;
 
@@ -10,8 +8,8 @@ import java.io.IOException;
 public class TestClass {
     public static void main(String args[]) throws IOException {
         int[][] intMap = new InitialMap().getIntMap1();
-        Map firstMap = new Map(intMap);
-        CrazyBomberClient firstClient = new CrazyBomberClient("localhost", firstMap);
+        //Map firstMap = new Map(intMap);
+        //CrazyBomberClient firstClient = new CrazyBomberClient("localhost", firstMap);
         /*for (Item item :firstMap.getItemArray()) {
             System.out.println("itemID: " + item.getItemID() + " itemType: " +item.getItemType());
         }

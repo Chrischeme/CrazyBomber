@@ -1,7 +1,7 @@
 package com.mygdx.crazybomber.model.player;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.crazybomber.model.GameState;
-import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.map.Map;
 
 import java.io.DataInputStream;
@@ -12,50 +12,50 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static java.lang.Thread.sleep;
-
 public class CrazyBomberClient {
-    // this class should have two threads; one for listening and one for running the game
-    // Look into Future<> for async
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
     private GameState _gameState;
     private int _playerId;
 
-    public CrazyBomberClient(String serverAddress) throws IOException {
-        this.socket = new Socket(serverAddress, 59898);
-        out = new DataOutputStream(socket.getOutputStream());
-        in = new DataInputStream(socket.getInputStream());
+    public CrazyBomberClient(String serverAddress, Texture texture) {
+        try {
+            this.socket = new Socket(serverAddress, 59898);
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
 
-        ExecutorService pool = Executors.newFixedThreadPool(1);
-        pool.execute(new CrazyBomberClient.Handler(in));
+            ExecutorService pool = Executors.newFixedThreadPool(1);
+            pool.execute(new CrazyBomberClient.Handler(in));
 
-        byte[] data = new byte[2];
-        in.readFully(data, 0, data.length);
-        _gameState.getPlayerList().get(_playerId).setXCoordinate(data[0]);
-        _gameState.getPlayerList().get(_playerId).setYCoordinate(data[1]);
+            byte[] coordinates = new byte[2];
+            in.readFully(coordinates, 0, coordinates.length);
 
-        data = new byte[2];
-        in.readFully(data, 0, data.length);
+            byte[] data = new byte[2];
+            in.readFully(data, 0, data.length);
 
-        byte[] byteArray = new byte[data[0] * data[1]];
-        in.readFully(byteArray, 0, data[0] * data[1]);
-        byte[][] blockByte2dArray = new byte[data[0]][data[1]];
-        for (int i = 0; i < data[1]; i++) {
-            for (int j = 0; j < data[0]; j++) {
-                blockByte2dArray[j + i][i] = byteArray[j + i * data[0]];
+            byte[] byteArray = new byte[data[0] * data[1]];
+            in.readFully(byteArray, 0, data[0] * data[1]);
+            byte[][] blockByte2dArray = new byte[data[0]][data[1]];
+            for (int i = 0; i < data[1]; i++) {
+                for (int j = 0; j < data[0]; j++) {
+                    blockByte2dArray[j + i][i] = byteArray[j + i * data[0]];
+                }
             }
-        }
 
-        in.readFully(byteArray, 0, data[0] * data[1]);
-        byte[][] itemBlockByte2dArray = new byte[data[0]][data[1]];
-        for (int i = 0; i < data[1]; i++) {
-            for (int j = 0; j < data[0]; j++) {
-                itemBlockByte2dArray[j + i][i] = byteArray[j + i * data[0]];
+            in.readFully(byteArray, 0, data[0] * data[1]);
+            byte[][] itemBlockByte2dArray = new byte[data[0]][data[1]];
+            for (int i = 0; i < data[1]; i++) {
+                for (int j = 0; j < data[0]; j++) {
+                    itemBlockByte2dArray[j + i][i] = byteArray[j + i * data[0]];
+                }
             }
+            _gameState = new GameState(new Map(blockByte2dArray, itemBlockByte2dArray));
+            _gameState.getPlayerList().add(new Player((byte)3, coordinates[0], coordinates[1], _gameState.getMap(), texture, this));
+            // TODO: Send on new player and receive back playerID
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        _gameState = new GameState(new Map(blockByte2dArray, itemBlockByte2dArray));
     }
 
     public GameState getGameState() {
@@ -149,10 +149,6 @@ public class CrazyBomberClient {
     public void sendByteArray(byte[] data) throws IOException {
         out.writeInt(data.length);
         out.write(data);
-    }
-
-    public Map getMap() {
-        return _map;
     }
 
     private static class Handler implements Runnable {

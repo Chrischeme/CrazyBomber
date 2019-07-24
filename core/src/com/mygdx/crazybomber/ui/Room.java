@@ -28,6 +28,7 @@ public class Room implements Screen {
     private Texture splashTexture;
     private Repository repository;
     private boolean ready = false;
+    private Screen currentScreen;
 
     public Room (Texture texture, Repository repository) {
         this.repository = repository;
@@ -36,6 +37,8 @@ public class Room implements Screen {
 
     @Override
     public void show() {
+        currentScreen = this;
+
         background = new Sprite(splashTexture);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -50,7 +53,7 @@ public class Room implements Screen {
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
 
-        buttonBack = new BackTextButton(skin);
+        buttonBack = new BackTextButton(skin, repository);
 
         buttonReady = new TextButton("READY", skin);
         buttonReady.addListener(new ClickListener() {
@@ -66,7 +69,8 @@ public class Room implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (ready) {
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getListOfRooms().get(1)); // default map for now
+                    repository.getListOfStates().push(currentScreen);
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getListOfMaps().get(0)); // default map for now
                     //TODO: if we're doing multiple maps, the flow has to change
                 }
             }

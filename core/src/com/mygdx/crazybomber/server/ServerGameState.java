@@ -1,13 +1,12 @@
 package com.mygdx.crazybomber.server;
 
-import com.mygdx.crazybomber.model.map.Map;
 import java.util.ArrayList;
 
 public class ServerGameState {
-    private ArrayList<Player> _playerList;
+    private ArrayList<ServerPlayer> _playerList;
     public ServerMap _map;
 
-    public ArrayList<Player> getPlayerList() {
+    public ArrayList<ServerPlayer> getPlayerList() {
         return _playerList;
     }
 
@@ -15,9 +14,9 @@ public class ServerGameState {
         return _map;
     }
 
-    public GameState(int[][] intMap, ArrayList<Player> playerArrayList){
+    public ServerGameState(int[][] intMap, ArrayList<ServerPlayer> playerArrayList){
         _playerList = playerArrayList;
-        _map = new Map(intMap);
+        //_map = new Map(intMap);
     }
 
 }

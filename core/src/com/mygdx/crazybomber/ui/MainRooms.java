@@ -1,5 +1,3 @@
-//TODO: right now this is basically just MainMaps and goes to the map class,
-// Need to make it go to a room instead, which is the room class
 package com.mygdx.crazybomber.ui;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -20,13 +18,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MainRooms implements Screen {
     private Stage stage;
     private Table table;
-    private TextButton buttonRoom1,buttonRoom2,buttonRoom3,buttonBack;
+    private TextButton buttonBack;
     private Label heading;
     private Skin skin;
     private TextureAtlas atlas;
     private Sprite background;
     private SpriteBatch batch = new SpriteBatch();
     private Repository repository;
+    private Screen currentScreen;
 
     public MainRooms(Repository repository) {
         this.repository = repository;
@@ -34,6 +33,8 @@ public class MainRooms implements Screen {
 
     @Override
     public void show() {
+        currentScreen = this;
+
         background = new Sprite(new Texture("background1.png"));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
@@ -54,6 +55,7 @@ public class MainRooms implements Screen {
             button.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    repository.getListOfStates().push(currentScreen);
                     ((Game)Gdx.app.getApplicationListener()).setScreen(room);
                 }
             });
@@ -62,7 +64,7 @@ public class MainRooms implements Screen {
             table.row();
         }
 
-        buttonBack = new BackTextButton(skin);
+        buttonBack = new BackTextButton(skin, repository);
         table.padBottom(50);
         table.add(buttonBack).bottom().left();
 

@@ -1,18 +1,12 @@
 package com.mygdx.crazybomber.server;
 
-import com.badlogic.gdx.Game;
-import com.mygdx.crazybomber.Player;
-import com.mygdx.crazybomber.model.GameState;
 import com.mygdx.crazybomber.model.block.EmptyBlock;
-import com.mygdx.crazybomber.model.item.BombUp;
 import com.mygdx.crazybomber.model.item.Item;
-import com.mygdx.crazybomber.model.item.RangeUp;
-import com.mygdx.crazybomber.model.item.SpeedUp;
+import com.mygdx.crazybomber.model.item.ItemTypes;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -35,7 +29,7 @@ public class CrazyBomberServer {
         private Socket socket;
         private DataInputStream in;
         private DataOutputStream out;
-        private GameState gameState;
+        private ServerGameState gameState;
 
         public Handler(Socket socket) {
             this.socket = socket;
@@ -60,28 +54,28 @@ public class CrazyBomberServer {
                         {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-                gameState = new GameState(intMap, new ArrayList<>());
+                gameState = new ServerGameState(intMap, new ArrayList<>());
                 out = new DataOutputStream(socket.getOutputStream());
                 in = new DataInputStream(socket.getInputStream());
 
                 clientList.add(out);
-                Player player;
+                ServerPlayer player;
                 int x = 0, y = 0;
 
                 switch (numPlayers) {
                     case 0:
-                        player = new Player(0f, 0f, gameState.getMap());
+                        player = new ServerPlayer((byte)1, 0f, 0f);
                         break;
                     case 1:
-                        player = new Player(0f, 14f, gameState.getMap());
+                        player = new ServerPlayer((byte)2, 0f, 14f);
                         y = 14;
                         break;
                     case 2:
-                        player = new Player(14f, 0f, gameState.getMap());
+                        player = new ServerPlayer((byte)3, 14f, 0f);
                          x = 14;
                         break;
                     case 3:
-                        player = new Player(14f, 14f, gameState.getMap());
+                        player = new ServerPlayer((byte)4, 14f, 14f);
                         x = 14;
                         y = 14;
                         break;
@@ -144,11 +138,11 @@ public class CrazyBomberServer {
                             Item item;
                             switch (data[9]) {
                                 case 0:
-                                    item = new BombUp(xCoord, yCoord, data[10]);
+                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.BombUp);
                                 case 1:
-                                    item = new RangeUp(xCoord, yCoord, data[10]);
+                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.RangeUp);
                                 default:
-                                    item = new SpeedUp(xCoord, yCoord, data[10]);
+                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.SpeedUp);
                             }
                             gameState.getMap().getItemArray().add(item);
                             break;

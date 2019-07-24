@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.crazybomber.ui.MainMenu;
-import com.mygdx.crazybomber.ui.Repository;
 
 public class SplashScreen implements Screen {
     private Sprite background;
@@ -21,7 +19,6 @@ public class SplashScreen implements Screen {
 
         Repository repository = new Repository();
         MainMenu mainMenu = new MainMenu(repository); //TODO: need to fade in/out before going to next stage
-        repository.getListOfStates().push(mainMenu);
         ((Game)Gdx.app.getApplicationListener()).setScreen(mainMenu);
     }
 

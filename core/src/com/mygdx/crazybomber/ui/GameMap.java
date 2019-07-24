@@ -1,5 +1,4 @@
-//TODO: do we need a back button here? if we do, should it go back to the room or all the way to the mainrooms?
-//TODO: FIX MOVE LATER
+//TODO: Back button will prob be in a menu settings somewhere, think about this later
 package com.mygdx.crazybomber.ui;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -17,12 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.crazybomber.CrazyBomber;
 import com.mygdx.crazybomber.model.GameState;
-import com.mygdx.crazybomber.Repository;
-import com.mygdx.crazybomber.Player;
+import com.mygdx.crazybomber.model.player.Player;
 import com.mygdx.crazybomber.model.player.CrazyBomberClient;
-
-import java.util.ArrayList;
 
 public class GameMap implements Screen {
 
@@ -41,7 +38,7 @@ public class GameMap implements Screen {
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE;
     private GameState gameState;
 
-    public Map (Texture texture, final Repository repository) {
+    public GameMap (Texture texture, Repository repository) {
         this.splashTexture = texture;
         this.repository = repository;
     }
@@ -50,18 +47,9 @@ public class GameMap implements Screen {
     public void show() {
         background = new Sprite(splashTexture);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        CrazyBomberClient crazyBomberClient = new CrazyBomberClient("localhost");
-        gameState = crazyBomberClient.getGameState();
-
         playerTexture = new Texture("player.png");
-        player = new Player(0f, 0f, gameState.getMap(), playerTexture);
-        player.setSize(50,50);
-        player.setPosition(615,600);
-        for (int i = 0; i < 20; i++){
-            //player.increaseSpeed();
-        }
 
+        gameState = new CrazyBomberClient("localhost", playerTexture).getGameState();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
@@ -73,7 +61,7 @@ public class GameMap implements Screen {
         buttonBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.peek());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(repository.getListOfStates().pop());
             }
         });
 

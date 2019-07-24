@@ -1,11 +1,15 @@
 package com.mygdx.crazybomber.model.item;
 
-public abstract class Item {
+public class Item {
     private int _xCoordinate;
     private int _yCoordinate;
     private double _dropChance;
     private byte _itemId;
-    private byte _itemType;
+    private ItemTypes _itemType;
+
+    public Item(int blockXCoordinate, int blockYCoordinate, byte itemId, ItemTypes itemType) {
+
+    }
 
     public int getXCoordinate() {
         return _xCoordinate;
@@ -39,11 +43,11 @@ public abstract class Item {
         this._itemId = _itemID;
     }
 
-    public byte getItemType() {
+    public ItemTypes getItemType() {
         return _itemType;
     }
 
-    public void setItemType(byte _itemType) {
+    public void setItemType(ItemTypes _itemType) {
         this._itemType = _itemType;
     }
 

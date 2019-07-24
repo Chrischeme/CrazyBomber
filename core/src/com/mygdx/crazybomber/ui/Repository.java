@@ -1,6 +1,8 @@
 package com.mygdx.crazybomber.ui;
 import java.util.ArrayList;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+
 import java.util.Stack;
 
 public class Repository {
@@ -9,32 +11,32 @@ public class Repository {
         populateRepository();
     }
 
-    private ArrayList<GameMap> listOfMaps = new ArrayList<GameMap>();
-    private ArrayList<Room> listOfRooms = new ArrayList<Room>();
-    private Stack<Screen> listOfStates = new Stack<Screen>();
+    private ArrayList<GameMap> _listOfMaps = new ArrayList<GameMap>();
+    private ArrayList<Room> _listOfRooms = new ArrayList<Room>();
+    private Stack<Screen> _listOfStates = new Stack<Screen>();
 
     public ArrayList<GameMap> getListOfMaps (){
-        return listOfMaps;
+        return _listOfMaps;
     }
 
     public ArrayList<Room> getListOfRooms (){
-        return listOfRooms;
+        return _listOfRooms;
     }
 
     public Stack<Screen> getListOfStates () {
-        return listOfStates;
+        return _listOfStates;
     }
 
     private void populateRepository() {
-        GameMap map = new GameMap((new Texture("background.jpg")),repository);
-        GameMap map1 = new GameMap((new Texture("background2.png")),repository);
-        repository.addMap(map);
-        repository.addMap(map1);
-        Room room = new Room((new Texture("background.jpg")));
-        Room room1 = new Room((new Texture("background1.png")));
-        Room room2 = new Room((new Texture("background2.png")));
-        repository.addRoom(room);
-        repository.addRoom(room1);
-        repository.addRoom(room2);
+        GameMap map = new GameMap(new Texture("background.jpg"), this);
+        GameMap map1 = new GameMap(new Texture("background2.png"), this);
+        _listOfMaps.add(map);
+        _listOfMaps.add(map1);
+        Room room = new Room(new Texture("background.jpg"), this);
+        Room room1 = new Room(new Texture("background1.png"), this);
+        Room room2 = new Room(new Texture("background2.png"), this);
+        _listOfRooms.add(room);
+        _listOfRooms.add(room1);
+        _listOfRooms.add(room2);
     }
 }

@@ -1,4 +1,4 @@
-package com.mygdx.crazybomber.model.map;
+package com.mygdx.crazybomber.server;
 
 public class InitialMap {
     private static int[][] _intMap1 =

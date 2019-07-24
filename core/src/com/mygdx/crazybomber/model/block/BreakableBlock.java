@@ -1,9 +1,6 @@
 package com.mygdx.crazybomber.model.block;
 
-import com.mygdx.crazybomber.model.item.BombUp;
 import com.mygdx.crazybomber.model.item.Item;
-import com.mygdx.crazybomber.model.item.RangeUp;
-import com.mygdx.crazybomber.model.item.SpeedUp;
 
 public class BreakableBlock extends Block {
     private Item _item;
@@ -12,21 +9,6 @@ public class BreakableBlock extends Block {
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
         setItem(null);
-    }
-
-    public BreakableBlock(int xCoordinate, int yCoordinate, byte itemID) {
-        setXCoordinate(xCoordinate);
-        setYCoordinate(yCoordinate);
-        double randNum = Math.random();
-        if (randNum <= 0.1) {
-            setItem(new BombUp(getXCoordinate(), getYCoordinate(), itemID));
-        } else if (randNum <= 0.2) {
-            setItem(new RangeUp(getXCoordinate(), getYCoordinate(), itemID));
-        } else if (randNum <= 0.30) {
-            setItem(new SpeedUp(getXCoordinate(), getYCoordinate(), itemID));
-        } else {
-            setItem(null);
-        }
     }
 
     public Item getItem() {

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.crazybomber.CrazyBomber;
 
 public class MainMenu implements Screen {
     private Stage stage;
@@ -23,6 +24,7 @@ public class MainMenu implements Screen {
     private Sprite background;
     private SpriteBatch batch = new SpriteBatch();
     private Repository repository;
+    private Screen currentScreen;
 
     public MainMenu(Repository repository) {
         this.repository = repository;
@@ -30,6 +32,8 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
+        currentScreen = this;
+
         background = new Sprite(new Texture(("background.jpg")));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
@@ -53,8 +57,8 @@ public class MainMenu implements Screen {
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                repository.getListOfStates().push(currentScreen);
                 MainRooms mainRooms = new MainRooms(repository);
-                repository.getListOfStates().push(mainRooms);
                 ((Game)Gdx.app.getApplicationListener()).setScreen(mainRooms);
             }
         });
@@ -69,7 +73,6 @@ public class MainMenu implements Screen {
 
         stage = new Stage();
         stage.addActor(table);
-        stage.addActor(userNameTextField);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -82,7 +85,6 @@ public class MainMenu implements Screen {
             background.draw(batch);
             batch.end();
             stage.draw();
-            //stage.act();
     }
 
     @Override

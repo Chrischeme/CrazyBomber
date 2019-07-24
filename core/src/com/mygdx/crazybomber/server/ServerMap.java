@@ -15,7 +15,7 @@ public class ServerMap{
     private ArrayList<Bomb> _activeBombArray;
     private ArrayList<Item> _activeItemArray;
 
-    public Map(int[][] intMap) {
+    public ServerMap(int[][] intMap) {
         _activeBombArray = new ArrayList<Bomb>();
         _activeItemArray = new ArrayList<Item>();
         byte itemIDCounter = 0;
@@ -25,7 +25,7 @@ public class ServerMap{
                 if (intMap[i][j] == 1) {
                     blockMatrix[i][j] = new UnbreakableBlock(i, j);
                 } else if (intMap[i][j] == 2) {
-                    blockMatrix[i][j] = new BreakableBlock(i, j, itemIDCounter);
+                    blockMatrix[i][j] = new ServerBreakableBlock(i, j, itemIDCounter);
                     if (((BreakableBlock) (blockMatrix[i][j])).getItem() != null) {
                         itemIDCounter = ((byte) (itemIDCounter + 1));
                         getItemArray().add(((BreakableBlock) blockMatrix[i][j]).getItem());
