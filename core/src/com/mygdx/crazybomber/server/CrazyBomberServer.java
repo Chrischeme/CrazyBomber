@@ -167,6 +167,8 @@ public class CrazyBomberServer {
                             // data should have which player and item coords
                             // update the player fields in player data + send to all other players
                             int itemType = wrapped.getInt(1);
+                            xCoord = wrapped.getInt(2);
+                            yCoord = wrapped.getInt(3);
                             byte playerId = data[4];
                             for (Item activeItem : gameState.getMap().getActiveItemArray()){
 

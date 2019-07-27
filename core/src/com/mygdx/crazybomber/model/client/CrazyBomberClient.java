@@ -89,6 +89,10 @@ public class CrazyBomberClient {
         return _gameState;
     }
 
+    public Player getPlayer() {
+        return _player;
+    }
+
     public void sendOnNewPlayer(int x, int y) throws IOException {
         byte[] data = new byte[9];
         data[0] = 7;
@@ -107,12 +111,13 @@ public class CrazyBomberClient {
     }
 
     public void sendOnItemPickedUp(byte itemType, Item item) throws IOException {
-        byte[] data = new byte[4];
+        byte[] data = new byte[11];
         data[0] = 5;
-        data[1] = itemType;
+        byte[]
         data[2] = (byte) item.getXCoordinate();
         data[3] = (byte) item.getYCoordinate();
-        data[4] = _playerId;
+        data[9] = itemType;
+        data[10] = _playerId;
         sendByteArray(data);
     }
 
