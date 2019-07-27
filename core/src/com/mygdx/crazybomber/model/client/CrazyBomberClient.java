@@ -40,7 +40,7 @@ public class CrazyBomberClient {
             byte[][] blockByte2dArray = new byte[data[0]][data[1]];
             for (int i = 0; i < data[1]; i++) {
                 for (int j = 0; j < data[0]; j++) {
-                    blockByte2dArray[j][i] = byteArray[j + i * data[0]];
+                    blockByte2dArray[i][j] = byteArray[j + i * data[0]];
                 }
             }
 
@@ -65,6 +65,19 @@ public class CrazyBomberClient {
 
             System.out.println("playerId is " + playerId);
             System.out.println("player coordinates are X:"+ _player.getX() + "Y:"+_player.getY());
+            for (byte[] arr : blockByte2dArray) {
+                for (byte b : arr) {
+                    System.out.print(b + " ");
+                }
+                System.out.println();
+            }
+
+            for (byte[] arr : itemBlockByte2dArray) {
+                for (byte b : arr) {
+                    System.out.print(b + " ");
+                }
+                System.out.println();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
