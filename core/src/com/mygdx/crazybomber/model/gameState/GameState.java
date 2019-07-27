@@ -1,4 +1,4 @@
-package com.mygdx.crazybomber.model;
+package com.mygdx.crazybomber.model.gameState;
 
 import com.mygdx.crazybomber.model.player.Player;
 import com.mygdx.crazybomber.model.map.Map;

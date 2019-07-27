@@ -1,17 +1,14 @@
 package com.mygdx.crazybomber.server;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.Map;
-import com.mygdx.crazybomber.model.player.CrazyBomberClient;
+import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 import java.io.IOException;
 import java.util.Stack;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class ServerPlayer {
     private float x;

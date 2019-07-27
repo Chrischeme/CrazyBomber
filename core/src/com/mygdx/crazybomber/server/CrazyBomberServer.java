@@ -94,9 +94,9 @@ public class CrazyBomberServer {
                     data[0] = (byte) x;
                     data[1] = (byte) y;
                     out.write(data);
-                    //todo add code to use wrap and integers to make maps larger than 16x16
-                    data[0] = 16;
-                    data[1] = 16;
+                    //todo add code to use wrap and integers to make maps larger than 15x15
+                    data[0] = 15;
+                    data[1] = 15;
                     out.write(data);
                     byte[] blockData = new byte[((int) data[0]) * ((int) data[1])];
                     byte[] itemData = new byte[((int) data[0]) * ((int) data[1])];

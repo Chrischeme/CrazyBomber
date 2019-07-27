@@ -1,13 +1,11 @@
 //TODO: FIX MOVE LATER
 package com.mygdx.crazybomber.model.player;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.mygdx.crazybomber.CrazyBomber;
 import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.Map;
-import com.mygdx.crazybomber.model.player.CrazyBomberClient;
+import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 import java.io.IOException;
 import java.util.Stack;

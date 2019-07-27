@@ -1,8 +1,9 @@
-package com.mygdx.crazybomber.model.player;
+package com.mygdx.crazybomber.model.client;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.crazybomber.model.GameState;
+import com.mygdx.crazybomber.model.gameState.GameState;
 import com.mygdx.crazybomber.model.map.Map;
+import com.mygdx.crazybomber.model.player.Player;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -61,6 +62,10 @@ public class CrazyBomberClient {
             }
             _player = new Player(playerId, coordinates[0], coordinates[1], _gameState.getMap(), texture, this);
             _gameState.getPlayerList().add(_player);
+
+            System.out.println("playerId is " + playerId);
+            System.out.println("player coordinates are X:"+ _player.getX() + "Y:"+_player.getY());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -135,15 +140,15 @@ public class CrazyBomberClient {
     //                     2 if going right
     //                     3 if going down
     //                     4 if going left
-    public void sendOnPlayerCoordinateChange(double x, double y, byte headingDirection) throws IOException {
-        byte[] data = new byte[18];
+    public void sendOnPlayerCoordinateChange(float x, float y, byte headingDirection) throws IOException {
+        byte[] data = new byte[10];
         data[0] = 1;
-        byte[] doubleInByteArray = new byte[8];
-        ByteBuffer.wrap(doubleInByteArray).putDouble(x);
-        copyArrayToAnotherWithStartingIndexes(doubleInByteArray, data, 1);
-        ByteBuffer.wrap(doubleInByteArray).putDouble(y);
-        copyArrayToAnotherWithStartingIndexes(doubleInByteArray, data, 9);
-        data[17] = headingDirection;
+        byte[] floatInByteArray = new byte[4];
+        ByteBuffer.wrap(floatInByteArray).putFloat(x);
+        copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 1);
+        ByteBuffer.wrap(floatInByteArray).putFloat(y);
+        copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 5);
+        data[9] = headingDirection;
         sendByteArray(data);
     }
 
