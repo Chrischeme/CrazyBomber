@@ -27,19 +27,20 @@ public class Map {
                 } else if (blockMap[i][j] == 2) {
                     blockMatrix[i][j] = new BreakableBlock(i, j);
                     switch (itemMap[i][j]) {
-                        case 0:
+                        case 1:
                             ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, itemIDCounter, ItemTypes.BombUp));
                             itemIDCounter++;
                             break;
-                        case 1:
+                        case 2:
                             ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, itemIDCounter, ItemTypes.RangeUp));
                             itemIDCounter++;
                             break;
-                        case 2:
+                        case 3:
                             ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, itemIDCounter, ItemTypes.SpeedUp));
                             itemIDCounter++;
                             break;
                         default:
+
                     }
                 } else {
                     blockMatrix[i][j] = new EmptyBlock(i, j);
@@ -52,7 +53,7 @@ public class Map {
         return _activeBombArray;
     }
 
-    public ArrayList<Item> getItemArray() {
+    public ArrayList<Item> getActiveItemArray() {
         return _activeItemArray;
     }
 }

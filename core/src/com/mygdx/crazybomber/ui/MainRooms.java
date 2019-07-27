@@ -51,7 +51,7 @@ public class MainRooms implements Screen {
 
         for (int i = 0; i < repository.getListOfRooms().size(); i++) {
             TextButton button = new TextButton("Room " + (i + 1), skin);
-            Room room = repository.getListOfRooms().get(i);
+            final Room room = repository.getListOfRooms().get(i);
             button.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

@@ -17,7 +17,7 @@ public class CrazyBomberClient {
     private DataInputStream in;
     private DataOutputStream out;
     private GameState _gameState;
-    private int _playerId;
+    private Player _player;
 
     public CrazyBomberClient(String serverAddress, Texture texture) {
         try {
@@ -51,8 +51,16 @@ public class CrazyBomberClient {
                 }
             }
             _gameState = new GameState(new Map(blockByte2dArray, itemBlockByte2dArray));
-            _gameState.getPlayerList().add(new Player((byte)3, coordinates[0], coordinates[1], _gameState.getMap(), texture, this));
-            // TODO: Send on new player and receive back playerID
+            byte playerId = 0;
+            if (coordinates[0] == 0 & coordinates[1] == 1){
+                playerId = 1;
+            } else if (coordinates[0] == 1 & coordinates[1]==1){
+                playerId = 2;
+            } else if (coordinates[0]== 1 & coordinates[1]==0){
+                playerId =3;
+            }
+            _player = new Player(playerId, coordinates[0], coordinates[1], _gameState.getMap(), texture, this);
+            _gameState.getPlayerList().add(_player);
         } catch (IOException e) {
             e.printStackTrace();
         }
