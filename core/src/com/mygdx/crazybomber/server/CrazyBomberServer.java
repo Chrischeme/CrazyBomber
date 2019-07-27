@@ -160,16 +160,15 @@ public class CrazyBomberServer {
                                 default:
                                     item = new Item(xCoord, yCoord, ItemTypes.SpeedUp);
                             }
-                            gameState.getMap().getItemArray().add(item);
+                            gameState.getMap().getActiveItemArray().add(item);
                             break;
                         case 5:
                             // On item pickedup
                             // data should have which player and item coords
                             // update the player fields in player data + send to all other players
                             int itemType = wrapped.getInt(1);
-                            byte playerId = data[2];
+                            byte playerId = data[4];
                             for (Item activeItem : gameState.getMap().getActiveItemArray()){
-                                if (activeItem.getXCoordinate() =)
 
                             }
 
