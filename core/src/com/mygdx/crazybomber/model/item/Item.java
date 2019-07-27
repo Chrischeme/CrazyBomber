@@ -8,7 +8,10 @@ public class Item {
     private ItemTypes _itemType;
 
     public Item(int blockXCoordinate, int blockYCoordinate, byte itemId, ItemTypes itemType) {
-
+        _xCoordinate = blockXCoordinate;
+        _yCoordinate = blockYCoordinate;
+        _itemId = itemId;
+        _itemType = itemType;
     }
 
     public int getXCoordinate() {

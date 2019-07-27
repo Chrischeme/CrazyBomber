@@ -7,12 +7,6 @@ import com.mygdx.crazybomber.model.item.ItemTypes;
 public class ServerBreakableBlock extends Block {
     private Item _item;
 
-    public ServerBreakableBlock(int xCoordinate, int yCoordinate) {
-        setXCoordinate(xCoordinate);
-        setYCoordinate(yCoordinate);
-        setItem(null);
-    }
-
     public ServerBreakableBlock(int xCoordinate, int yCoordinate, byte itemID) {
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
@@ -24,7 +18,7 @@ public class ServerBreakableBlock extends Block {
         } else if (randNum <= 0.30) {
             setItem(new Item(getXCoordinate(), getYCoordinate(), itemID, ItemTypes.SpeedUp));
         } else {
-            setItem(null);
+            setItem(new Item(getXCoordinate(), getYCoordinate(), (byte)0, ItemTypes.Empty));
         }
     }
 
