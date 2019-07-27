@@ -74,8 +74,7 @@ public class Player extends Sprite {
     public void move(char direction) {
         if (direction == 'W'){
             setY(getY() + getSpeed());
-        }
-        if (direction == 'A'){
+        }if (direction == 'A'){
             setX(getX() - getSpeed());
         }if (direction == 'S'){
             setY(getY() - getSpeed());
@@ -125,8 +124,9 @@ public class Player extends Sprite {
         getMap().getActiveBombArray().add(bomb);
     }
 
-    public void pickUpItem(Item item, Map map) throws IOException {
+    public void pickUpItem(Item item) throws IOException {
         _playerClient.sendOnItemPickedUp((byte)item.getItemType().ordinal(), item.getItemID());
+        getMap().getActiveItemArray().remove(item);
     }
 
     public Map getMap() {

@@ -7,10 +7,9 @@ public class Item {
     private byte _itemId;
     private ItemTypes _itemType;
 
-    public Item(int blockXCoordinate, int blockYCoordinate, byte itemId, ItemTypes itemType) {
+    public Item(int blockXCoordinate, int blockYCoordinate,ItemTypes itemType) {
         _xCoordinate = blockXCoordinate;
         _yCoordinate = blockYCoordinate;
-        _itemId = itemId;
         _itemType = itemType;
     }
 
@@ -36,14 +35,6 @@ public class Item {
 
     public void setDropChance(double _dropChance) {
         this._dropChance = _dropChance;
-    }
-
-    public byte getItemID() {
-        return _itemId;
-    }
-
-    public void setItemID(byte _itemID) {
-        this._itemId = _itemID;
     }
 
     public ItemTypes getItemType() {

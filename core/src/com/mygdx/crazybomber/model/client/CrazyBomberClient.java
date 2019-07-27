@@ -2,6 +2,7 @@ package com.mygdx.crazybomber.model.client;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.crazybomber.model.gameState.GameState;
+import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.Map;
 import com.mygdx.crazybomber.model.player.Player;
 
@@ -18,6 +19,7 @@ public class CrazyBomberClient {
     private DataInputStream in;
     private DataOutputStream out;
     private GameState _gameState;
+    private byte _playerId = 0;
     private Player _player;
 
     public CrazyBomberClient(String serverAddress, Texture texture) {
@@ -35,8 +37,8 @@ public class CrazyBomberClient {
             byte[] data = new byte[2];
             in.readFully(data, 0, data.length);
 
-            byte[] byteArray = new byte[((int)data[0]) * ((int)data[1])];
-            in.readFully(byteArray, 0, ((int)data[0]) * ((int)data[1]));
+            byte[] byteArray = new byte[((int) data[0]) * ((int) data[1])];
+            in.readFully(byteArray, 0, ((int) data[0]) * ((int) data[1]));
             byte[][] blockByte2dArray = new byte[data[0]][data[1]];
             for (int i = 0; i < data[1]; i++) {
                 for (int j = 0; j < data[0]; j++) {
@@ -52,19 +54,18 @@ public class CrazyBomberClient {
                 }
             }
             _gameState = new GameState(new Map(blockByte2dArray, itemBlockByte2dArray));
-            byte playerId = 0;
-            if (coordinates[0] == 0 & coordinates[1] == 1){
-                playerId = 1;
-            } else if (coordinates[0] == 1 & coordinates[1]==1){
-                playerId = 2;
-            } else if (coordinates[0]== 1 & coordinates[1]==0){
-                playerId =3;
+            if (coordinates[0] == 0 & coordinates[1] == 14) {
+                _playerId = 1;
+            } else if (coordinates[0] == 14 & coordinates[1] == 14) {
+                _playerId = 2;
+            } else if (coordinates[0] == 14 & coordinates[1] == 0) {
+                _playerId = 3;
             }
-            _player = new Player(playerId, coordinates[0], coordinates[1], _gameState.getMap(), texture, this);
+            _player = new Player(_playerId, coordinates[0], coordinates[1], _gameState.getMap(), texture, this);
             _gameState.getPlayerList().add(_player);
 
-            System.out.println("playerId is " + playerId);
-            System.out.println("player coordinates are X:"+ _player.getX() + "Y:"+_player.getY());
+            System.out.println("playerId is " + _playerId);
+            System.out.println("player coordinates are X:" + _gameState.getPlayerList().get(_playerId).getX() + "Y:" + _gameState.getPlayerList().get(_playerId).getY());
             for (byte[] arr : blockByte2dArray) {
                 for (byte b : arr) {
                     System.out.print(b + " ");
@@ -87,6 +88,7 @@ public class CrazyBomberClient {
     public GameState getGameState() {
         return _gameState;
     }
+
     public void sendOnNewPlayer(int x, int y) throws IOException {
         byte[] data = new byte[9];
         data[0] = 7;
@@ -104,11 +106,13 @@ public class CrazyBomberClient {
         sendByteArray(data);
     }
 
-    public void sendOnItemPickedUp(byte itemType, byte itemId) throws IOException {
-        byte[] data = new byte[3];
+    public void sendOnItemPickedUp(byte itemType, Item item) throws IOException {
+        byte[] data = new byte[4];
         data[0] = 5;
         data[1] = itemType;
-        data[2] = itemId;
+        data[2] = (byte) item.getXCoordinate();
+        data[3] = (byte) item.getYCoordinate();
+        data[4] = _playerId;
         sendByteArray(data);
     }
 

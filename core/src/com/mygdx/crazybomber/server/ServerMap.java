@@ -28,7 +28,7 @@ public class ServerMap{
                     blockMatrix[i][j] = new ServerBreakableBlock(i, j, itemIDCounter);
                     if (((ServerBreakableBlock) (blockMatrix[i][j])).getItem() != null) {
                         itemIDCounter = ((byte) (itemIDCounter + 1));
-                        getItemArray().add(((ServerBreakableBlock) blockMatrix[i][j]).getItem());
+                        getActiveItemArray().add(((ServerBreakableBlock) blockMatrix[i][j]).getItem());
                     }
                 } else {
                     blockMatrix[i][j] = new EmptyBlock(i, j);
@@ -41,7 +41,7 @@ public class ServerMap{
         return _activeBombArray;
     }
 
-    public ArrayList<Item> getItemArray() {
+    public ArrayList<Item> getActiveItemArray() {
         return _activeItemArray;
     }
 }

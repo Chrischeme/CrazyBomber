@@ -1,6 +1,5 @@
 package com.mygdx.crazybomber.server;
 
-import com.mygdx.crazybomber.model.block.BreakableBlock;
 import com.mygdx.crazybomber.model.block.EmptyBlock;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.item.ItemTypes;
@@ -104,7 +103,7 @@ public class CrazyBomberServer {
                         for (int j = 0; j < (int) data[1]; j++) {
                             blockData[i * ((int) data[0]) + j] = (byte) intMap[i][j];
                             if (intMap[i][j] == 2) {
-            itemData[i * ((int) data[0]) + j] = (byte) ((ServerBreakableBlock) gameState.getMap().blockMatrix[i][j]).
+                                itemData[i * ((int) data[0]) + j] = (byte) ((ServerBreakableBlock) gameState.getMap().blockMatrix[i][j]).
                                         getItem().getItemType().ordinal();
                             }
                         }
@@ -155,20 +154,24 @@ public class CrazyBomberServer {
                             Item item;
                             switch (data[9]) {
                                 case 1:
-                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.BombUp);
+                                    item = new Item(xCoord, yCoord, ItemTypes.BombUp);
                                 case 2:
-                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.RangeUp);
+                                    item = new Item(xCoord, yCoord, ItemTypes.RangeUp);
                                 default:
-                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.SpeedUp);
+                                    item = new Item(xCoord, yCoord, ItemTypes.SpeedUp);
                             }
                             gameState.getMap().getItemArray().add(item);
                             break;
                         case 5:
                             // On item pickedup
-                            // data should have which player
+                            // data should have which player and item coords
                             // update the player fields in player data + send to all other players
-                           int itemType = wrapped.getInt(1);
-                           int itemId = wrapped.getInt(2);
+                            int itemType = wrapped.getInt(1);
+                            byte playerId = data[2];
+                            for (Item activeItem : gameState.getMap().getActiveItemArray()){
+                                if (activeItem.getXCoordinate() =)
+
+                            }
 
                             break;
                         case 6:

@@ -18,7 +18,6 @@ public class Map {
     public Map(byte[][] blockMap, byte[][] itemMap) {
         _activeBombArray = new ArrayList<Bomb>();
         _activeItemArray = new ArrayList<Item>();
-        byte itemIDCounter = 1;
 
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
@@ -28,16 +27,13 @@ public class Map {
                     blockMatrix[i][j] = new BreakableBlock(i, j);
                     switch (itemMap[i][j]) {
                         case 1:
-                            ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, itemIDCounter, ItemTypes.BombUp));
-                            itemIDCounter++;
+                            ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, ItemTypes.BombUp));
                             break;
                         case 2:
-                            ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, itemIDCounter, ItemTypes.RangeUp));
-                            itemIDCounter++;
+                            ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, ItemTypes.RangeUp));
                             break;
                         case 3:
-                            ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, itemIDCounter, ItemTypes.SpeedUp));
-                            itemIDCounter++;
+                            ((BreakableBlock) blockMatrix[i][j]).setItem(new Item(i, j, ItemTypes.SpeedUp));
                             break;
                         default:
 
