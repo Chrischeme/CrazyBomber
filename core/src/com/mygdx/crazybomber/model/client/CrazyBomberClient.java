@@ -113,7 +113,6 @@ public class CrazyBomberClient {
     public void sendOnItemPickedUp(byte itemType, Item item) throws IOException {
         byte[] data = new byte[11];
         data[0] = 5;
-        byte[]
         data[2] = (byte) item.getXCoordinate();
         data[3] = (byte) item.getYCoordinate();
         data[9] = itemType;
