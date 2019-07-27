@@ -18,7 +18,7 @@ public class Map {
     public Map(byte[][] blockMap, byte[][] itemMap) {
         _activeBombArray = new ArrayList<Bomb>();
         _activeItemArray = new ArrayList<Item>();
-        byte itemIDCounter = 0;
+        byte itemIDCounter = 1;
 
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {

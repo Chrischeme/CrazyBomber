@@ -48,7 +48,7 @@ public class CrazyBomberClient {
             byte[][] itemBlockByte2dArray = new byte[data[0]][data[1]];
             for (int i = 0; i < data[1]; i++) {
                 for (int j = 0; j < data[0]; j++) {
-                    itemBlockByte2dArray[j][i] = byteArray[j + i * data[0]];
+                    itemBlockByte2dArray[i][j] = byteArray[j + i * data[0]];
                 }
             }
             _gameState = new GameState(new Map(blockByte2dArray, itemBlockByte2dArray));

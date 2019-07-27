@@ -103,11 +103,9 @@ public class CrazyBomberServer {
                     for (int i = 0; i < (int) data[0]; i++) {
                         for (int j = 0; j < (int) data[1]; j++) {
                             blockData[i * ((int) data[0]) + j] = (byte) intMap[i][j];
-                            if (intMap[i][j] == 2 & ((BreakableBlock) gameState.getMap().blockMatrix[i][j]).getItem().getItemType().ordinal() != 0) {
+                            if (intMap[i][j] == 2) {
                                 itemData[i * ((int) data[0]) + j] = (byte) ((BreakableBlock) gameState.getMap().blockMatrix[i][j]).
                                         getItem().getItemType().ordinal();
-                            } else {
-                                itemData[i * ((int) data[0]) + j] = 0;
                             }
                         }
                     }
@@ -156,9 +154,9 @@ public class CrazyBomberServer {
                             yCoord = wrapped.getInt(5);
                             Item item;
                             switch (data[9]) {
-                                case 0:
-                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.BombUp);
                                 case 1:
+                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.BombUp);
+                                case 2:
                                     item = new Item(xCoord, yCoord, data[10], ItemTypes.RangeUp);
                                 default:
                                     item = new Item(xCoord, yCoord, data[10], ItemTypes.SpeedUp);
@@ -169,6 +167,9 @@ public class CrazyBomberServer {
                             // On item pickedup
                             // data should have which player
                             // update the player fields in player data + send to all other players
+                           int itemType = wrapped.getInt(1);
+                           int itemId = wrapped.getInt(2);
+
                             break;
                         case 6:
                             // On player death
