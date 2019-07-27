@@ -18,7 +18,7 @@ public class Player extends Sprite {
     private boolean _isKnockedUp;
     private boolean _isAlive;
     private int _numRangeUpgrades;
-    private byte _id;
+    private byte _playerId;
     private float _speed;
     private boolean onItem;
     private Stack<Bomb> _bombStack;
@@ -26,6 +26,10 @@ public class Player extends Sprite {
     private ScheduledFuture _scheduledFuture;
     private Map _map;
     private CrazyBomberClient _playerClient;
+
+    public Stack<Bomb> getBombStack(){
+        return _bombStack;
+    }
 
     public float getSpeed() {
         return _speed;
@@ -109,7 +113,7 @@ public class Player extends Sprite {
     public Player(byte id, float playerSpawnXCoordinate, float playerSpawnYCoordinate, Map map, Texture texture, CrazyBomberClient client) {
         super(texture);
         _playerClient = client;
-        _id = id;
+        _playerId = id;
         _bombStack = new Stack<Bomb>();
         setIsAlive(false);
         setIsKnockedUp(false);
@@ -125,8 +129,7 @@ public class Player extends Sprite {
     }
 
     public void pickUpItem(Item item) throws IOException {
-        _playerClient.sendOnItemPickedUp((byte)item.getItemType().ordinal(), item.getItemID());
-        getMap().getActiveItemArray().remove(item);
+        _playerClient.sendOnItemPickedUp(item.getXCoordinate(),item.getYCoordinate(),(byte) item.getItemType().ordinal());
     }
 
     public Map getMap() {
@@ -140,4 +143,9 @@ public class Player extends Sprite {
     public CrazyBomberClient getPlayerClient() {
         return _playerClient;
     }
+
+    public byte getPlayerId() {
+        return _playerId;
+    }
+
 }

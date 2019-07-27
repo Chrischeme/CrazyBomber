@@ -49,7 +49,9 @@ public class GameMap implements Screen {
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         playerTexture = new Texture("player.png");
 
-        gameState = new CrazyBomberClient("localhost", playerTexture).getGameState();
+        CrazyBomberClient client = new CrazyBomberClient("localhost", playerTexture);
+        gameState = client.getGameState();
+        player = client.getPlayer();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");

@@ -1,6 +1,7 @@
 package com.mygdx.crazybomber.server;
 
 import com.mygdx.crazybomber.model.block.EmptyBlock;
+import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.item.ItemTypes;
 
@@ -110,7 +111,6 @@ public class CrazyBomberServer {
                     }
                     out.write(blockData);
                     out.write(itemData);
-
                 }
                 while (true) {
                     int length = in.readInt();
@@ -122,6 +122,7 @@ public class CrazyBomberServer {
                     byte switchByte = data[0];
                     System.out.println("Updating: " + switchByte);
                     int xCoord, yCoord;
+                    byte playerId;
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
                         case 1:
@@ -135,6 +136,16 @@ public class CrazyBomberServer {
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
                             // update bomb in bomb data + send to all other players => NOT SURE
+                            xCoord = wrapped.getInt(1);
+                            yCoord = wrapped.getInt(5);
+                            for (Bomb bomb : gameState.getMap().getActiveBombArray()) {
+                                if (bomb.getXCoordinate() == xCoord & bomb.getYCoordinate() == yCoord) {
+                                    break;
+                                } else {
+                                    gameState.getMap().getActiveBombArray().add(new Bomb(xCoord, yCoord));
+                                    out.write(data);
+                                }
+                            }
 
                             break;
                         case 3:
@@ -166,19 +177,23 @@ public class CrazyBomberServer {
                             // On item pickedup
                             // data should have which player and item coords
                             // update the player fields in player data + send to all other players
-                            int itemType = wrapped.getInt(1);
-                            xCoord = wrapped.getInt(2);
-                            yCoord = wrapped.getInt(3);
-                            byte playerId = data[4];
-                            for (Item activeItem : gameState.getMap().getActiveItemArray()){
-
+                            xCoord = wrapped.getInt(1);
+                            yCoord = wrapped.getInt(5);
+                            for (Item activeItem : gameState.getMap().getActiveItemArray()) {
+                                if (activeItem.getXCoordinate() == xCoord & activeItem.getYCoordinate() == yCoord) {
+                                    gameState.getMap().getActiveItemArray().remove(activeItem);
+                                    out.write(data);
+                                    break;
+                                }
                             }
-
                             break;
                         case 6:
                             // On player death
                             // data should have which player
                             // send to all other players
+                            playerId = data[1];
+                            gameState.getPlayerList().remove(gameState.getPlayerList().get(playerId));
+                            out.write(data);
                             break;
                         case 7:
                             // Currently do not have a case for this one

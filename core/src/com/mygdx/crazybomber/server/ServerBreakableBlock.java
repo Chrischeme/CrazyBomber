@@ -12,13 +12,13 @@ public class ServerBreakableBlock extends Block {
         setYCoordinate(yCoordinate);
         double randNum = Math.random();
         if (randNum <= 0.1) {
-            setItem(new Item(getXCoordinate(), getYCoordinate(), itemID, ItemTypes.BombUp));
+            setItem(new Item(getXCoordinate(), getYCoordinate(), ItemTypes.BombUp));
         } else if (randNum <= 0.2) {
-            setItem(new Item(getXCoordinate(), getYCoordinate(), itemID, ItemTypes.RangeUp));
+            setItem(new Item(getXCoordinate(), getYCoordinate(), ItemTypes.RangeUp));
         } else if (randNum <= 0.30) {
-            setItem(new Item(getXCoordinate(), getYCoordinate(), itemID, ItemTypes.SpeedUp));
+            setItem(new Item(getXCoordinate(), getYCoordinate(), ItemTypes.SpeedUp));
         } else {
-            setItem(new Item(getXCoordinate(), getYCoordinate(), (byte)0, ItemTypes.Empty));
+            setItem(new Item(getXCoordinate(), getYCoordinate(), ItemTypes.Empty));
         }
     }
 

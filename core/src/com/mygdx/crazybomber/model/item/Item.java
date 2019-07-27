@@ -4,7 +4,6 @@ public class Item {
     private int _xCoordinate;
     private int _yCoordinate;
     private double _dropChance;
-    private byte _itemId;
     private ItemTypes _itemType;
 
     public Item(int blockXCoordinate, int blockYCoordinate,ItemTypes itemType) {

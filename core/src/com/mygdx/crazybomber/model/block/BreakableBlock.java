@@ -9,7 +9,7 @@ public class BreakableBlock extends Block {
     public BreakableBlock(int xCoordinate, int yCoordinate) {
         setXCoordinate(xCoordinate);
         setYCoordinate(yCoordinate);
-        setItem(new Item(xCoordinate, yCoordinate, (byte) 0, ItemTypes.Empty));
+        setItem(new Item(xCoordinate, yCoordinate, ItemTypes.Empty));
     }
 
     public Item getItem() {
