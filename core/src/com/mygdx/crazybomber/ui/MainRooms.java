@@ -35,7 +35,7 @@ public class MainRooms implements Screen {
     public void show() {
         currentScreen = this;
 
-        background = new Sprite(new Texture("background1.png"));
+        background = new Sprite(new Texture("backgroundimg4.png"));
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         atlas = new TextureAtlas("ui/button.pack");

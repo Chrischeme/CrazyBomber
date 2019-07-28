@@ -27,7 +27,7 @@ public class Room implements Screen {
     private TextureAtlas atlas;
     private Texture splashTexture;
     private Repository repository;
-    private boolean ready = false;
+    private boolean ready;
     private Screen currentScreen;
 
     public Room (Texture texture, Repository repository) {
@@ -38,6 +38,7 @@ public class Room implements Screen {
     @Override
     public void show() {
         currentScreen = this;
+        ready = false;
 
         background = new Sprite(splashTexture);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

@@ -22,8 +22,8 @@ import com.mygdx.crazybomber.model.player.Player;
 import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 public class GameMap implements Screen {
-
-    private Sprite background;
+    private GameState game1;
+    private Sprite background,breakableblock,unbreakableblock,bomb;
     private SpriteBatch batch = new SpriteBatch();
     private Stage stage;
     private Table table;
@@ -46,9 +46,19 @@ public class GameMap implements Screen {
     @Override
     public void show() {
         background = new Sprite(splashTexture);
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        playerTexture = new Texture("player.png");
+        background.setSize(720,720);
+        background.setX(180);
+        breakableblock = new Sprite(new Texture("object/breakableblock.png"));
+        breakableblock.setPosition(400,400);
+        unbreakableblock = new Sprite(new Texture("object/unbreakableblock.png"));
+        unbreakableblock.setPosition(500,400);
 
+        bomb = new Sprite(new Texture("object/bomb.png"));
+        bomb.setPosition(600,400);
+        bomb.setSize(48,48);
+        batch = new SpriteBatch();
+
+        playerTexture = new Texture("object/player.png");
         CrazyBomberClient client = new CrazyBomberClient("localhost", playerTexture);
         gameState = client.getGameState();
         player = client.getPlayer();
@@ -57,7 +67,7 @@ public class GameMap implements Screen {
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
         table = new Table(skin);
-        table.setBounds(1050, 600, 100,100 );
+        table.setBounds(950, 660, 100,100 );
 
         buttonBack = new TextButton("BACK", skin);
         buttonBack.addListener(new ClickListener() {
@@ -82,9 +92,20 @@ public class GameMap implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+
+
+
+
+
+
         stage.act(delta);
         batch.begin();
         background.draw(batch);
+        bomb.draw(batch);
+        unbreakableblock.draw(batch);
+        breakableblock.draw(batch);
         isPressedUP = Gdx.input.isKeyPressed(Input.Keys.UP);
         isPressedDOWN = Gdx.input.isKeyPressed(Input.Keys.DOWN);
         isPressedRIGHT = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
@@ -111,7 +132,7 @@ public class GameMap implements Screen {
         {
             player.move('D');
         }
-        player.draw(batch);
+        //player.draw(batch);
         batch.end();
         stage.draw();
     }
