@@ -74,19 +74,6 @@ public class Player extends Sprite {
         this._numRangeUpgrades = _rangeBombs;
     }
 
-    //todo: will need logic to not walk through walls and make traveling constant (frame rate or constant velocity, libgdx physics?)
-    public void move(char direction) {
-        if (direction == 'W'){
-            setY(getY() + getSpeed());
-        }if (direction == 'A'){
-            setX(getX() - getSpeed());
-        }if (direction == 'S'){
-            setY(getY() - getSpeed());
-        }if (direction == 'D'){
-            setX(getX() + getSpeed());
-        }
-    }
-
     public Bomb dropBomb() throws IOException {
         if (_bombStack.isEmpty()) {
             System.out.println("out of bombs");
@@ -94,8 +81,8 @@ public class Player extends Sprite {
         }
         final Bomb droppedBomb = _bombStack.pop();
         droppedBomb.setRangeBomb(getNumRangeUpgrades() + 1);
-        droppedBomb.setXCoordinate((int) Math.round(getX()));
-        droppedBomb.setYCoordinate((int) Math.round(getY()));
+        droppedBomb.setX((byte) Math.round(getX()));
+        droppedBomb.setY((byte) Math.round(getY()));
 
         _scheduledExecutorService = Executors.newScheduledThreadPool(1);
         System.out.println("bomb dropped");
@@ -106,11 +93,11 @@ public class Player extends Sprite {
                         _scheduledExecutorService.shutdown();
                     }
                 }, 3, TimeUnit.SECONDS);
-        getPlayerClient().sendOnBombPlaced(droppedBomb.getXCoordinate(), droppedBomb.getYCoordinate());
+        getPlayerClient().sendOnBombPlaced(droppedBomb.getX(), droppedBomb.getY());
         return droppedBomb;
     }
 
-    public Player(byte id, float playerSpawnXCoordinate, float playerSpawnYCoordinate, Map map, Texture texture, CrazyBomberClient client) {
+    public Player(byte id, float playerSpawnX, float playerSpawnY, Map map, Texture texture, CrazyBomberClient client) {
         super(texture);
         _playerClient = client;
         _playerId = id;
@@ -120,8 +107,8 @@ public class Player extends Sprite {
         setOnItem(false);
         setSpeed(1.5f);
         setNumRangeUpgrades(0);
-        setX(playerSpawnXCoordinate);
-        setY(playerSpawnYCoordinate);
+        setX(playerSpawnX);
+        setY(playerSpawnY);
         _map = map;
         Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
@@ -129,7 +116,7 @@ public class Player extends Sprite {
     }
 
     public void pickUpItem(Item item) throws IOException {
-        _playerClient.sendOnItemPickedUp(item.getXCoordinate(),item.getYCoordinate(),(byte) item.getItemType().ordinal());
+        _playerClient.sendOnItemPickedUp(item.getX(),item.getY(),(byte) item.getItemType().ordinal());
     }
 
     public Map getMap() {

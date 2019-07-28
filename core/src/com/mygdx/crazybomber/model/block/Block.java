@@ -1,22 +1,22 @@
 package com.mygdx.crazybomber.model.block;
 
 public abstract class Block {
-    private int _xCoordinate;
-    private int _yCoordinate;
+    private byte _x;
+    private byte _y;
 
-    public int getXCoordinate() {
-        return _xCoordinate;
+    public byte getX() {
+        return _x;
     }
 
-    public void setXCoordinate(int _xCoordinate) {
-        this._xCoordinate = _xCoordinate;
+    public void setX(byte x) {
+        this._x = x;
     }
 
-    public int getYCoordinate() {
-        return _yCoordinate;
+    public byte getY() {
+        return _y;
     }
 
-    public void setYCoordinate(int _yCoordinate) {
-        this._yCoordinate = _yCoordinate;
+    public void setY(byte y) {
+        this._y = y;
     }
 }

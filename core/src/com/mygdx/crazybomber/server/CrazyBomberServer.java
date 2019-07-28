@@ -121,7 +121,7 @@ public class CrazyBomberServer {
                     ByteBuffer wrapped = ByteBuffer.wrap(data);
                     byte switchByte = data[0];
                     System.out.println("Updating: " + switchByte);
-                    int xCoord, yCoord;
+                    byte xCoord, yCoord;
                     byte playerId;
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
@@ -129,15 +129,15 @@ public class CrazyBomberServer {
                             // On player coord change
                             // data should have which player + new coord + if a movement key is pressed down (WASD)
                             // update the player coord in player data + send to all other players
-                            player.setX((float) wrapped.getDouble(1));
-                            player.setY((float) wrapped.getDouble(9));
+                            player.setX((float) wrapped.getFloat(1));
+                            player.setY((float) wrapped.getFloat(9));
                             break;
                         case 2:
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
                             // update bomb in bomb data + send to all other players => NOT SURE
-                            xCoord = wrapped.getInt(1);
-                            yCoord = wrapped.getInt(5);
+                            xCoord = data[1];
+                            yCoord = data[2];
                             for (Bomb bomb : gameState.getMap().getActiveBombArray()) {
                                 if (bomb.getXCoordinate() == xCoord & bomb.getYCoordinate() == yCoord) {
                                     break;
@@ -146,22 +146,21 @@ public class CrazyBomberServer {
                                     out.write(data);
                                 }
                             }
-
                             break;
                         case 3:
                             // On block broken
                             // data should have coord of broken block.
                             // update the block in map data + send to all other players
-                            xCoord = wrapped.getInt(1);
-                            yCoord = wrapped.getInt(5);
+                            xCoord = data[1];
+                            yCoord = data[2];
                             gameState.getMap().blockMatrix[xCoord][yCoord] = new EmptyBlock(xCoord, yCoord);
                             break;
                         case 4:
                             // On item dropped
                             // data should have type of item + coord of item
                             // update item in item data + send to all other players => NOT SURE
-                            xCoord = wrapped.getInt(1);
-                            yCoord = wrapped.getInt(5);
+                            xCoord = data[1];
+                            yCoord = data[2];
                             Item item;
                             switch (data[9]) {
                                 case 1:
@@ -177,10 +176,10 @@ public class CrazyBomberServer {
                             // On item pickedup
                             // data should have which player and item coords
                             // update the player fields in player data + send to all other players
-                            xCoord = wrapped.getInt(1);
-                            yCoord = wrapped.getInt(5);
+                            xCoord = data[1];
+                            yCoord = data[2];
                             for (Item activeItem : gameState.getMap().getActiveItemArray()) {
-                                if (activeItem.getXCoordinate() == xCoord & activeItem.getYCoordinate() == yCoord) {
+                                if (activeItem.getX() == xCoord & activeItem.getY() == yCoord) {
                                     gameState.getMap().getActiveItemArray().remove(activeItem);
                                     out.write(data);
                                     break;
@@ -193,7 +192,6 @@ public class CrazyBomberServer {
                             // send to all other players
                             playerId = data[1];
                             gameState.getPlayerList().remove(gameState.getPlayerList().get(playerId));
-                            out.write(data);
                             break;
                         case 7:
                             // Currently do not have a case for this one
@@ -202,8 +200,8 @@ public class CrazyBomberServer {
                             // on Bomb explodes
                             // data should have player data // MAYBE should have bomb range
                             // send to all other players
-                            xCoord = wrapped.getInt(1);
-                            yCoord = wrapped.getInt(5);
+                            xCoord = data[1];
+                            yCoord = data[2];
                             for (int i = 0; i < gameState.getMap().getActiveBombArray().size(); i++) {
                                 if (gameState.getMap().getActiveBombArray().get(i).getXCoordinate() == xCoord &&
                                         gameState.getMap().getActiveBombArray().get(i).getYCoordinate() == yCoord) {
