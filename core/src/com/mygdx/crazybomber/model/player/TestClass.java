@@ -8,6 +8,9 @@ import java.io.IOException;
 public class TestClass {
     public static void main(String args[]) throws IOException {
         int[][] intMap = new InitialMap().getIntMap1();
+
+        byte[] data = new byte[10];
+        System.out.println(data[0]);
         //Map firstMap = new Map(intMap);
         //CrazyBomberClient firstClient = new CrazyBomberClient("localhost", firstMap);
         /*for (Item item :firstMap.getItemArray()) {

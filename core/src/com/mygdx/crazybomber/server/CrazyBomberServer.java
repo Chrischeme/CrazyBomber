@@ -1,10 +1,13 @@
 package com.mygdx.crazybomber.server;
 
 import com.mygdx.crazybomber.model.block.EmptyBlock;
+import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.item.ItemTypes;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -16,7 +19,7 @@ public class CrazyBomberServer {
     private static int numPlayers = 0;
     public static ArrayList<DataOutputStream> clientList = new ArrayList<>();
 
-    public static void main (String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         try (ServerSocket listener = new ServerSocket(59898)) {
             System.out.println("The server is running...");
             ExecutorService pool = Executors.newFixedThreadPool(4);
@@ -25,6 +28,7 @@ public class CrazyBomberServer {
             }
         }
     }
+
     private static class Handler implements Runnable {
         private Socket socket;
         private DataInputStream in;
@@ -38,23 +42,23 @@ public class CrazyBomberServer {
         public void run() {
             try {
                 int[][] intMap =
-                        {{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
-                        {0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-                gameState = new ServerGameState(intMap, new ArrayList<>());
+                        {
+                                {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1},
+                                {0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+                gameState = new ServerGameState(intMap, new ArrayList<ServerPlayer>());
                 out = new DataOutputStream(socket.getOutputStream());
                 in = new DataInputStream(socket.getInputStream());
 
@@ -64,18 +68,18 @@ public class CrazyBomberServer {
 
                 switch (numPlayers) {
                     case 0:
-                        player = new ServerPlayer((byte)1, 0f, 0f);
+                        player = new ServerPlayer((byte) 1, 0f, 0f);
                         break;
                     case 1:
-                        player = new ServerPlayer((byte)2, 0f, 14f);
+                        player = new ServerPlayer((byte) 2, 0f, 14f);
                         y = 14;
                         break;
                     case 2:
-                        player = new ServerPlayer((byte)3, 14f, 0f);
-                         x = 14;
+                        player = new ServerPlayer((byte) 3, 14f, 0f);
+                        x = 14;
                         break;
                     case 3:
-                        player = new ServerPlayer((byte)4, 14f, 14f);
+                        player = new ServerPlayer((byte) 4, 14f, 14f);
                         x = 14;
                         y = 14;
                         break;
@@ -86,17 +90,29 @@ public class CrazyBomberServer {
                 numPlayers++;
                 if (player != null) {
                     gameState.getPlayerList().add(player);
-                    byte[] data = new byte[8];
-                    byte[] intInByteArray = new byte[4];
-                    ByteBuffer.wrap(intInByteArray).putInt(x);
-                    copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 0);
-                    ByteBuffer.wrap(intInByteArray).putInt(y);
-                    copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 4);
-                    out.writeInt(data.length);
+                    byte[] data = new byte[2];
+                    data[0] = (byte) x;
+                    data[1] = (byte) y;
                     out.write(data);
+                    //todo add code to use wrap and integers to make maps larger than 15x15
+                    data[0] = 15;
+                    data[1] = 15;
+                    out.write(data);
+                    byte[] blockData = new byte[((int) data[0]) * ((int) data[1])];
+                    byte[] itemData = new byte[((int) data[0]) * ((int) data[1])];
+                    for (int i = 0; i < (int) data[0]; i++) {
+                        for (int j = 0; j < (int) data[1]; j++) {
+                            blockData[i * ((int) data[0]) + j] = (byte) intMap[i][j];
+                            if (intMap[i][j] == 2) {
+                                itemData[i * ((int) data[0]) + j] = (byte) ((ServerBreakableBlock) gameState.getMap().blockMatrix[i][j]).
+                                        getItem().getItemType().ordinal();
+                            }
+                        }
+                    }
+                    out.write(blockData);
+                    out.write(itemData);
                 }
-
-                while(true) {
+                while (true) {
                     int length = in.readInt();
                     byte[] data = new byte[length];
                     if (length > 0) {
@@ -106,19 +122,30 @@ public class CrazyBomberServer {
                     byte switchByte = data[0];
                     System.out.println("Updating: " + switchByte);
                     int xCoord, yCoord;
+                    byte playerId;
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
                         case 1:
                             // On player coord change
                             // data should have which player + new coord + if a movement key is pressed down (WASD)
                             // update the player coord in player data + send to all other players
-                            player.setX((float)wrapped.getDouble(1));
-                            player.setY((float)wrapped.getDouble(9));
+                            player.setX((float) wrapped.getDouble(1));
+                            player.setY((float) wrapped.getDouble(9));
                             break;
                         case 2:
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
                             // update bomb in bomb data + send to all other players => NOT SURE
+                            xCoord = wrapped.getInt(1);
+                            yCoord = wrapped.getInt(5);
+                            for (Bomb bomb : gameState.getMap().getActiveBombArray()) {
+                                if (bomb.getXCoordinate() == xCoord & bomb.getYCoordinate() == yCoord) {
+                                    break;
+                                } else {
+                                    gameState.getMap().getActiveBombArray().add(new Bomb(xCoord, yCoord));
+                                    out.write(data);
+                                }
+                            }
 
                             break;
                         case 3:
@@ -137,24 +164,36 @@ public class CrazyBomberServer {
                             yCoord = wrapped.getInt(5);
                             Item item;
                             switch (data[9]) {
-                                case 0:
-                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.BombUp);
                                 case 1:
-                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.RangeUp);
+                                    item = new Item(xCoord, yCoord, ItemTypes.BombUp);
+                                case 2:
+                                    item = new Item(xCoord, yCoord, ItemTypes.RangeUp);
                                 default:
-                                    item = new Item(xCoord, yCoord, data[10], ItemTypes.SpeedUp);
+                                    item = new Item(xCoord, yCoord, ItemTypes.SpeedUp);
                             }
-                            gameState.getMap().getItemArray().add(item);
+                            gameState.getMap().getActiveItemArray().add(item);
                             break;
                         case 5:
                             // On item pickedup
-                            // data should have which player
+                            // data should have which player and item coords
                             // update the player fields in player data + send to all other players
+                            xCoord = wrapped.getInt(1);
+                            yCoord = wrapped.getInt(5);
+                            for (Item activeItem : gameState.getMap().getActiveItemArray()) {
+                                if (activeItem.getXCoordinate() == xCoord & activeItem.getYCoordinate() == yCoord) {
+                                    gameState.getMap().getActiveItemArray().remove(activeItem);
+                                    out.write(data);
+                                    break;
+                                }
+                            }
                             break;
                         case 6:
                             // On player death
                             // data should have which player
                             // send to all other players
+                            playerId = data[1];
+                            gameState.getPlayerList().remove(gameState.getPlayerList().get(playerId));
+                            out.write(data);
                             break;
                         case 7:
                             // Currently do not have a case for this one
@@ -186,7 +225,7 @@ public class CrazyBomberServer {
         }
 
         private void sendDataToOtherPlayers(byte[] data, DataOutputStream out) throws IOException {
-            for(DataOutputStream outputStream : clientList) {
+            for (DataOutputStream outputStream : clientList) {
                 if (out != outputStream) {
                     outputStream.writeInt(data.length);
                     outputStream.write(data);
@@ -195,7 +234,7 @@ public class CrazyBomberServer {
         }
 
         public void copyArrayToAnotherWithStartingIndexes(byte[] fromArray, byte[] toArray, int toArrayIndex) {
-            for(byte fromArrayByte : fromArray){
+            for (byte fromArrayByte : fromArray) {
                 toArray[toArrayIndex] = fromArrayByte;
                 toArrayIndex++;
             }

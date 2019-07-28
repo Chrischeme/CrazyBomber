@@ -16,7 +16,7 @@ public class ServerGameState {
 
     public ServerGameState(int[][] intMap, ArrayList<ServerPlayer> playerArrayList){
         _playerList = playerArrayList;
-        //_map = new Map(intMap);
+        _map = new ServerMap(intMap);
     }
 
 }

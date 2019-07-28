@@ -4,11 +4,12 @@ public class Item {
     private int _xCoordinate;
     private int _yCoordinate;
     private double _dropChance;
-    private byte _itemId;
     private ItemTypes _itemType;
 
-    public Item(int blockXCoordinate, int blockYCoordinate, byte itemId, ItemTypes itemType) {
-
+    public Item(int blockXCoordinate, int blockYCoordinate,ItemTypes itemType) {
+        _xCoordinate = blockXCoordinate;
+        _yCoordinate = blockYCoordinate;
+        _itemType = itemType;
     }
 
     public int getXCoordinate() {
@@ -33,14 +34,6 @@ public class Item {
 
     public void setDropChance(double _dropChance) {
         this._dropChance = _dropChance;
-    }
-
-    public byte getItemID() {
-        return _itemId;
-    }
-
-    public void setItemID(byte _itemID) {
-        this._itemId = _itemID;
     }
 
     public ItemTypes getItemType() {

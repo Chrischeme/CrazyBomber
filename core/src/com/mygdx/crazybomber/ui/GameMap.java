@@ -17,9 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.crazybomber.CrazyBomber;
-import com.mygdx.crazybomber.model.GameState;
+import com.mygdx.crazybomber.model.gameState.GameState;
 import com.mygdx.crazybomber.model.player.Player;
-import com.mygdx.crazybomber.model.player.CrazyBomberClient;
+import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 public class GameMap implements Screen {
 
@@ -49,7 +49,9 @@ public class GameMap implements Screen {
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         playerTexture = new Texture("player.png");
 
-        gameState = new CrazyBomberClient("localhost", playerTexture).getGameState();
+        CrazyBomberClient client = new CrazyBomberClient("localhost", playerTexture);
+        gameState = client.getGameState();
+        player = client.getPlayer();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");

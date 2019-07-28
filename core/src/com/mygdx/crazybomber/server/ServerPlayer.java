@@ -1,17 +1,14 @@
 package com.mygdx.crazybomber.server;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.Map;
-import com.mygdx.crazybomber.model.player.CrazyBomberClient;
+import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 import java.io.IOException;
 import java.util.Stack;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class ServerPlayer {
     private float x;
@@ -21,12 +18,7 @@ public class ServerPlayer {
     private int _numRangeUpgrades;
     private byte _id;
     private float _speed;
-    private boolean onItem;
-    private Stack<Bomb> _bombStack;
-    private ScheduledExecutorService _scheduledExecutorService;
-    private ScheduledFuture _scheduledFuture;
     private Map _map;
-    private CrazyBomberClient _playerClient;
 
     public float getSpeed() {
         return _speed;
@@ -52,17 +44,6 @@ public class ServerPlayer {
         this._isAlive = _isAlive;
     }
 
-    public boolean getIsOnItem() {
-        return onItem;
-    }
-
-    public void setOnItem(boolean onItem) {
-        this.onItem = onItem;
-    }
-
-    public void pickUpItem(int itemXCoordinate, int itemYCoordinate) {
-    }
-
     public int getNumRangeUpgrades() {
         return _numRangeUpgrades;
     }
@@ -73,31 +54,18 @@ public class ServerPlayer {
 
     public ServerPlayer(byte id, float playerSpawnXCoordinate, float playerSpawnYCoordinate) {
         _id = id;
-        _bombStack = new Stack<Bomb>();
         setIsAlive(false);
         setIsKnockedUp(false);
-        setOnItem(false);
         setSpeed(1.5f);
         setNumRangeUpgrades(0);
         x = playerSpawnXCoordinate;
         y = playerSpawnYCoordinate;
     }
 
-    public void pickUpItem(Item item, Map map) throws IOException {
-        _playerClient.sendOnItemPickedUp((byte)item.getItemType().ordinal(),item.getItemID());
-    }
-
     public Map getMap() {
         return _map;
     }
 
-    public ScheduledFuture getScheduledFuture() {
-        return _scheduledFuture;
-    }
-
-    public CrazyBomberClient getPlayerClient() {
-        return _playerClient;
-    }
 
     public void setX(float x) {
         this.x = x;

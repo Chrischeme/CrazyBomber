@@ -26,11 +26,9 @@ public class ServerMap{
                     blockMatrix[i][j] = new UnbreakableBlock(i, j);
                 } else if (intMap[i][j] == 2) {
                     blockMatrix[i][j] = new ServerBreakableBlock(i, j, itemIDCounter);
-                    if (((BreakableBlock) (blockMatrix[i][j])).getItem() != null) {
+                    if (((ServerBreakableBlock) (blockMatrix[i][j])).getItem() != null) {
                         itemIDCounter = ((byte) (itemIDCounter + 1));
-                        getItemArray().add(((BreakableBlock) blockMatrix[i][j]).getItem());
-                    } else {
-                        blockMatrix[i][j] = new BreakableBlock(i, j);
+                        getActiveItemArray().add(((ServerBreakableBlock) blockMatrix[i][j]).getItem());
                     }
                 } else {
                     blockMatrix[i][j] = new EmptyBlock(i, j);
@@ -43,7 +41,7 @@ public class ServerMap{
         return _activeBombArray;
     }
 
-    public ArrayList<Item> getItemArray() {
+    public ArrayList<Item> getActiveItemArray() {
         return _activeItemArray;
     }
 }

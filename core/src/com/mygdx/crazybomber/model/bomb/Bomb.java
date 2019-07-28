@@ -22,6 +22,11 @@ public class Bomb {
         _bombOwner = player;
     }
 
+    public Bomb(int x, int y){
+        setXCoordinate(x);
+        setYCoordinate(y);
+    }
+
     public int getRangeBomb() {
         return _rangeBomb;
     }
