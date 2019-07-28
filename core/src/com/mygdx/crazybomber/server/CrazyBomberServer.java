@@ -139,7 +139,7 @@ public class CrazyBomberServer {
                             xCoord = data[1];
                             yCoord = data[2];
                             for (Bomb bomb : gameState.getMap().getActiveBombArray()) {
-                                if (bomb.getXCoordinate() == xCoord & bomb.getYCoordinate() == yCoord) {
+                                if (bomb.getX() == xCoord & bomb.getY() == yCoord) {
                                     break;
                                 } else {
                                     gameState.getMap().getActiveBombArray().add(new Bomb(xCoord, yCoord));
@@ -203,8 +203,8 @@ public class CrazyBomberServer {
                             xCoord = data[1];
                             yCoord = data[2];
                             for (int i = 0; i < gameState.getMap().getActiveBombArray().size(); i++) {
-                                if (gameState.getMap().getActiveBombArray().get(i).getXCoordinate() == xCoord &&
-                                        gameState.getMap().getActiveBombArray().get(i).getYCoordinate() == yCoord) {
+                                if (gameState.getMap().getActiveBombArray().get(i).getX() == xCoord &&
+                                        gameState.getMap().getActiveBombArray().get(i).getY() == yCoord) {
                                     gameState.getMap().getActiveBombArray().remove(i);
                                     break;
                                 }

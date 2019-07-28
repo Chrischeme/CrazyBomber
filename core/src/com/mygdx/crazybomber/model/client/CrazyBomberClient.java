@@ -30,9 +30,6 @@ public class CrazyBomberClient {
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
 
-            ExecutorService pool = Executors.newFixedThreadPool(1);
-            pool.execute(new CrazyBomberClient.Handler(in));
-
             byte[] coordinates = new byte[2];
             in.readFully(coordinates, 0, coordinates.length);
 
@@ -45,7 +42,9 @@ public class CrazyBomberClient {
             for (int i = 0; i < data[1]; i++) {
                 for (int j = 0; j < data[0]; j++) {
                     blockByte2dArray[i][j] = byteArray[j + i * data[0]];
+                    System.out.print(blockByte2dArray[i][j] + "   ");
                 }
+                System.out.println("");
             }
 
             in.readFully(byteArray, 0, data[0] * data[1]);
@@ -87,6 +86,9 @@ public class CrazyBomberClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+        pool.execute(new CrazyBomberClient.Handler(in));
     }
 
     public GameState getGameState() {
