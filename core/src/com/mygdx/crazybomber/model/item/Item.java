@@ -1,39 +1,30 @@
 package com.mygdx.crazybomber.model.item;
 
 public class Item {
-    private int _xCoordinate;
-    private int _yCoordinate;
-    private double _dropChance;
+    private byte _x;
+    private byte _y;
     private ItemTypes _itemType;
 
-    public Item(int blockXCoordinate, int blockYCoordinate,ItemTypes itemType) {
-        _xCoordinate = blockXCoordinate;
-        _yCoordinate = blockYCoordinate;
+    public Item(byte x, byte y, ItemTypes itemType) {
+        setX(x);
+        setY(y);
         _itemType = itemType;
     }
 
-    public int getXCoordinate() {
-        return _xCoordinate;
+    public byte getX() {
+        return _x;
     }
 
-    public void setXCoordinate(int _xCoordinate) {
-        this._xCoordinate = _xCoordinate;
+    public void setX(byte x) {
+        this._x = x;
     }
 
-    public int getYCoordinate() {
-        return _yCoordinate;
+    public byte getY() {
+        return _y;
     }
 
-    public void setYCoordinate(int _yCoordinate) {
-        this._yCoordinate = _yCoordinate;
-    }
-
-    public double getDropChance() {
-        return _dropChance;
-    }
-
-    public void setDropChance(double _dropChance) {
-        this._dropChance = _dropChance;
+    public void setY(byte y) {
+        this._y = y;
     }
 
     public ItemTypes getItemType() {
