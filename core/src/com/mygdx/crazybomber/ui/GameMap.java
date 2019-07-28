@@ -23,7 +23,7 @@ import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 public class GameMap implements Screen {
     private GameState game1;
-    private Sprite background,breakableblock,unbreakableblock,bomb;
+    private Sprite background,breakableblock,unbreakableblock,bomb; // TODO: extend blocks with sprite
     private SpriteBatch batch = new SpriteBatch();
     private Stage stage;
     private Table table;
@@ -52,7 +52,6 @@ public class GameMap implements Screen {
         breakableblock.setPosition(400,400);
         unbreakableblock = new Sprite(new Texture("object/unbreakableblock.png"));
         unbreakableblock.setPosition(500,400);
-
         bomb = new Sprite(new Texture("object/bomb.png"));
         bomb.setPosition(600,400);
         bomb.setSize(48,48);
@@ -62,6 +61,7 @@ public class GameMap implements Screen {
         CrazyBomberClient client = new CrazyBomberClient("localhost", playerTexture);
         gameState = client.getGameState();
         player = client.getPlayer();
+        player.setPosition(180,0);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
@@ -92,14 +92,6 @@ public class GameMap implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
-
-
-
-
-
-
         stage.act(delta);
         batch.begin();
         background.draw(batch);
@@ -128,7 +120,7 @@ public class GameMap implements Screen {
         else if (isPressedRIGHT == true || isPressedD == true)
         {
         }
-        //player.draw(batch);
+        player.draw(batch);
         batch.end();
         stage.draw();
     }
