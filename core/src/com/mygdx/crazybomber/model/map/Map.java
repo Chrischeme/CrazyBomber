@@ -19,8 +19,8 @@ public class Map {
         _activeBombArray = new ArrayList<Bomb>();
         _activeItemArray = new ArrayList<Item>();
 
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        for (byte i = 0; i < 15; i++) {
+            for (byte j = 0; j < 15; j++) {
                 if (blockMap[i][j] == 1) {
                     blockMatrix[i][j] = new UnbreakableBlock(i, j);
                 } else if (blockMap[i][j] == 2) {

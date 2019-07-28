@@ -97,19 +97,15 @@ public class GameMap implements Screen {
 
         if (isPressedUP == true || isPressedW == true)
         {
-            player.move('W');
         }
         else if (isPressedDOWN == true || isPressedS == true)
         {
-            player.move('S');
         }
         else if (isPressedLEFT == true || isPressedA == true)
         {
-            player.move('A');
         }
         else if (isPressedRIGHT == true || isPressedD == true)
         {
-            player.move('D');
         }
         player.draw(batch);
         batch.end();

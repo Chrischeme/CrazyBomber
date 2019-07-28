@@ -6,10 +6,10 @@ import com.mygdx.crazybomber.model.item.ItemTypes;
 public class BreakableBlock extends Block {
     private Item _item;
 
-    public BreakableBlock(int xCoordinate, int yCoordinate) {
-        setXCoordinate(xCoordinate);
-        setYCoordinate(yCoordinate);
-        setItem(new Item(xCoordinate, yCoordinate, ItemTypes.Empty));
+    public BreakableBlock(byte x, byte y) {
+        setX(x);
+        setY(y);
+        setItem(new Item(x, y, ItemTypes.Empty));
     }
 
     public Item getItem() {

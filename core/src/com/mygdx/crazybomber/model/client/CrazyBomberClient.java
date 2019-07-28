@@ -1,6 +1,7 @@
 package com.mygdx.crazybomber.model.client;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.crazybomber.model.block.EmptyBlock;
 import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.gameState.GameState;
 import com.mygdx.crazybomber.model.item.Item;
@@ -29,9 +30,6 @@ public class CrazyBomberClient {
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
 
-            ExecutorService pool = Executors.newFixedThreadPool(1);
-            pool.execute(new CrazyBomberClient.Handler(in));
-
             byte[] coordinates = new byte[2];
             in.readFully(coordinates, 0, coordinates.length);
 
@@ -44,7 +42,9 @@ public class CrazyBomberClient {
             for (int i = 0; i < data[1]; i++) {
                 for (int j = 0; j < data[0]; j++) {
                     blockByte2dArray[i][j] = byteArray[j + i * data[0]];
+                    System.out.print(blockByte2dArray[i][j] + "   ");
                 }
+                System.out.println("");
             }
 
             in.readFully(byteArray, 0, data[0] * data[1]);
@@ -86,6 +86,9 @@ public class CrazyBomberClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+        pool.execute(new CrazyBomberClient.Handler(in));
     }
 
     public GameState getGameState() {
@@ -113,51 +116,40 @@ public class CrazyBomberClient {
         sendByteArray(data);
     }
 
-    public void sendOnItemPickedUp(int x, int y, byte itemType) throws IOException {
-        byte[] data = new byte[11];
+    public void sendOnItemPickedUp(byte x, byte y, byte itemType) throws IOException {
+        byte[] data = new byte[5];
         data[0] = 5;
-        byte[] intInByteArray = new byte[4];
-        ByteBuffer.wrap(intInByteArray).putInt(x);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 1);
-        ByteBuffer.wrap(intInByteArray).putInt(y);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 5);
-        data[9] = itemType;
-        data[10] = _player.getPlayerId();
+        data[1] = x;
+        data[2] = y;
+        data[3] = itemType;
+        data[4] = _player.getPlayerId();
         sendByteArray(data);
     }
 
     // Think about combining this with block broken
-    public void sendOnItemDropped(int x, int y, byte itemType) throws IOException {
-        byte[] data = new byte[10];
+    public void sendOnItemDropped(byte x, byte y, byte itemType) throws IOException {
+        byte[] data = new byte[4];
         data[0] = 4;
-        byte[] intInByteArray = new byte[4];
-        ByteBuffer.wrap(intInByteArray).putInt(x);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 1);
-        ByteBuffer.wrap(intInByteArray).putInt(y);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 5);
-        data[9] = itemType;
+        data[1] = x;
+        data[2] = y;
+        data[3] = itemType;
         sendByteArray(data);
     }
 
-    public void sendOnBlockBroken(int x, int y) throws IOException {
-        byte[] data = new byte[9];
+    public void sendOnBlockBroken(byte x, byte y) throws IOException {
+        byte[] data = new byte[3];
         data[0] = 3;
-        byte[] intInByteArray = new byte[4];
-        ByteBuffer.wrap(intInByteArray).putInt(x);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 1);
-        ByteBuffer.wrap(intInByteArray).putInt(y);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 5);
+        data[1] = x;
+        data[2] = y;
         sendByteArray(data);
     }
 
-    public void sendOnBombPlaced(int x, int y) throws IOException {
-        byte[] data = new byte[9];
+    public void sendOnBombPlaced(byte x, byte y) throws IOException {
+        byte[] data = new byte[4];
         data[0] = 2;
-        byte[] intInByteArray = new byte[4];
-        ByteBuffer.wrap(intInByteArray).putInt(x);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 1);
-        ByteBuffer.wrap(intInByteArray).putInt(y);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 5);
+        data[1] = x;
+        data[2] = y;
+        data[3] = _player.getPlayerId();
         sendByteArray(data);
     }
 
@@ -208,38 +200,55 @@ public class CrazyBomberClient {
                     ByteBuffer wrapped = ByteBuffer.wrap(data);
                     byte switchByte = data[0];
                     System.out.println("Updating: " + switchByte);
-                    int xCoord, yCoord;
+                    byte xCoord, yCoord;
                     byte playerId;
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
-                        case 1:
-                            // On player coord change
-                            // data should have which player + new coord + if a movement key is pressed down (WASD)
-                            // update the player coord in player data + send to all other players
-                            break;
                         case 2:
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
-                            // update bomb in bomb data + send to all other players => NOT SURE
+                            // update bomb in bomb data => NOT SURE
+                            xCoord = data[1];
+                            yCoord = data[2];
+                            playerId = data[3];
+                            Bomb bomb = new Bomb(getGameState().getPlayerList().get(playerId), getGameState().getPlayerList().get(playerId).getBombStack());
+                            getGameState().getMap().getActiveBombArray().add(bomb);
+                            break;
                         case 3:
                             // On block broken
                             // data should have coord of broken block.
-                            // update the block in map data + send to all other players
+                            // update the block in map data
+                            xCoord = data[1];
+                            yCoord = data[2];
+                            getGameState().getMap().blockMatrix[xCoord][yCoord] = new EmptyBlock(xCoord, yCoord);
+                            break;
                         case 4:
                             // On item dropped
                             // data should have type of item + coord of item
-                            // update item in item data + send to all other players => NOT SURE
+                            // update item in item data => NOT SURE
+                            xCoord = data[1];
+                            yCoord = data[2];
+                            Item item;
+                            switch (data[3]) {
+                                case 1:
+                                    item = new Item(xCoord, yCoord, ItemTypes.BombUp);
+                                case 2:
+                                    item = new Item(xCoord, yCoord, ItemTypes.RangeUp);
+                                default:
+                                    item = new Item(xCoord, yCoord, ItemTypes.SpeedUp);
+                            }
+                            getGameState().getMap().getActiveItemArray().add(item);
                             break;
                         case 5:
                             // On item pickedup
                             // data should have which player and item coords
-                            // update the player fields in player data + send to all other players
-                            xCoord = wrapped.getInt(1);
-                            yCoord = wrapped.getInt(5);
-                            byte itemType = data[9];
-                            playerId = data[10];
+                            // update the player fields in player data
+                            xCoord = data[1];
+                            yCoord = data[2];
+                            byte itemType = data[3];
+                            playerId = data[4];
                             for (Item activeItem : getGameState().getMap().getActiveItemArray()) {
-                                if (activeItem.getXCoordinate() == xCoord & activeItem.getYCoordinate() == yCoord) {
+                                if (activeItem.getX() == xCoord & activeItem.getY() == yCoord) {
                                     getGameState().getMap().getActiveItemArray().remove(activeItem);
                                     activeItem = null;
                                 }
@@ -260,6 +269,8 @@ public class CrazyBomberClient {
                             // On player death
                             // data should have which player
                             // send to all other players
+                            playerId = data[1];
+                            getGameState().getPlayerList().remove(getGameState().getPlayerList().get(playerId));
                             break;
                         case 7:
                             // Currently do not have a case for this one
