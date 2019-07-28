@@ -1,11 +1,12 @@
 //TODO: FIX MOVE LATER
 package com.mygdx.crazybomber.model.player;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.crazybomber.model.bomb.Bomb;
+import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.map.Map;
-import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 import java.io.IOException;
 import java.util.Stack;
@@ -27,7 +28,7 @@ public class Player extends Sprite {
     private Map _map;
     private CrazyBomberClient _playerClient;
 
-    public Stack<Bomb> getBombStack(){
+    public Stack<Bomb> getBombStack() {
         return _bombStack;
     }
 
@@ -116,7 +117,7 @@ public class Player extends Sprite {
     }
 
     public void pickUpItem(Item item) throws IOException {
-        _playerClient.sendOnItemPickedUp(item.getX(),item.getY(),(byte) item.getItemType().ordinal());
+        _playerClient.sendOnItemPickedUp(item.getX(), item.getY(), (byte) item.getItemType().ordinal());
     }
 
     public Map getMap() {

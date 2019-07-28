@@ -1,7 +1,7 @@
 package com.mygdx.crazybomber.model.bomb;
 
-import com.mygdx.crazybomber.model.player.Player;
 import com.mygdx.crazybomber.model.map.Map;
+import com.mygdx.crazybomber.model.player.Player;
 
 import java.util.Stack;
 
@@ -14,15 +14,15 @@ public class Bomb {
     private Player _bombOwner;
 
     public Bomb(Player player, Stack<Bomb> bombStack) {
-        setX((byte)Math.round(player.getX()));
-        setY((byte)Math.round(player.getY()));
+        setX((byte) Math.round(player.getX()));
+        setY((byte) Math.round(player.getY()));
         setRangeBomb(player.getNumRangeUpgrades() + 1);
         _bombStack = bombStack;
         _map = player.getMap();
         _bombOwner = player;
     }
 
-    public Bomb(byte x, byte y){
+    public Bomb(byte x, byte y) {
         setX(x);
         setY(y);
     }
@@ -55,7 +55,7 @@ public class Bomb {
         explodeBombsInRange();
     }
 
-    public void explodeBombsInRange(){
+    public void explodeBombsInRange() {
         int explodedBombXCoordinate = getX();
         int explodedBombYCoordinate = getY();
         int explodedBombRange = getRangeBomb();
@@ -74,11 +74,12 @@ public class Bomb {
             }
         }
     }
+
     public Player getBombOwner() {
         return _bombOwner;
     }
 
-    public void explodeBreakableBlocksInRange(){
+    public void explodeBreakableBlocksInRange() {
         int explodedBombXCoordinate = getX();
         int explodedBombYCoordinate = getY();
         int explodedBombRange = getRangeBomb();
