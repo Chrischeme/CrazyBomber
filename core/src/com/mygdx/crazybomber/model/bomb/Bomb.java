@@ -56,15 +56,18 @@ public class Bomb {
         getBombStack().push(this);
 
         for (byte r = 1; r < this.getRangeBomb(); r++) {
-            if (getMap().blockMatrix[getX()][getY() + r] instanceof BreakableBlock) {
-                if (((BreakableBlock) getMap().blockMatrix[getX()][getY() + r]).getItem() != null) {
-                    getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX()][getY() + r]).getItem());
-                }
-                getMap().blockMatrix[getX()][getY() + r] = new EmptyBlock(getX(), (byte) (getY() + r));
-                break;
-            } else if (getMap().blockMatrix[getX()][getY() + r] instanceof UnbreakableBlock) {
+            if (((int) getY() + r) > getMap().blockMatrix[0].length) {
                 break;
             }
+                if (getMap().blockMatrix[getX()][getY() + r] instanceof BreakableBlock) {
+                    if (((BreakableBlock) getMap().blockMatrix[getX()][getY() + r]).getItem() != null) {
+                        getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX()][getY() + r]).getItem());
+                    }
+                    getMap().blockMatrix[getX()][getY() + r] = new EmptyBlock(getX(), (byte) (getY() + r));
+                    break;
+                } else if (getMap().blockMatrix[getX()][getY() + r] instanceof UnbreakableBlock) {
+                    break;
+                }
             for (Bomb activeBomb : getMap().getActiveBombArray()) {
                 if (activeBomb.getX() == getX() & activeBomb.getY() == ((byte) getY() + r)) {
                     activeBomb.getBombOwner().getScheduledFuture().cancel(true);
@@ -73,6 +76,9 @@ public class Bomb {
             }
         }
         for (byte r = 1; r < this.getRangeBomb(); r++) {
+            if (((int) getX() + r) > getMap().blockMatrix.length) {
+                break;
+            }
             if (getMap().blockMatrix[getX() + r][getY()] instanceof BreakableBlock) {
                 if (((BreakableBlock) getMap().blockMatrix[getX() + r][getY()]).getItem() != null) {
                     getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX() + r][getY()]).getItem());
@@ -83,13 +89,16 @@ public class Bomb {
                 break;
             }
             for (Bomb activeBomb : getMap().getActiveBombArray()) {
-                if (activeBomb.getX() == ((byte) getX() + r) & activeBomb.getY() == getY()){
+                if (activeBomb.getX() == ((byte) getX() + r) & activeBomb.getY() == getY()) {
                     activeBomb.getBombOwner().getScheduledFuture().cancel(true);
                     activeBomb.explode();
                 }
             }
         }
         for (byte r = 1; r < this.getRangeBomb(); r++) {
+            if (((int) getY() - r) > 0) {
+                break;
+            }
             if (getMap().blockMatrix[getX()][getY() - r] instanceof BreakableBlock) {
                 if (((BreakableBlock) getMap().blockMatrix[getX()][getY() - r]).getItem() != null) {
                     getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX()][getY() - r]).getItem());
@@ -107,6 +116,9 @@ public class Bomb {
             }
         }
         for (byte r = 1; r < this.getRangeBomb(); r++) {
+            if (((int) getX() - r) > 0) {
+                break;
+            }
             if (getMap().blockMatrix[getX() - r][getY()] instanceof BreakableBlock) {
                 if (((BreakableBlock) getMap().blockMatrix[getX() - r][getY()]).getItem() != null) {
                     getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX() - r][getY()]).getItem());
@@ -117,7 +129,7 @@ public class Bomb {
                 break;
             }
             for (Bomb activeBomb : getMap().getActiveBombArray()) {
-                if (activeBomb.getX() == ((byte) getX() - r) & activeBomb.getY() == getY()){
+                if (activeBomb.getX() == ((byte) getX() - r) & activeBomb.getY() == getY()) {
                     activeBomb.getBombOwner().getScheduledFuture().cancel(true);
                     activeBomb.explode();
                 }
