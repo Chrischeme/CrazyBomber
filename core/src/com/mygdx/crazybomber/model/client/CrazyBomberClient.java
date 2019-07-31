@@ -42,9 +42,7 @@ public class CrazyBomberClient {
             for (int i = 0; i < data[1]; i++) {
                 for (int j = 0; j < data[0]; j++) {
                     blockByte2dArray[i][j] = byteArray[j + i * data[0]];
-                    System.out.print(blockByte2dArray[i][j] + "   ");
                 }
-                System.out.println("");
             }
 
             in.readFully(byteArray, 0, data[0] * data[1]);
@@ -80,7 +78,7 @@ public class CrazyBomberClient {
                 for (byte b : arr) {
                     System.out.print(b + " ");
                 }
-                System.out.println();
+
             }
 
         } catch (IOException e) {
@@ -278,7 +276,15 @@ public class CrazyBomberClient {
                         case 8:
                             // on Bomb explodes
                             // data should have player data // MAYBE should have bomb range
-                            // send to all other players
+                            xCoord = data[1];
+                            yCoord = data[2];
+                            for (int i = 0; i < getGameState().getMap().getActiveBombArray().size(); i++) {
+                                if (getGameState().getMap().getActiveBombArray().get(i).getX() == xCoord &&
+                                      getGameState().getMap().getActiveBombArray().get(i).getY() == yCoord) {
+                                    getGameState().getMap().getActiveBombArray().remove(i);
+                                    break;
+                                }
+                            }
                             break;
                         default:
                             // Unspecified
