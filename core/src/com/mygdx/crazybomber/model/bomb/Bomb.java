@@ -1,5 +1,8 @@
 package com.mygdx.crazybomber.model.bomb;
 
+import com.mygdx.crazybomber.model.block.BreakableBlock;
+import com.mygdx.crazybomber.model.block.EmptyBlock;
+import com.mygdx.crazybomber.model.block.UnbreakableBlock;
 import com.mygdx.crazybomber.model.map.Map;
 import com.mygdx.crazybomber.model.player.Player;
 
@@ -51,38 +54,79 @@ public class Bomb {
 
         getMap().getActiveBombArray().remove(this);
         getBombStack().push(this);
-        explodeBreakableBlocksInRange();
-        explodeBombsInRange();
-    }
 
-    public void explodeBombsInRange() {
-        int explodedBombX = getX();
-        int explodedBombY = getY();
-        int explodedBombRange = getRangeBomb();
-        for (Bomb activeBomb : getMap().getActiveBombArray()) {
-            if (activeBomb.getY() == explodedBombY &&
-                    activeBomb.getX() >= explodedBombX - explodedBombRange &&
-                    activeBomb.getX() <= explodedBombX + explodedBombRange) {
-                activeBomb.getBombOwner().getScheduledFuture().cancel(true);
-                activeBomb.explode();
+        for (byte r = 1; r < this.getRangeBomb(); r++) {
+            if (getMap().blockMatrix[getX()][getY() + r] instanceof BreakableBlock) {
+                if (((BreakableBlock) getMap().blockMatrix[getX()][getY() + r]).getItem() != null) {
+                    getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX()][getY() + r]).getItem());
+                }
+                getMap().blockMatrix[getX()][getY() + r] = new EmptyBlock(getX(), (byte) (getY() + r));
+                break;
+            } else if (getMap().blockMatrix[getX()][getY() + r] instanceof UnbreakableBlock) {
+                break;
             }
-            if (activeBomb.getX() == explodedBombX &&
-                    activeBomb.getY() >= explodedBombY - explodedBombRange &&
-                    activeBomb.getY() <= explodedBombY + explodedBombRange) {
-                activeBomb.getBombOwner().getScheduledFuture().cancel(true);
-                activeBomb.explode();
+            for (Bomb activeBomb : getMap().getActiveBombArray()) {
+                if (activeBomb.getX() == getX() & activeBomb.getY() == ((byte) getY() + r)) {
+                    activeBomb.getBombOwner().getScheduledFuture().cancel(true);
+                    activeBomb.explode();
+                }
+            }
+        }
+        for (byte r = 1; r < this.getRangeBomb(); r++) {
+            if (getMap().blockMatrix[getX() + r][getY()] instanceof BreakableBlock) {
+                if (((BreakableBlock) getMap().blockMatrix[getX() + r][getY()]).getItem() != null) {
+                    getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX() + r][getY()]).getItem());
+                }
+                getMap().blockMatrix[getX() + r][getY()] = new EmptyBlock(getX(), (byte) (getY() + r));
+                break;
+            } else if (getMap().blockMatrix[getX() + r][getY()] instanceof UnbreakableBlock) {
+                break;
+            }
+            for (Bomb activeBomb : getMap().getActiveBombArray()) {
+                if (activeBomb.getX() == ((byte) getX() + r) & activeBomb.getY() == getY()){
+                    activeBomb.getBombOwner().getScheduledFuture().cancel(true);
+                    activeBomb.explode();
+                }
+            }
+        }
+        for (byte r = 1; r < this.getRangeBomb(); r++) {
+            if (getMap().blockMatrix[getX()][getY() - r] instanceof BreakableBlock) {
+                if (((BreakableBlock) getMap().blockMatrix[getX()][getY() - r]).getItem() != null) {
+                    getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX()][getY() - r]).getItem());
+                }
+                getMap().blockMatrix[getX()][getY() - r] = new EmptyBlock(getX(), (byte) (getY() + r));
+                break;
+            } else if (getMap().blockMatrix[getX()][getY() - r] instanceof UnbreakableBlock) {
+                break;
+            }
+            for (Bomb activeBomb : getMap().getActiveBombArray()) {
+                if (activeBomb.getX() == getX() & activeBomb.getY() == ((byte) getY() - r)) {
+                    activeBomb.getBombOwner().getScheduledFuture().cancel(true);
+                    activeBomb.explode();
+                }
+            }
+        }
+        for (byte r = 1; r < this.getRangeBomb(); r++) {
+            if (getMap().blockMatrix[getX() - r][getY()] instanceof BreakableBlock) {
+                if (((BreakableBlock) getMap().blockMatrix[getX() - r][getY()]).getItem() != null) {
+                    getMap().getActiveItemArray().add(((BreakableBlock) getMap().blockMatrix[getX() - r][getY()]).getItem());
+                }
+                getMap().blockMatrix[getX() - r][getY()] = new EmptyBlock(getX(), (byte) (getY() + r));
+                break;
+            } else if (getMap().blockMatrix[getX() - r][getY()] instanceof UnbreakableBlock) {
+                break;
+            }
+            for (Bomb activeBomb : getMap().getActiveBombArray()) {
+                if (activeBomb.getX() == ((byte) getX() - r) & activeBomb.getY() == getY()){
+                    activeBomb.getBombOwner().getScheduledFuture().cancel(true);
+                    activeBomb.explode();
+                }
             }
         }
     }
 
     public Player getBombOwner() {
         return _bombOwner;
-    }
-
-    public void explodeBreakableBlocksInRange() {
-        int explodedBombX = getX();
-        int explodedBombY = getY();
-        int explodedBombRange = getRangeBomb();
     }
 
     public byte getX() {
