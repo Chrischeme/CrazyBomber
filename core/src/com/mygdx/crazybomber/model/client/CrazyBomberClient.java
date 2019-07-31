@@ -78,7 +78,7 @@ public class CrazyBomberClient {
                 for (byte b : arr) {
                     System.out.print(b + " ");
                 }
-
+                System.out.println();
             }
 
         } catch (IOException e) {
@@ -280,7 +280,7 @@ public class CrazyBomberClient {
                             yCoord = data[2];
                             for (int i = 0; i < getGameState().getMap().getActiveBombArray().size(); i++) {
                                 if (getGameState().getMap().getActiveBombArray().get(i).getX() == xCoord &&
-                                      getGameState().getMap().getActiveBombArray().get(i).getY() == yCoord) {
+                                        getGameState().getMap().getActiveBombArray().get(i).getY() == yCoord) {
                                     getGameState().getMap().getActiveBombArray().remove(i);
                                     break;
                                 }
