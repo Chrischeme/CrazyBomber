@@ -56,19 +56,19 @@ public class Bomb {
     }
 
     public void explodeBombsInRange() {
-        int explodedBombXCoordinate = getX();
-        int explodedBombYCoordinate = getY();
+        int explodedBombX = getX();
+        int explodedBombY = getY();
         int explodedBombRange = getRangeBomb();
         for (Bomb activeBomb : getMap().getActiveBombArray()) {
-            if (activeBomb.getY() == explodedBombYCoordinate &&
-                    activeBomb.getX() >= explodedBombXCoordinate - explodedBombRange &&
-                    activeBomb.getX() <= explodedBombXCoordinate + explodedBombRange) {
+            if (activeBomb.getY() == explodedBombY &&
+                    activeBomb.getX() >= explodedBombX - explodedBombRange &&
+                    activeBomb.getX() <= explodedBombX + explodedBombRange) {
                 activeBomb.getBombOwner().getScheduledFuture().cancel(true);
                 activeBomb.explode();
             }
-            if (activeBomb.getX() == explodedBombXCoordinate &&
-                    activeBomb.getY() >= explodedBombYCoordinate - explodedBombRange &&
-                    activeBomb.getY() <= explodedBombYCoordinate + explodedBombRange) {
+            if (activeBomb.getX() == explodedBombX &&
+                    activeBomb.getY() >= explodedBombY - explodedBombRange &&
+                    activeBomb.getY() <= explodedBombY + explodedBombRange) {
                 activeBomb.getBombOwner().getScheduledFuture().cancel(true);
                 activeBomb.explode();
             }
@@ -80,8 +80,8 @@ public class Bomb {
     }
 
     public void explodeBreakableBlocksInRange() {
-        int explodedBombXCoordinate = getX();
-        int explodedBombYCoordinate = getY();
+        int explodedBombX = getX();
+        int explodedBombY = getY();
         int explodedBombRange = getRangeBomb();
     }
 
