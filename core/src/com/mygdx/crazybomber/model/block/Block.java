@@ -1,8 +1,17 @@
 package com.mygdx.crazybomber.model.block;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public abstract class Block extends Sprite {
+    public Block(Texture texture)
+    {
+        super(texture);
+    }
+    public Block()
+    {
+
+    }
     private byte _x; // change the name & getXcoord
     private byte _y; // delete the fields and methods, cast it as a byte
 

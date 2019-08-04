@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class UnbreakableBlock extends Block {
     public UnbreakableBlock(byte x, byte y) {
+        super(new Texture("object/unbreakableblock.png"));
         setXCoord(x);
         setYCoord(y);
-        setX(x*48);
-        setY(y*48);
-        this.setTexture(new Texture("object/unbreakableblock.png"));
+        setX(300);
+        setY(600);
     }
 }

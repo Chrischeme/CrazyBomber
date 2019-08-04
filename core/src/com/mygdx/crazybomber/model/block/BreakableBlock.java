@@ -7,12 +7,12 @@ import com.mygdx.crazybomber.model.item.ItemTypes;
 public class BreakableBlock extends Block {
     private Item _item;
     public BreakableBlock(byte x, byte y) {
+        super(new Texture("object/breakableblock.png"));
         setXCoord(x);
         setYCoord(y);
         setX(x*48);
-        setY(x*48);
+        setY(y*48);
         setItem(new Item(x, y, ItemTypes.Empty));
-        this.setTexture(new Texture("object/breakableblock.png"));
     }
 
     public Item getItem() {

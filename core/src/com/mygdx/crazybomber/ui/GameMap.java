@@ -56,7 +56,7 @@ public class GameMap implements Screen {
         CrazyBomberClient client = new CrazyBomberClient("localhost", playerTexture);
         gameState = client.getGameState();
         player = client.getPlayer();
-        player.setPosition(180,0);
+        //player.setPosition(180,0);
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -114,12 +114,13 @@ public class GameMap implements Screen {
         {
         }
         player.draw(batch);
-        for (int i = 0; i <15; i++)
-            for (int j = 0; j < 15; j++)
-            {
-                if (!(gameState.getMap().blockMatrix[i][j] instanceof EmptyBlock))
-                gameState.getMap().blockMatrix[i][j].draw(batch);
+        for (int i = 0; i <15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (!(gameState.getMap().blockMatrix[i][j] instanceof EmptyBlock)) {
+                    gameState.getMap().blockMatrix[i][j].draw(batch);
+                }
             }
+        }
         batch.end();
         stage.draw();
     }

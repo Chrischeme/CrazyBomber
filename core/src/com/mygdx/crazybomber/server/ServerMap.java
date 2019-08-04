@@ -23,9 +23,9 @@ public class ServerMap{
         for (byte i = 0; i < 15; i++) {
             for (byte j = 0; j < 15; j++) {
                 if (intMap[i][j] == 1) {
-                    blockMatrix[i][j] = new ServerUnbreakableBlock(i, j);
+                    blockMatrix[i][j] = new ServerUnbreakableBlock(i,j);
                 } else if (intMap[i][j] == 2) {
-                    blockMatrix[i][j] = new ServerBreakableBlock(i, j, itemIDCounter);
+                    blockMatrix[i][j] = new ServerBreakableBlock(i,j, itemIDCounter);
                     if (((ServerBreakableBlock) (blockMatrix[i][j])).getItem() != null) {
                         itemIDCounter = ((byte) (itemIDCounter + 1));
                         getActiveItemArray().add(((ServerBreakableBlock) blockMatrix[i][j]).getItem());
