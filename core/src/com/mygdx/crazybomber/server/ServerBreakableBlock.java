@@ -5,28 +5,28 @@ import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.item.ItemTypes;
 
 public class ServerBreakableBlock extends Block {
-    private Item _item;
+    private ServerItem _item;
 
     public ServerBreakableBlock(byte x, byte y, byte itemID) {
         setXCoord(x);
         setYCoord(y);
         double randNum = Math.random();
         if (randNum <= 0.1) {
-            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.BombUp));
+            setItem(new ServerItem(getXCoord(), getYCoord(), ItemTypes.BombUp));
         } else if (randNum <= 0.2) {
-            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.RangeUp));
+            setItem(new ServerItem(getXCoord(), getYCoord(), ItemTypes.RangeUp));
         } else if (randNum <= 0.30) {
-            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.SpeedUp));
+            setItem(new ServerItem(getXCoord(), getYCoord(), ItemTypes.SpeedUp));
         } else {
-            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.Empty));
+            setItem(new ServerItem(getXCoord(), getYCoord(), ItemTypes.Empty));
         }
     }
 
-    public Item getItem() {
+    public ServerItem getItem() {
         return _item;
     }
 
-    public void setItem(Item _item) {
+    public void setItem(ServerItem _item) {
         this._item = _item;
     }
 }

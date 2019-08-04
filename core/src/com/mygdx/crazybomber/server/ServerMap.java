@@ -12,12 +12,12 @@ import java.util.ArrayList;
 public class ServerMap{
 
     public Block[][] blockMatrix = new Block[15][15];
-    private ArrayList<Bomb> _activeBombArray;
-    private ArrayList<Item> _activeItemArray;
+    private ArrayList<ServerBomb> _activeBombArray;
+    private ArrayList<ServerItem> _activeItemArray;
 
     public ServerMap(int[][] intMap) {
-        _activeBombArray = new ArrayList<Bomb>();
-        _activeItemArray = new ArrayList<Item>();
+        _activeBombArray = new ArrayList<ServerBomb>();
+        _activeItemArray = new ArrayList<ServerItem>();
         byte itemIDCounter = 0;
 
         for (byte i = 0; i < 15; i++) {
@@ -37,11 +37,11 @@ public class ServerMap{
         }
     }
 
-    public ArrayList<Bomb> getActiveBombArray() {
+    public ArrayList<ServerBomb> getActiveBombArray() {
         return _activeBombArray;
     }
 
-    public ArrayList<Item> getActiveItemArray() {
+    public ArrayList<ServerItem> getActiveItemArray() {
         return _activeItemArray;
     }
 }
