@@ -8,17 +8,17 @@ public class ServerBreakableBlock extends Block {
     private Item _item;
 
     public ServerBreakableBlock(byte x, byte y, byte itemID) {
-        setX(x);
-        setY(y);
+        setXCoord(x);
+        setYCoord(y);
         double randNum = Math.random();
         if (randNum <= 0.1) {
-            setItem(new Item(getX(), getY(), ItemTypes.BombUp));
+            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.BombUp));
         } else if (randNum <= 0.2) {
-            setItem(new Item(getX(), getY(), ItemTypes.RangeUp));
+            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.RangeUp));
         } else if (randNum <= 0.30) {
-            setItem(new Item(getX(), getY(), ItemTypes.SpeedUp));
+            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.SpeedUp));
         } else {
-            setItem(new Item(getX(), getY(), ItemTypes.Empty));
+            setItem(new Item(getXCoord(), getYCoord(), ItemTypes.Empty));
         }
     }
 

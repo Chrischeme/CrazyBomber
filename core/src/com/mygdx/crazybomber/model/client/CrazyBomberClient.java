@@ -248,7 +248,7 @@ public class CrazyBomberClient {
                             byte itemType = data[3];
                             playerId = data[4];
                             for (Item activeItem : getGameState().getMap().getActiveItemArray()) {
-                                if (activeItem.getX() == xCoord & activeItem.getY() == yCoord) {
+                                if (activeItem.getXCoord() == xCoord & activeItem.getYCoord() == yCoord) {
                                     getGameState().getMap().getActiveItemArray().remove(activeItem);
                                     activeItem = null;
                                 }

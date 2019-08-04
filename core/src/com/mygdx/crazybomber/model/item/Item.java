@@ -1,29 +1,35 @@
 package com.mygdx.crazybomber.model.item;
 
-public class Item {
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+public class Item extends Sprite {
     private byte _x;
     private byte _y;
     private ItemTypes _itemType;
+    private Texture texture = new Texture("object/item.png");
 
     public Item(byte x, byte y, ItemTypes itemType) {
-        setX(x);
-        setY(y);
+        setXCoord(x);
+        setYCoord(y);
+        setX(x*48);
+        setY(y*48);
         _itemType = itemType;
     }
 
-    public byte getX() {
+    public byte getXCoord() {
         return _x;
     }
 
-    public void setX(byte x) {
+    public void setXCoord(byte x) {
         this._x = x;
     }
 
-    public byte getY() {
+    public byte getYCoord() {
         return _y;
     }
 
-    public void setY(byte y) {
+    public void setYCoord(byte y) {
         this._y = y;
     }
 

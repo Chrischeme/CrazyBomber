@@ -17,13 +17,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.crazybomber.CrazyBomber;
+import com.mygdx.crazybomber.model.block.Block;
+import com.mygdx.crazybomber.model.block.EmptyBlock;
+import com.mygdx.crazybomber.model.block.UnbreakableBlock;
 import com.mygdx.crazybomber.model.gameState.GameState;
 import com.mygdx.crazybomber.model.player.Player;
 import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
 public class GameMap implements Screen {
-    private GameState game1;
-    private Sprite background,breakableblock,unbreakableblock,bomb; // TODO: extend blocks with sprite
+    private Sprite background;
     private SpriteBatch batch = new SpriteBatch();
     private Stage stage;
     private Table table;
@@ -48,13 +50,6 @@ public class GameMap implements Screen {
         background = new Sprite(splashTexture);
         background.setSize(720,720);
         background.setX(180);
-        breakableblock = new Sprite(new Texture("object/breakableblock.png"));
-        breakableblock.setPosition(400,400);
-        unbreakableblock = new Sprite(new Texture("object/unbreakableblock.png"));
-        unbreakableblock.setPosition(500,400);
-        bomb = new Sprite(new Texture("object/bomb.png"));
-        bomb.setPosition(600,400);
-        bomb.setSize(48,48);
         batch = new SpriteBatch();
 
         playerTexture = new Texture("object/player.png");
@@ -62,6 +57,7 @@ public class GameMap implements Screen {
         gameState = client.getGameState();
         player = client.getPlayer();
         player.setPosition(180,0);
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
@@ -95,9 +91,6 @@ public class GameMap implements Screen {
         stage.act(delta);
         batch.begin();
         background.draw(batch);
-        bomb.draw(batch);
-        unbreakableblock.draw(batch);
-        breakableblock.draw(batch);
         isPressedUP = Gdx.input.isKeyPressed(Input.Keys.UP);
         isPressedDOWN = Gdx.input.isKeyPressed(Input.Keys.DOWN);
         isPressedRIGHT = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
@@ -121,6 +114,12 @@ public class GameMap implements Screen {
         {
         }
         player.draw(batch);
+        for (int i = 0; i <15; i++)
+            for (int j = 0; j < 15; j++)
+            {
+                if (!(gameState.getMap().blockMatrix[i][j] instanceof EmptyBlock))
+                gameState.getMap().blockMatrix[i][j].draw(batch);
+            }
         batch.end();
         stage.draw();
     }

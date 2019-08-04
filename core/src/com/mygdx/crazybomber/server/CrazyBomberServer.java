@@ -139,7 +139,7 @@ public class CrazyBomberServer {
                             xCoord = data[1];
                             yCoord = data[2];
                             for (Bomb bomb : gameState.getMap().getActiveBombArray()) {
-                                if (bomb.getX() == xCoord & bomb.getY() == yCoord) {
+                                if (bomb.getXCoord() == xCoord & bomb.getYCoord() == yCoord) {
                                     break;
                                 } else {
                                     gameState.getMap().getActiveBombArray().add(new Bomb(xCoord, yCoord));
@@ -179,7 +179,7 @@ public class CrazyBomberServer {
                             xCoord = data[1];
                             yCoord = data[2];
                             for (Item activeItem : gameState.getMap().getActiveItemArray()) {
-                                if (activeItem.getX() == xCoord & activeItem.getY() == yCoord) {
+                                if (activeItem.getXCoord() == xCoord & activeItem.getYCoord() == yCoord) {
                                     gameState.getMap().getActiveItemArray().remove(activeItem);
                                     out.write(data);
                                     break;
@@ -203,8 +203,8 @@ public class CrazyBomberServer {
                             xCoord = data[1];
                             yCoord = data[2];
                             for (int i = 0; i < gameState.getMap().getActiveBombArray().size(); i++) {
-                                if (gameState.getMap().getActiveBombArray().get(i).getX() == xCoord &&
-                                        gameState.getMap().getActiveBombArray().get(i).getY() == yCoord) {
+                                if (gameState.getMap().getActiveBombArray().get(i).getXCoord() == xCoord &&
+                                        gameState.getMap().getActiveBombArray().get(i).getYCoord() == yCoord) {
                                     gameState.getMap().getActiveBombArray().remove(i);
                                     break;
                                 }

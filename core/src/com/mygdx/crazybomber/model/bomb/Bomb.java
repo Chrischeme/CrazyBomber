@@ -1,21 +1,24 @@
 package com.mygdx.crazybomber.model.bomb;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.crazybomber.model.map.Map;
 import com.mygdx.crazybomber.model.player.Player;
 
 import java.util.Stack;
 
-public class Bomb {
+public class Bomb extends Sprite {
     private int _rangeBomb;
     private byte _x;
     private byte _y;
     private Stack<Bomb> _bombStack;
     private Map _map;
     private Player _bombOwner;
+    private Texture texture = new Texture("object/bomb.png");
 
     public Bomb(Player player, Stack<Bomb> bombStack) {
-        setX((byte) Math.round(player.getX()));
-        setY((byte) Math.round(player.getY()));
+        setXCoord((byte) Math.round(player.getX()));
+        setYCoord((byte) Math.round(player.getY()));
         setRangeBomb(player.getNumRangeUpgrades() + 1);
         _bombStack = bombStack;
         _map = player.getMap();
@@ -23,8 +26,8 @@ public class Bomb {
     }
 
     public Bomb(byte x, byte y) {
-        setX(x);
-        setY(y);
+        setXCoord(x);
+        setYCoord(y);
     }
 
     public int getRangeBomb() {
@@ -56,19 +59,19 @@ public class Bomb {
     }
 
     public void explodeBombsInRange() {
-        int explodedBombXCoordinate = getX();
-        int explodedBombYCoordinate = getY();
+        int explodedBombXCoordinate = getXCoord();
+        int explodedBombYCoordinate = getYCoord();
         int explodedBombRange = getRangeBomb();
         for (Bomb activeBomb : getMap().getActiveBombArray()) {
-            if (activeBomb.getY() == explodedBombYCoordinate &&
-                    activeBomb.getX() >= explodedBombXCoordinate - explodedBombRange &&
-                    activeBomb.getX() <= explodedBombXCoordinate + explodedBombRange) {
+            if (activeBomb.getYCoord() == explodedBombYCoordinate &&
+                    activeBomb.getXCoord() >= explodedBombXCoordinate - explodedBombRange &&
+                    activeBomb.getXCoord() <= explodedBombXCoordinate + explodedBombRange) {
                 activeBomb.getBombOwner().getScheduledFuture().cancel(true);
                 activeBomb.explode();
             }
-            if (activeBomb.getX() == explodedBombXCoordinate &&
-                    activeBomb.getY() >= explodedBombYCoordinate - explodedBombRange &&
-                    activeBomb.getY() <= explodedBombYCoordinate + explodedBombRange) {
+            if (activeBomb.getXCoord() == explodedBombXCoordinate &&
+                    activeBomb.getYCoord() >= explodedBombYCoordinate - explodedBombRange &&
+                    activeBomb.getYCoord() <= explodedBombYCoordinate + explodedBombRange) {
                 activeBomb.getBombOwner().getScheduledFuture().cancel(true);
                 activeBomb.explode();
             }
@@ -80,24 +83,26 @@ public class Bomb {
     }
 
     public void explodeBreakableBlocksInRange() {
-        int explodedBombXCoordinate = getX();
-        int explodedBombYCoordinate = getY();
+        int explodedBombXCoordinate = getXCoord();
+        int explodedBombYCoordinate = getYCoord();
         int explodedBombRange = getRangeBomb();
     }
 
-    public byte getX() {
+    public byte getXCoord() {
         return _x;
     }
 
-    public void setX(byte x) {
+    public void setXCoord(byte x) {
         this._x = x;
+        setX(x*48);
     }
 
-    public byte getY() {
+    public byte getYCoord() {
         return _y;
     }
 
-    public void setY(byte y) {
+    public void setYCoord(byte y) {
         this._y = y;
+        setY(y*48);
     }
 }
