@@ -14,7 +14,6 @@ public class Bomb extends Sprite {
     private Stack<Bomb> _bombStack;
     private Map _map;
     private Player _bombOwner;
-    private Texture texture = new Texture("object/bomb.png");
 
     public Bomb(Player player, Stack<Bomb> bombStack) {
         setXCoord((byte) Math.round(player.getX()));
@@ -23,6 +22,7 @@ public class Bomb extends Sprite {
         _bombStack = bombStack;
         _map = player.getMap();
         _bombOwner = player;
+        this.setTexture(new Texture("object/bomb.png"));
     }
 
     public Bomb(byte x, byte y) {

@@ -7,14 +7,13 @@ public class Item extends Sprite {
     private byte _x;
     private byte _y;
     private ItemTypes _itemType;
-    private Texture texture = new Texture("object/item.png");
-
     public Item(byte x, byte y, ItemTypes itemType) {
         setXCoord(x);
         setYCoord(y);
         setX(x*48);
         setY(y*48);
         _itemType = itemType;
+        this.setTexture(new Texture("object/item.png"));
     }
 
     public byte getXCoord() {
