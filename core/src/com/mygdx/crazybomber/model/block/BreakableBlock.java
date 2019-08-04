@@ -10,8 +10,8 @@ public class BreakableBlock extends Block {
         super(new Texture("object/breakableblock.png"));
         setXCoord(x);
         setYCoord(y);
-        setX(x*48);
-        setY(y*48);
+        setX(y*48+180);
+        setY((14-x)*48);
         setItem(new Item(x, y, ItemTypes.Empty));
     }
 

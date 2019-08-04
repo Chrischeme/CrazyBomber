@@ -7,7 +7,7 @@ public class UnbreakableBlock extends Block {
         super(new Texture("object/unbreakableblock.png"));
         setXCoord(x);
         setYCoord(y);
-        setX(300);
-        setY(600);
+        setX(y*48+180);
+        setY((14-x)*48);
     }
 }
