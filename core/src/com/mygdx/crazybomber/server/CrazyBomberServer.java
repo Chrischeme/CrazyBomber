@@ -130,7 +130,16 @@ public class CrazyBomberServer {
                             // data should have which player + new coord + if a movement key is pressed down (WASD)
                             // update the player coord in player data + send to all other players
                             player.setX((float) wrapped.getFloat(1));
-                            player.setY((float) wrapped.getFloat(9));
+                            player.setY((float) wrapped.getFloat(5));
+                            data = new byte[11];
+                            data[0] = 1;
+                            byte[] floatInByteArray = new byte[4];
+                            ByteBuffer.wrap(floatInByteArray).putFloat(x);
+                            copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 1);
+                            ByteBuffer.wrap(floatInByteArray).putFloat(y);
+                            copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 5);
+                            data[9] = wrapped.get(9);
+                            data[10] = player.getId();
                             break;
                         case 2:
                             // On player placed bomb

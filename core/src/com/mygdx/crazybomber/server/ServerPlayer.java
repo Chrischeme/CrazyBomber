@@ -82,4 +82,12 @@ public class ServerPlayer {
     public void setY(float y) {
         this.y = y;
     }
+
+    public byte getId() {
+        return _id;
+    }
+
+    public void setId(byte _id) {
+        this._id = _id;
+    }
 }
