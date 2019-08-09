@@ -200,8 +200,16 @@ public class CrazyBomberClient {
                     System.out.println("Updating: " + switchByte);
                     byte xCoord, yCoord;
                     byte playerId;
+                    byte headingDirection;
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
+                        case 1:
+                            playerId = data[10];
+                            headingDirection = wrapped.get(9);
+                            getGameState().getPlayerList().get(playerId).setX((float) wrapped.getFloat(1));
+                            getGameState().getPlayerList().get(playerId).setY((float) wrapped.getFloat(5));
+                            data[9] = wrapped.get(9);
+
                         case 2:
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
