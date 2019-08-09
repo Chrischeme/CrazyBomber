@@ -10,8 +10,8 @@ public class Item extends Sprite {
     public Item(byte x, byte y, ItemTypes itemType) {
         setXCoord(x);
         setYCoord(y);
-        setX(x*48);
-        setY(y*48);
+        setX(y*48+180);
+        setY((14-x)*48);
         _itemType = itemType;
         this.setTexture(new Texture("object/item.png"));
     }

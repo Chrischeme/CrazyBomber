@@ -2,6 +2,7 @@ package com.mygdx.crazybomber.model.block;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Block extends Sprite {
     public Block(Texture texture)

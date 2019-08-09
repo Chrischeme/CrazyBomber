@@ -33,7 +33,7 @@ public class Repository {
         _listOfMaps.add(map);
         _listOfMaps.add(map1);
         Room room = new Room(new Texture("backgroundimg1.png"), this);
-        Room room1 = new Room(new Texture("backgroundimg3.png"), this);
+        Room room1 = new Room(new Texture("backgroundimg4.png"), this);
         Room room2 = new Room(new Texture("backgroundimg2.png"), this);
         _listOfRooms.add(room);
         _listOfRooms.add(room1);
