@@ -201,6 +201,7 @@ public class CrazyBomberClient {
                     byte xCoord, yCoord;
                     byte playerId;
                     switch (switchByte) {
+                        case 1:
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
                         case 2:
                             // On player placed bomb

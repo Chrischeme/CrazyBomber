@@ -47,11 +47,6 @@ public class Bomb {
     }
 
     public void explode() {
-        //todo to factor in walls
-        //todo System.out.println("bomb x coordinate is " + getXCoordinate());
-        //todo System.out.println("bomb y coordinate is " + getYCoordinate());
-        //todo System.out.println("bomb exploded at " + (double)System.nanoTime()/(1000000000));
-
         getMap().getActiveBombArray().remove(this);
         getBombStack().push(this);
 
