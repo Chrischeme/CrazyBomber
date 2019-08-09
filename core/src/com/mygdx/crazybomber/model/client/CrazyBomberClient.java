@@ -65,7 +65,18 @@ public class CrazyBomberClient {
             _player = new Player(playerId, coordinates[0], coordinates[1], _gameState.getMap(), texture, this);
             _gameState.getPlayerList().add(_player);
 
-            System.out.println("playerId is " + playerId);
+            int length = in.readInt();
+            data = new byte[length * 3];
+            if (length > 0) {
+                in.readFully(data, 0, data.length);
+            }
+
+            for (int i = 0; i > length; i++) {
+                getGameState().getPlayerList().add(new Player(data[i*3],data[i*3+1],data[i*3+2]));
+            }
+
+
+            /*System.out.println("playerId is " + playerId);
             System.out.println("player coordinates are X:" + _gameState.getPlayerList().get(playerId).getX() + "Y:" + _gameState.getPlayerList().get(playerId).getY());
             for (byte[] arr : blockByte2dArray) {
                 for (byte b : arr) {
@@ -79,7 +90,7 @@ public class CrazyBomberClient {
                     System.out.print(b + " ");
                 }
                 System.out.println();
-            }
+            }*/
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,14 +108,11 @@ public class CrazyBomberClient {
         return _player;
     }
 
-    public void sendOnNewPlayer(int x, int y) throws IOException {
-        byte[] data = new byte[9];
-        data[0] = 7;
-        byte[] intInByteArray = new byte[4];
-        ByteBuffer.wrap(intInByteArray).putInt(x);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 1);
-        ByteBuffer.wrap(intInByteArray).putInt(y);
-        copyArrayToAnotherWithStartingIndexes(intInByteArray, data, 5);
+    public void sendOnNewPlayer(byte x, byte y, byte playerId) throws IOException {
+        byte[] data = new byte[3];
+        data[0] = x;
+        data[1] = y;
+        data[2] = getPlayer().getPlayerId();
         sendByteArray(data);
     }
 
@@ -206,6 +214,13 @@ public class CrazyBomberClient {
                         case 1:
                             playerId = data[10];
                             headingDirection = wrapped.get(9);
+                            //todo add for loop to look for the exact player that has the matching playerID
+                            for (Player player : getGameState().getPlayerList()) {
+                                if (player.getPlayerId() == playerId) {
+                                    getGameState().getPlayerList().get(playerId).setX((float) wrapped.getFloat(1));
+                                    getGameState().getPlayerList().get(playerId).setY((float) wrapped.getFloat(5));
+                                }
+                            }
                             getGameState().getPlayerList().get(playerId).setX((float) wrapped.getFloat(1));
                             getGameState().getPlayerList().get(playerId).setY((float) wrapped.getFloat(5));
                             data[9] = wrapped.get(9);
@@ -279,7 +294,13 @@ public class CrazyBomberClient {
                             getGameState().getPlayerList().remove(getGameState().getPlayerList().get(playerId));
                             break;
                         case 7:
-                            // Currently do not have a case for this one
+                            // On player creation
+                            // data should have player coordinates and playerID
+                            // send to all others
+                            xCoord = data[1];
+                            yCoord = data[2];
+                            playerId = data[3];
+                            getGameState().getPlayerList().add(new Player(xCoord, yCoord, playerId));
                             break;
                         case 8:
                             // on Bomb explodes
