@@ -108,8 +108,8 @@ public class Player extends Sprite {
         setOnItem(false);
         setSpeed(1.5f);
         setNumRangeUpgrades(0);
-        setX(playerSpawnX);
-        setY(playerSpawnY);
+        setX(playerSpawnX*48 + 180);
+        setY(playerSpawnY*48 + 180);
         _map = map;
         Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
@@ -138,8 +138,8 @@ public class Player extends Sprite {
     }
 
     public Player(byte x, byte y, byte playerId) {
-        setX((float)x);
-        setY((float)y);
+        setX((float)x*48 + 180);
+        setY((float)y*48 + 180);
         _playerId = playerId;
     }
 }

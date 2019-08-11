@@ -61,7 +61,6 @@ public class GameMap implements Screen {
         client = new CrazyBomberClient("localhost", playerTexture);
         gameState = client.getGameState();
         player = client.getPlayer();
-        player.setPosition(180,0);
         player.setSize(48,48);
 
         stage = new Stage();
