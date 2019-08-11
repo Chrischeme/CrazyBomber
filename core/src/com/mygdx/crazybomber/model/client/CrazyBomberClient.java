@@ -228,7 +228,7 @@ public class CrazyBomberClient {
                                 }
                             }
                             data[9] = wrapped.get(9);
-
+                            break;
                         case 2:
                             // On player placed bomb
                             // data should have coord of bomb.  IMPLEMENT LATER : have time the bomb was placed
