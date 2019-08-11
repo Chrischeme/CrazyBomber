@@ -213,7 +213,7 @@ public class CrazyBomberClient {
 
                     System.out.println("START");
                     for (byte b : data) {
-                        System.out.print(b);
+                        System.out.print(b + " ");
                     }
                     System.out.println("END");
                     switch (switchByte) {

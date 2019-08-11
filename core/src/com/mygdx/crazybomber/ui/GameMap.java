@@ -109,22 +109,22 @@ public class GameMap implements Screen {
         if (isPressedUP == true || isPressedW == true)
         {
             player.translateY(player.getSpeed());
-            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)2);
+            client.sendOnPlayerCoordinateChange((player.getX() - 180) / 48,player.getY() / 48,(byte)2);
         }
         else if (isPressedDOWN == true || isPressedS == true)
         {
             player.translateY(-player.getSpeed());
-            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)0);
+            client.sendOnPlayerCoordinateChange((player.getX() - 180) / 48,player.getY() / 48,(byte)0);
         }
         else if (isPressedLEFT == true || isPressedA == true)
         {
             player.translateX(-player.getSpeed());
-            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)1);
+            client.sendOnPlayerCoordinateChange((player.getX() - 180) / 48,player.getY() / 48,(byte)1);
         }
         else if (isPressedRIGHT == true || isPressedD == true)
         {
             player.translateX(player.getSpeed());
-            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)3);
+            client.sendOnPlayerCoordinateChange((player.getX() - 180) / 48,player.getY() / 48,(byte)3);
         }
         } catch (IOException e) {
             e.printStackTrace();
