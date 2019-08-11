@@ -214,7 +214,6 @@ public class CrazyBomberClient {
                         case 1:
                             playerId = data[10];
                             headingDirection = wrapped.get(9);
-                            //todo add for loop to look for the exact player that has the matching playerID
                             for (Player player : getGameState().getPlayerList()) {
                                 if (player.getPlayerId() == playerId) {
                                     getGameState().getPlayerList().get(playerId).setX((float) wrapped.getFloat(1));

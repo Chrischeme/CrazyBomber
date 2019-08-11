@@ -114,7 +114,7 @@ public class Player extends Sprite {
         Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
         getMap().getActiveBombArray().add(bomb);
-        getPlayerClient().sendOnNewPlayer((int) playerSpawnX, (int) playerSpawnY);
+        getPlayerClient().sendOnNewPlayer((byte) playerSpawnX, (byte) playerSpawnY,getPlayerId());
     }
 
     public void pickUpItem(Item item) throws IOException {
