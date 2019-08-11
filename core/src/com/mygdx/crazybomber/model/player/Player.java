@@ -98,7 +98,7 @@ public class Player extends Sprite {
         return droppedBomb;
     }
 
-    public Player(byte id, float playerSpawnX, float playerSpawnY, Map map, Texture texture, CrazyBomberClient client) {
+    public Player(byte id, float playerSpawnX, float playerSpawnY, Map map, Texture texture, CrazyBomberClient client) throws IOException {
         super(texture);
         _playerClient = client;
         _playerId = id;
@@ -114,6 +114,7 @@ public class Player extends Sprite {
         Bomb bomb = new Bomb(this, _bombStack);
         _bombStack.push(bomb);
         getMap().getActiveBombArray().add(bomb);
+        getPlayerClient().sendOnNewPlayer((int) playerSpawnX, (int) playerSpawnY);
     }
 
     public void pickUpItem(Item item) throws IOException {
@@ -136,4 +137,9 @@ public class Player extends Sprite {
         return _playerId;
     }
 
+    public Player(byte x, byte y, byte playerId) {
+        setX((float)x);
+        setY((float)y);
+        _playerId = playerId;
+    }
 }

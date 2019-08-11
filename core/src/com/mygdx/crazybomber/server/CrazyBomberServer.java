@@ -2,6 +2,7 @@ package com.mygdx.crazybomber.server;
 
 import com.mygdx.crazybomber.model.block.EmptyBlock;
 import com.mygdx.crazybomber.model.bomb.Bomb;
+import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.item.ItemTypes;
 
@@ -111,6 +112,20 @@ public class CrazyBomberServer {
                     }
                     out.write(blockData);
                     out.write(itemData);
+
+                    out.writeInt(gameState.getPlayerList().size()-1);
+                    data = new byte[(gameState.getPlayerList().size()-1)];
+                    for (ServerPlayer serverplayer: gameState.getPlayerList()) {
+                        int i = 0;
+                        if (serverplayer.getId() != player.getId()){
+                            data[i*3] = (byte) player.getX();
+                            data[i*3+1] = (byte) player.getY();
+                            data[i*3+2] = player.getId();
+                            i++;
+                        }
+                    }
+                    out.write(data);
+
                 }
                 while (true) {
                     int length = in.readInt();
@@ -130,7 +145,16 @@ public class CrazyBomberServer {
                             // data should have which player + new coord + if a movement key is pressed down (WASD)
                             // update the player coord in player data + send to all other players
                             player.setX((float) wrapped.getFloat(1));
-                            player.setY((float) wrapped.getFloat(9));
+                            player.setY((float) wrapped.getFloat(5));
+                            data = new byte[11];
+                            data[0] = 1;
+                            byte[] floatInByteArray = new byte[4];
+                            ByteBuffer.wrap(floatInByteArray).putFloat(x);
+                            copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 1);
+                            ByteBuffer.wrap(floatInByteArray).putFloat(y);
+                            copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 5);
+                            data[9] = wrapped.get(9);
+                            data[10] = player.getId();
                             break;
                         case 2:
                             // On player placed bomb
@@ -194,7 +218,9 @@ public class CrazyBomberServer {
                             gameState.getPlayerList().remove(gameState.getPlayerList().get(playerId));
                             break;
                         case 7:
-                            // Currently do not have a case for this one
+                            // On player creation
+                            // data should have player coordinates and playerID
+                            // send to all others
                             break;
                         case 8:
                             // on Bomb explodes
