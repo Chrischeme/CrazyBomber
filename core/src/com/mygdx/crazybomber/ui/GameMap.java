@@ -137,6 +137,9 @@ public class GameMap implements Screen {
              }
         }
 
+        for (Player player: gameState.getPlayerList()) {
+            player.draw(batch);
+        }
         for (Item item : gameState.getMap().getActiveItemArray()) {
             item.draw(batch);
         }

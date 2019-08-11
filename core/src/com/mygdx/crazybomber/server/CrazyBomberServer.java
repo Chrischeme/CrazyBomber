@@ -146,15 +146,10 @@ public class CrazyBomberServer {
                             // update the player coord in player data + send to all other players
                             player.setX((float) wrapped.getFloat(1));
                             player.setY((float) wrapped.getFloat(5));
-                            data = new byte[11];
-                            data[0] = 1;
-                            byte[] floatInByteArray = new byte[4];
-                            ByteBuffer.wrap(floatInByteArray).putFloat(x);
-                            copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 1);
-                            ByteBuffer.wrap(floatInByteArray).putFloat(y);
-                            copyArrayToAnotherWithStartingIndexes(floatInByteArray, data, 5);
-                            data[9] = wrapped.get(9);
-                            data[10] = player.getId();
+                            byte[] newData = new byte[11];
+                            copyArrayToAnotherWithStartingIndexes(data, newData, 0);
+                            newData[10] = player.getId();
+                            data = newData;
                             break;
                         case 2:
                             // On player placed bomb

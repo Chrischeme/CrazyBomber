@@ -166,6 +166,8 @@ public class CrazyBomberClient {
     //                     3 if going down
     //                     4 if going left
     public void sendOnPlayerCoordinateChange(float x, float y, byte headingDirection) throws IOException {
+        System.out.println(x + " X ");
+        System.out.println(y + " Y ");
         byte[] data = new byte[10];
         data[0] = 1;
         byte[] floatInByteArray = new byte[4];
