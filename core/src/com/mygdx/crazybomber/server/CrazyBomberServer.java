@@ -2,6 +2,7 @@ package com.mygdx.crazybomber.server;
 
 import com.mygdx.crazybomber.model.block.EmptyBlock;
 import com.mygdx.crazybomber.model.bomb.Bomb;
+import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.item.ItemTypes;
 
@@ -111,6 +112,20 @@ public class CrazyBomberServer {
                     }
                     out.write(blockData);
                     out.write(itemData);
+
+                    out.writeInt(gameState.getPlayerList().size()-1);
+                    data = new byte[(gameState.getPlayerList().size()-1)];
+                    for (ServerPlayer serverplayer: gameState.getPlayerList()) {
+                        int i = 0;
+                        if (serverplayer.getId() != player.getId()){
+                            data[i*3] = (byte) player.getX();
+                            data[i*3+1] = (byte) player.getY();
+                            data[i*3+2] = player.getId();
+                            i++;
+                        }
+                    }
+                    out.write(data);
+
                 }
                 while (true) {
                     int length = in.readInt();
@@ -203,7 +218,9 @@ public class CrazyBomberServer {
                             gameState.getPlayerList().remove(gameState.getPlayerList().get(playerId));
                             break;
                         case 7:
-                            // Currently do not have a case for this one
+                            // On player creation
+                            // data should have player coordinates and playerID
+                            // send to all others
                             break;
                         case 8:
                             // on Bomb explodes
