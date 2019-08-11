@@ -109,10 +109,11 @@ public class CrazyBomberClient {
     }
 
     public void sendOnNewPlayer(byte x, byte y, byte playerId) throws IOException {
-        byte[] data = new byte[3];
-        data[0] = x;
-        data[1] = y;
-        data[2] = playerId;
+        byte[] data = new byte[4];
+        data[0] = 7;
+        data[1] = x;
+        data[2] = y;
+        data[3] = playerId;
         sendByteArray(data);
     }
 
@@ -209,6 +210,12 @@ public class CrazyBomberClient {
                     byte xCoord, yCoord;
                     byte playerId;
                     byte headingDirection;
+
+                    System.out.println("START");
+                    for (byte b : data) {
+                        System.out.print(b);
+                    }
+                    System.out.println("END");
                     switch (switchByte) {
                         // not sure about the data about which player, we might be able to decipher that with the different sockets
                         case 1:
