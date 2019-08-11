@@ -26,7 +26,7 @@ public class CrazyBomberClient {
 
     public CrazyBomberClient(String serverAddress, Texture texture) {
         try {
-            this.socket = new Socket(serverAddress, 59898);
+            this.socket = new Socket("108.54.182.203", 3000);
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
 
@@ -72,7 +72,7 @@ public class CrazyBomberClient {
             }
 
             for (int i = 0; i > length; i++) {
-                getGameState().getPlayerList().add(new Player(data[i*3],data[i*3+1],data[i*3+2]));
+                getGameState().getPlayerList().add(new Player(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]));
             }
 
 
@@ -112,7 +112,7 @@ public class CrazyBomberClient {
         byte[] data = new byte[3];
         data[0] = x;
         data[1] = y;
-        data[2] = getPlayer().getPlayerId();
+        data[2] = playerId;
         sendByteArray(data);
     }
 
@@ -216,12 +216,10 @@ public class CrazyBomberClient {
                             headingDirection = wrapped.get(9);
                             for (Player player : getGameState().getPlayerList()) {
                                 if (player.getPlayerId() == playerId) {
-                                    getGameState().getPlayerList().get(playerId).setX((float) wrapped.getFloat(1));
-                                    getGameState().getPlayerList().get(playerId).setY((float) wrapped.getFloat(5));
+                                    player.setX((float) wrapped.getFloat(1));
+                                    player.setY((float) wrapped.getFloat(5));
                                 }
                             }
-                            getGameState().getPlayerList().get(playerId).setX((float) wrapped.getFloat(1));
-                            getGameState().getPlayerList().get(playerId).setY((float) wrapped.getFloat(5));
                             data[9] = wrapped.get(9);
 
                         case 2:
@@ -231,8 +229,12 @@ public class CrazyBomberClient {
                             xCoord = data[1];
                             yCoord = data[2];
                             playerId = data[3];
-                            Bomb bomb = new Bomb(getGameState().getPlayerList().get(playerId), getGameState().getPlayerList().get(playerId).getBombStack());
-                            getGameState().getMap().getActiveBombArray().add(bomb);
+                            for (Player player : getGameState().getPlayerList()) {
+                                if (player.getPlayerId() == playerId) {
+                                    Bomb bomb = new Bomb(player, player.getBombStack());
+                                    getGameState().getMap().getActiveBombArray().add(bomb);
+                                }
+                            }
                             break;
                         case 3:
                             // On block broken
@@ -274,15 +276,18 @@ public class CrazyBomberClient {
                                 }
                             }
                             if (itemType == 1) {
-                                final Bomb newBomb = new Bomb(getGameState().getPlayerList().get(playerId),
-                                        getGameState().getPlayerList().get(playerId).getBombStack());
-                                getGameState().getPlayerList().get(playerId).getBombStack().push(newBomb);
-                            } else if (itemType == 2) {
-                                getGameState().getPlayerList().get(playerId).setNumRangeUpgrades(
-                                        getGameState().getPlayerList().get(playerId).getNumRangeUpgrades() + 1);
-                            } else if (itemType == 3) {
-                                getGameState().getPlayerList().get(playerId).setSpeed(
-                                        getGameState().getPlayerList().get(playerId).getSpeed() + (float) 1.0);
+                                for (Player player : getGameState().getPlayerList()) {
+                                    if (player.getPlayerId() == playerId) {
+                                        final Bomb newBomb = new Bomb(player, player.getBombStack());
+                                        player.getBombStack().push(newBomb);
+                                    } else if (itemType == 2) {
+                                        player.setNumRangeUpgrades(
+                                                player.getNumRangeUpgrades() + 1);
+                                    } else if (itemType == 3) {
+                                        player.setSpeed(
+                                                player.getSpeed() + (float) 1.0);
+                                    }
+                                }
                             }
                             break;
                         case 6:
@@ -290,7 +295,11 @@ public class CrazyBomberClient {
                             // data should have which player
                             // send to all other players
                             playerId = data[1];
-                            getGameState().getPlayerList().remove(getGameState().getPlayerList().get(playerId));
+                            for (Player player : getGameState().getPlayerList()) {
+                                if (player.getPlayerId() == playerId) {
+                                    getGameState().getPlayerList().remove(player);
+                                }
+                            }
                             break;
                         case 7:
                             // On player creation
