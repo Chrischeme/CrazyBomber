@@ -13,7 +13,18 @@ public class Item extends Sprite {
         setX(y*48+180);
         setY((14-x)*48);
         _itemType = itemType;
-        this.setTexture(new Texture("object/item.png"));
+        switch (itemType) {
+            case BombUp:
+                this.setTexture(new Texture("object/itembomb.png"));
+                break;
+            case RangeUp:
+                this.setTexture(new Texture("object/itemrange.png"));
+                break;
+            case SpeedUp:
+                this.setTexture(new Texture("object/itemspeed.png"));
+                break;
+            default:
+        }
     }
 
     public byte getXCoord() {
