@@ -28,13 +28,13 @@ public class Repository {
     }
 
     private void populateRepository() {
-        GameMap map = new GameMap(new Texture("background.jpg"), this);
-        GameMap map1 = new GameMap(new Texture("background2.png"), this);
+        GameMap map = new GameMap(new Texture("backgroundimg3.png"), this);
+        GameMap map1 = new GameMap(new Texture("backgroundimg2.png"), this);
         _listOfMaps.add(map);
         _listOfMaps.add(map1);
-        Room room = new Room(new Texture("background.jpg"), this);
-        Room room1 = new Room(new Texture("background1.png"), this);
-        Room room2 = new Room(new Texture("background2.png"), this);
+        Room room = new Room(new Texture("backgroundimg1.png"), this);
+        Room room1 = new Room(new Texture("backgroundimg4.png"), this);
+        Room room2 = new Room(new Texture("backgroundimg2.png"), this);
         _listOfRooms.add(room);
         _listOfRooms.add(room1);
         _listOfRooms.add(room2);

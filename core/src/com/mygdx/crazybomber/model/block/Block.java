@@ -1,22 +1,34 @@
 package com.mygdx.crazybomber.model.block;
 
-public abstract class Block {
-    private byte _x;
-    private byte _y;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 
-    public byte getX() {
+public abstract class Block extends Sprite {
+    public Block(Texture texture)
+    {
+        super(texture);
+    }
+    public Block()
+    {
+
+    }
+    private byte _x; // change the name & getXcoord
+    private byte _y; // delete the fields and methods, cast it as a byte
+
+    public byte getXCoord() {
         return _x;
     }
 
-    public void setX(byte x) {
+    public void setXCoord(byte x) {
         this._x = x;
     }
 
-    public byte getY() {
+    public byte getYCoord() {
         return _y;
     }
 
-    public void setY(byte y) {
+    public void setYCoord(byte y) {
         this._y = y;
     }
 }

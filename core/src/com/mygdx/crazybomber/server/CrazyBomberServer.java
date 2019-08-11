@@ -162,11 +162,11 @@ public class CrazyBomberServer {
                             // update bomb in bomb data + send to all other players => NOT SURE
                             xCoord = data[1];
                             yCoord = data[2];
-                            for (Bomb bomb : gameState.getMap().getActiveBombArray()) {
-                                if (bomb.getX() == xCoord & bomb.getY() == yCoord) {
+                            for (ServerBomb bomb : gameState.getMap().getActiveBombArray()) {
+                                if (bomb.getXCoord() == xCoord & bomb.getYCoord() == yCoord) {
                                     break;
                                 } else {
-                                    gameState.getMap().getActiveBombArray().add(new Bomb(xCoord, yCoord));
+                                    gameState.getMap().getActiveBombArray().add(new ServerBomb(xCoord, yCoord));
                                     out.write(data);
                                 }
                             }
@@ -185,14 +185,14 @@ public class CrazyBomberServer {
                             // update item in item data + send to all other players => NOT SURE
                             xCoord = data[1];
                             yCoord = data[2];
-                            Item item;
+                            ServerItem item;
                             switch (data[9]) {
                                 case 1:
-                                    item = new Item(xCoord, yCoord, ItemTypes.BombUp);
+                                    item = new ServerItem(xCoord, yCoord, ItemTypes.BombUp);
                                 case 2:
-                                    item = new Item(xCoord, yCoord, ItemTypes.RangeUp);
+                                    item = new ServerItem(xCoord, yCoord, ItemTypes.RangeUp);
                                 default:
-                                    item = new Item(xCoord, yCoord, ItemTypes.SpeedUp);
+                                    item = new ServerItem(xCoord, yCoord, ItemTypes.SpeedUp);
                             }
                             gameState.getMap().getActiveItemArray().add(item);
                             break;
@@ -202,8 +202,8 @@ public class CrazyBomberServer {
                             // update the player fields in player data + send to all other players
                             xCoord = data[1];
                             yCoord = data[2];
-                            for (Item activeItem : gameState.getMap().getActiveItemArray()) {
-                                if (activeItem.getX() == xCoord & activeItem.getY() == yCoord) {
+                            for (ServerItem activeItem : gameState.getMap().getActiveItemArray()) {
+                                if (activeItem.getXCoord() == xCoord & activeItem.getYCoord() == yCoord) {
                                     gameState.getMap().getActiveItemArray().remove(activeItem);
                                     out.write(data);
                                     break;
@@ -229,8 +229,8 @@ public class CrazyBomberServer {
                             xCoord = data[1];
                             yCoord = data[2];
                             for (int i = 0; i < gameState.getMap().getActiveBombArray().size(); i++) {
-                                if (gameState.getMap().getActiveBombArray().get(i).getX() == xCoord &&
-                                        gameState.getMap().getActiveBombArray().get(i).getY() == yCoord) {
+                                if (gameState.getMap().getActiveBombArray().get(i).getXCoord() == xCoord &&
+                                        gameState.getMap().getActiveBombArray().get(i).getYCoord() == yCoord) {
                                     gameState.getMap().getActiveBombArray().remove(i);
                                     break;
                                 }

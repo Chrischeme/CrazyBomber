@@ -82,8 +82,8 @@ public class Player extends Sprite {
         }
         final Bomb droppedBomb = _bombStack.pop();
         droppedBomb.setRangeBomb(getNumRangeUpgrades() + 1);
-        droppedBomb.setX((byte) Math.round(getX()));
-        droppedBomb.setY((byte) Math.round(getY()));
+        droppedBomb.setXCoord((byte) Math.round(getX()));
+        droppedBomb.setYCoord((byte) Math.round(getY()));
 
         _scheduledExecutorService = Executors.newScheduledThreadPool(1);
         System.out.println("bomb dropped");
@@ -94,7 +94,7 @@ public class Player extends Sprite {
                         _scheduledExecutorService.shutdown();
                     }
                 }, 3, TimeUnit.SECONDS);
-        getPlayerClient().sendOnBombPlaced(droppedBomb.getX(), droppedBomb.getY());
+        getPlayerClient().sendOnBombPlaced(droppedBomb.getXCoord(), droppedBomb.getYCoord());
         return droppedBomb;
     }
 
@@ -118,7 +118,7 @@ public class Player extends Sprite {
     }
 
     public void pickUpItem(Item item) throws IOException {
-        _playerClient.sendOnItemPickedUp(item.getX(), item.getY(), (byte) item.getItemType().ordinal());
+        _playerClient.sendOnItemPickedUp(item.getXCoord(), item.getYCoord(), (byte) item.getItemType().ordinal());
     }
 
     public Map getMap() {

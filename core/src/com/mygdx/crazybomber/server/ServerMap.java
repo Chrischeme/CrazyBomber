@@ -12,20 +12,20 @@ import java.util.ArrayList;
 public class ServerMap{
 
     public Block[][] blockMatrix = new Block[15][15];
-    private ArrayList<Bomb> _activeBombArray;
-    private ArrayList<Item> _activeItemArray;
+    private ArrayList<ServerBomb> _activeBombArray;
+    private ArrayList<ServerItem> _activeItemArray;
 
     public ServerMap(int[][] intMap) {
-        _activeBombArray = new ArrayList<Bomb>();
-        _activeItemArray = new ArrayList<Item>();
+        _activeBombArray = new ArrayList<ServerBomb>();
+        _activeItemArray = new ArrayList<ServerItem>();
         byte itemIDCounter = 0;
 
         for (byte i = 0; i < 15; i++) {
             for (byte j = 0; j < 15; j++) {
                 if (intMap[i][j] == 1) {
-                    blockMatrix[i][j] = new UnbreakableBlock(i, j);
+                    blockMatrix[i][j] = new ServerUnbreakableBlock(i,j);
                 } else if (intMap[i][j] == 2) {
-                    blockMatrix[i][j] = new ServerBreakableBlock(i, j, itemIDCounter);
+                    blockMatrix[i][j] = new ServerBreakableBlock(i,j, itemIDCounter);
                     if (((ServerBreakableBlock) (blockMatrix[i][j])).getItem() != null) {
                         itemIDCounter = ((byte) (itemIDCounter + 1));
                         getActiveItemArray().add(((ServerBreakableBlock) blockMatrix[i][j]).getItem());
@@ -37,11 +37,11 @@ public class ServerMap{
         }
     }
 
-    public ArrayList<Bomb> getActiveBombArray() {
+    public ArrayList<ServerBomb> getActiveBombArray() {
         return _activeBombArray;
     }
 
-    public ArrayList<Item> getActiveItemArray() {
+    public ArrayList<ServerItem> getActiveItemArray() {
         return _activeItemArray;
     }
 }

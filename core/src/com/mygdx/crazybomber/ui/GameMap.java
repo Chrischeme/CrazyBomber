@@ -17,12 +17,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.crazybomber.CrazyBomber;
+import com.mygdx.crazybomber.model.block.Block;
+import com.mygdx.crazybomber.model.block.BreakableBlock;
+import com.mygdx.crazybomber.model.block.EmptyBlock;
+import com.mygdx.crazybomber.model.block.UnbreakableBlock;
+import com.mygdx.crazybomber.model.bomb.Bomb;
 import com.mygdx.crazybomber.model.gameState.GameState;
+import com.mygdx.crazybomber.model.item.Item;
 import com.mygdx.crazybomber.model.player.Player;
 import com.mygdx.crazybomber.model.client.CrazyBomberClient;
 
-public class GameMap implements Screen {
+import java.io.IOException;
 
+public class GameMap implements Screen {
     private Sprite background;
     private SpriteBatch batch = new SpriteBatch();
     private Stage stage;
@@ -37,7 +44,7 @@ public class GameMap implements Screen {
     private Texture playerTexture;
     boolean isPressedUP, isPressedDOWN, isPressedRIGHT, isPressedLEFT, isPressedW, isPressedS, isPressedD, isPressedA, isPressedSPACE;
     private GameState gameState;
-
+    private CrazyBomberClient client;
     public GameMap (Texture texture, Repository repository) {
         this.splashTexture = texture;
         this.repository = repository;
@@ -46,18 +53,23 @@ public class GameMap implements Screen {
     @Override
     public void show() {
         background = new Sprite(splashTexture);
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        playerTexture = new Texture("player.png");
+        background.setSize(720,720);
+        background.setX(180);
+        batch = new SpriteBatch();
 
-        CrazyBomberClient client = new CrazyBomberClient("localhost", playerTexture);
+        playerTexture = new Texture("object/player.png");
+        client = new CrazyBomberClient("localhost", playerTexture);
         gameState = client.getGameState();
         player = client.getPlayer();
+        player.setPosition(180,0);
+        player.setSize(48,48);
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("menuSkin.json"),atlas);
         table = new Table(skin);
-        table.setBounds(1050, 600, 100,100 );
+        table.setBounds(950, 660, 100,100 );
 
         buttonBack = new TextButton("BACK", skin);
         buttonBack.addListener(new ClickListener() {
@@ -94,20 +106,44 @@ public class GameMap implements Screen {
         isPressedD = Gdx.input.isKeyPressed(Input.Keys.D);
         isPressedA = Gdx.input.isKeyPressed(Input.Keys.A);
         isPressedSPACE = Gdx.input.isKeyPressed(Input.Keys.SPACE);
-
+        try {
         if (isPressedUP == true || isPressedW == true)
         {
+            player.translateY(player.getSpeed());
+            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)2);
         }
         else if (isPressedDOWN == true || isPressedS == true)
         {
+            player.translateY(-player.getSpeed());
+            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)0);
         }
         else if (isPressedLEFT == true || isPressedA == true)
         {
+            player.translateX(-player.getSpeed());
+            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)1);
         }
         else if (isPressedRIGHT == true || isPressedD == true)
         {
+            player.translateX(player.getSpeed());
+            client.sendOnPlayerCoordinateChange(player.getX(),player.getY(),(byte)3);
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         player.draw(batch);
+        for(Block[] blocks : gameState.getMap().blockMatrix) {
+            for (Block block : blocks){
+                if (!(block instanceof EmptyBlock))
+                block.draw(batch);
+             }
+        }
+
+        for (Item item : gameState.getMap().getActiveItemArray()) {
+            item.draw(batch);
+        }
+        for (Bomb bomb : gameState.getMap().getActiveBombArray()) {
+            bomb.draw(batch);
+        }
         batch.end();
         stage.draw();
     }
