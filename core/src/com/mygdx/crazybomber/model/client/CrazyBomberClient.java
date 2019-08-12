@@ -23,8 +23,10 @@ public class CrazyBomberClient {
     private DataOutputStream out;
     private GameState _gameState;
     private Player _player;
+    private Texture playerTexture;
 
     public CrazyBomberClient(String serverAddress, Texture texture) {
+        this.playerTexture = texture;
         try {
             this.socket = new Socket("108.54.182.203", 3000);
             out = new DataOutputStream(socket.getOutputStream());
@@ -72,7 +74,7 @@ public class CrazyBomberClient {
             }
 
             for (int i = 0; i > length; i++) {
-                getGameState().getPlayerList().add(new Player(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]));
+                getGameState().getPlayerList().add(new Player(data[i * 3], data[i * 3 + 1], data[i * 3 + 2], playerTexture));
             }
 
 
@@ -97,7 +99,7 @@ public class CrazyBomberClient {
         }
 
         ExecutorService pool = Executors.newFixedThreadPool(1);
-        pool.execute(new CrazyBomberClient.Handler(in));
+        pool.execute(new CrazyBomberClient.Handler(in, playerTexture));
     }
 
     public GameState getGameState() {
@@ -193,9 +195,11 @@ public class CrazyBomberClient {
 
     private class Handler implements Runnable {
         private DataInputStream in;
+        private Texture playerTexture;
 
-        public Handler(DataInputStream in) {
+        public Handler(DataInputStream in, Texture texture) {
             this.in = in;
+            this.playerTexture = texture;
         }
 
         public void run() {
@@ -317,7 +321,7 @@ public class CrazyBomberClient {
                             xCoord = data[1];
                             yCoord = data[2];
                             playerId = data[3];
-                            getGameState().getPlayerList().add(new Player(xCoord, yCoord, playerId));
+                            getGameState().getPlayerList().add(new Player(xCoord, yCoord, playerId, playerTexture));
                             break;
                         case 8:
                             // on Bomb explodes

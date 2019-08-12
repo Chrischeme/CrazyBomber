@@ -137,8 +137,8 @@ public class Player extends Sprite {
         return _playerId;
     }
 
-    public Player(byte x, byte y, byte playerId) {
-        super(new Texture("object/player.png"));
+    public Player(byte x, byte y, byte playerId, Texture texture) {
+        super(texture);
         setX((float)x*48 + 180);
         setY((float)y*48);
         _playerId = playerId;
