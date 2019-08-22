@@ -73,7 +73,7 @@ public class CrazyBomberClient {
                 in.readFully(data, 0, data.length);
             }
 
-            for (int i = 0; i > length; i++) {
+            for (int i = 0; i < length; i++) {
                 getGameState().getPlayerList().add(new Player(data[i * 3], data[i * 3 + 1], data[i * 3 + 2], playerTexture));
             }
 

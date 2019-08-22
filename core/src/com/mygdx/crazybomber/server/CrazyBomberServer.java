@@ -19,8 +19,27 @@ import java.util.concurrent.Executors;
 public class CrazyBomberServer {
     private static int numPlayers = 0;
     public static ArrayList<DataOutputStream> clientList = new ArrayList<>();
+    private static ServerGameState gameState;
+    private static int[][] intMap =
+            {
+                    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1},
+                    {0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
     public static void main(String[] args) throws IOException {
+        gameState = new ServerGameState(intMap, new ArrayList<ServerPlayer>());
         try (ServerSocket listener = new ServerSocket(59898)) {
             System.out.println("The server is running...");
             ExecutorService pool = Executors.newFixedThreadPool(4);
@@ -34,7 +53,6 @@ public class CrazyBomberServer {
         private Socket socket;
         private DataInputStream in;
         private DataOutputStream out;
-        private ServerGameState gameState;
 
         public Handler(Socket socket) {
             this.socket = socket;
@@ -42,24 +60,6 @@ public class CrazyBomberServer {
 
         public void run() {
             try {
-                int[][] intMap =
-                        {
-                                {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1},
-                                {0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 2, 2, 2, 0, 0, 1, 0, 1, 0, 1},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-                gameState = new ServerGameState(intMap, new ArrayList<ServerPlayer>());
                 out = new DataOutputStream(socket.getOutputStream());
                 in = new DataInputStream(socket.getInputStream());
 
