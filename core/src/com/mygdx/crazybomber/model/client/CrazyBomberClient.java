@@ -60,9 +60,9 @@ public class CrazyBomberClient {
             if (coordinates[0] == 0 & coordinates[1] == 14) {
                 playerId = 2;
             } else if (coordinates[0] == 14 & coordinates[1] == 14) {
-                playerId = 3;
-            } else if (coordinates[0] == 14 & coordinates[1] == 0) {
                 playerId = 4;
+            } else if (coordinates[0] == 14 & coordinates[1] == 0) {
+                playerId = 3;
             }
             _player = new Player(playerId, coordinates[0], coordinates[1], _gameState.getMap(), texture, this);
             _gameState.getPlayerList().add(_player);
