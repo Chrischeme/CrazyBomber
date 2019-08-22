@@ -28,7 +28,7 @@ public class CrazyBomberClient {
     public CrazyBomberClient(String serverAddress, Texture texture) {
         this.playerTexture = texture;
         try {
-            this.socket = new Socket("108.54.182.203", 3000);
+            this.socket = new Socket("100.2.163.226", 3000);
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
 
@@ -229,8 +229,8 @@ public class CrazyBomberClient {
                             headingDirection = wrapped.get(9);
                             for (Player player : getGameState().getPlayerList()) {
                                 if (player.getPlayerId() == playerId) {
-                                    player.setX((float) wrapped.getFloat(1));
-                                    player.setY((float) wrapped.getFloat(5));
+                                    player.setX(180 + (float) wrapped.getFloat(1) * 48);
+                                    player.setY(180 + (float) wrapped.getFloat(5) * 48);
                                 }
                             }
                             data[9] = wrapped.get(9);
