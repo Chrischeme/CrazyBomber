@@ -229,7 +229,7 @@ public class CrazyBomberClient {
                             for (Player player : getGameState().getPlayerList()) {
                                 if (player.getPlayerId() == playerId) {
                                     player.setX(180 + (float) wrapped.getFloat(1) * 48);
-                                    player.setY(180 + (float) wrapped.getFloat(5) * 48);
+                                    player.setY((float) wrapped.getFloat(5) * 48);
                                 }
                             }
                             data[9] = wrapped.get(9);
