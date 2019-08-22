@@ -55,14 +55,14 @@ public class CrazyBomberClient {
                 }
             }
 
-            byte playerId = 0;
+            byte playerId = 1;
             _gameState = new GameState(new Map(blockByte2dArray, itemBlockByte2dArray));
             if (coordinates[0] == 0 & coordinates[1] == 14) {
-                playerId = 1;
-            } else if (coordinates[0] == 14 & coordinates[1] == 14) {
                 playerId = 2;
-            } else if (coordinates[0] == 14 & coordinates[1] == 0) {
+            } else if (coordinates[0] == 14 & coordinates[1] == 14) {
                 playerId = 3;
+            } else if (coordinates[0] == 14 & coordinates[1] == 0) {
+                playerId = 4;
             }
             _player = new Player(playerId, coordinates[0], coordinates[1], _gameState.getMap(), texture, this);
             _gameState.getPlayerList().add(_player);
@@ -207,9 +207,8 @@ public class CrazyBomberClient {
                 try {
                     int length = in.readInt();
                     byte[] data = new byte[length];
+                    in.readFully(data, 0, data.length);
                     if (length > 0) {
-                        in.readFully(data, 0, data.length);
-                    }
                     ByteBuffer wrapped = ByteBuffer.wrap(data);
                     byte switchByte = data[0];
                     System.out.println("Updating: " + switchByte);
@@ -342,7 +341,7 @@ public class CrazyBomberClient {
                             break;
                     }
 
-                } catch (IOException e) {
+                } }catch (IOException e) {
                 }
             }
             //e.printStackTrace();
